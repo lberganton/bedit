@@ -10,6 +10,12 @@
 #include "defs.h"
 #include "file.h"
 
+typedef enum Mode {
+  MODE_NORMAL,
+  MODE_INSERT,
+  MODE_COMMAND
+} Mode;
+
 typedef struct Section {
   char *file_name;
   bool dirty;
@@ -20,3 +26,6 @@ typedef struct Section {
 
 Section *section_unamed(void);
 Section *section_open(char *file);
+void mode_normal(Section *s);
+void mode_insert(Section *s);
+void mode_command(Section *s);
