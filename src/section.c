@@ -22,7 +22,7 @@ Section *section_unamed(void) {
   new->row = 0;
   new->col = 0;
 
-  new->windows = window_init();
+  new->windows = windows_init();
   new->buffer = buffer_init();
 
   return new;
@@ -37,18 +37,33 @@ Section *section_open(char *file_name) {
   new->row = 0;
   new->col = 0;
 
-  new->windows = window_init();
+  new->windows = windows_init();
   new->buffer = buffer_init();
 
   FILE *file = fopen(file_name, "r");
   ABORT(file == NULL, "Erro: Falha ao abrir o arquivo.");
-#include <ncurses.h>
+
   buffer_read_file(new->buffer, file);
 
   return new;
 }
 
-void mode_normal(Section *s) {}
+void mode_normal(Section *s) {
+  while (true) {
+    paint_windows(s->row, s->top_row, s->windows, s->buffer);
+
+    int key = get_key();
+
+    switch (key) {
+    case 'i':
+      mode_insert(s);
+      break;
+    case ':':
+      mode_command(s);
+      break;
+    }
+  }
+}
 
 void mode_insert(Section *s) {}
 

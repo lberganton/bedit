@@ -48,6 +48,7 @@ Buffer *buffer_init(void) {
 
   new->begin = NULL;
   new->end = NULL;
+  new->nodes = 0;
 
   return new;
 }

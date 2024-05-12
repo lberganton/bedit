@@ -21,6 +21,7 @@ typedef struct BufferNode {
 typedef struct Buffer {
   BufferNode *begin;
   BufferNode *end;
+  size_t nodes;
 } Buffer;
 
 Buffer *buffer_init(void);

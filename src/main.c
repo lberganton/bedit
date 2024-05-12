@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
   ui_init();
 
-  // mode_normal(section);
+  mode_normal(section);
 
   ui_end();
 

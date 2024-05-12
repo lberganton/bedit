@@ -23,6 +23,8 @@ typedef struct Section {
   u32 row;
   u32 col;
 
+  u32 top_row;
+
   Windows *windows;
 } Section;
 
