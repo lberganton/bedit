@@ -6,7 +6,6 @@
  * The entry of Beditor application.
  */
 #include "section.h"
-#include <ncurses.h>
 
 static Section *section;
 
@@ -21,17 +20,13 @@ int main(int argc, char **argv) {
     section = section_open(argv[1]);
   }
 
-  initscr();
-
-  buffer_print(section->buffer);
-  getch();
+  ui_init();
 
   // mode_normal(section);
 
-  endwin();
+  ui_end();
 
   // section_end(section);
 
-  endwin();
   return 0;
 }
