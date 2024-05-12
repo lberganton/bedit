@@ -8,6 +8,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define BUFF_SIZE 1024
 
@@ -27,3 +28,4 @@ typedef struct Buffer {
 Buffer *buffer_init(void);
 void buffer_read_file(Buffer *b, FILE *f);
 void buffer_print(Buffer *b);
+bool is_utf(char ch);

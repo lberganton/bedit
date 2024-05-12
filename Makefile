@@ -13,7 +13,7 @@ ARGS := test.txt
 CC := gcc
 CFLAGS := -Wall -Wextra -Wpedantic
 CINCLUDE := -I $(INCLUDE)
-CLIB := -l ncurses
+CLIB := -l ncursesw
 
 # Sources
 CSRC := $(shell find $(SRC) -name '*.c')

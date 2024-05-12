@@ -168,6 +168,7 @@ void paint_text(Section *s, WINDOW *w) {
     }
   }
 
+  wattrset(w, COLOR_PAIR(PAIR_TEXT));
   int i = 0;
 
   while (i < maxy && node) {
@@ -179,7 +180,14 @@ void paint_text(Section *s, WINDOW *w) {
         i++;
         x = 0;
       }
-      mvwaddch(w, i, x, node->buffer[len] | COLOR_PAIR(PAIR_TEXT));
+
+      // Check if the characters is unicode
+      if (is_utf(node->buffer[len])) {
+        mvwprintw(w, i, x, "%.2s", &node->buffer[len++]);
+      } else {
+        mvwaddch(w, i, x, node->buffer[len]);
+      }
+
       len++;
       x++;
     }

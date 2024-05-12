@@ -87,3 +87,7 @@ void buffer_print(Buffer *b) {
     aux = aux->next;
   }
 }
+
+bool is_utf(char ch) {
+  return ch == -61;
+}
