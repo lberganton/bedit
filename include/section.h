@@ -9,6 +9,8 @@
 
 #include "defs.h"
 #include "file.h"
+#include "buffer.h"
+#include "window.h"
 
 typedef enum Mode {
   MODE_NORMAL,
@@ -19,9 +21,13 @@ typedef enum Mode {
 typedef struct Section {
   char *file_name;
   bool dirty;
+  bool unamed;
 
+  Buffer *buffer;
   u32 row;
   u32 col;
+
+  Windows *windows;
 } Section;
 
 Section *section_unamed(void);

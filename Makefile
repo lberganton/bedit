@@ -5,8 +5,9 @@ TARGET := bedit
 INCLUDE := include
 SRC := src
 
-# Terminal Emulator
+# Run Config
 TERM := gnome-terminal
+ARGS := test.txt
 
 # C Compiler
 CC := gcc
@@ -37,7 +38,7 @@ link:
 	@echo "Beditor compiled."
 
 run:
-	@$(TERM) -- ./$(TARGET)
+	@$(TERM) -- ./$(TARGET) $(ARGS)
 	@echo "Running Beditor application."
 
 .PHONY: clean

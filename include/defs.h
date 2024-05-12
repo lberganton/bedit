@@ -8,6 +8,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <ncurses.h>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -20,12 +21,12 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define ERROR_WRONG_ARGS_NUM                                                   \
-  "Erro: Forneça argumentos válidos.\n\n"                                    \
+  "Forneça argumentos válidos.\n"                                            \
   "bedit [arquivo]"
 
 #define ABORT(condition, description)                                          \
   if (condition) {                                                             \
     if (stdscr)                                                                \
       endwin();                                                                \
-    fprintf(stderr, "bedit: %s\n", description);                             \
-  }\
+    fprintf(stderr, "bedit: %s\n", description);                               \
+  }

@@ -22,9 +22,16 @@ int main(int argc, char **argv) {
     section = section_open(argv[1]);
   }
 
-  mode_normal(section);
+  initscr();
+
+  buffer_print(section->buffer);
+  getch();
+
+  // mode_normal(section);
+
+  endwin();
   
-  section_end(section);
+  // section_end(section);
   
   endwin();
   return 0;

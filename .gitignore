@@ -1,6 +1,9 @@
 # Related-program files
-beditor
+bedit
 *.swp
 
 # Object files
 *.o
+
+# Text files
+*.txt
