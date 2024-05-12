@@ -49,7 +49,7 @@ Section *section_open(char *file_name) {
 }
 
 void mode_normal(Section *s) {
-
+  
 }
 
 void mode_insert(Section *s) {

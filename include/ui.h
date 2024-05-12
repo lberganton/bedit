@@ -1,9 +1,7 @@
 /*
- * File: window.h
+ * File: ui.h
  * Author: Lucas Berganton
  * Created: 05/11/2024
- *
- * Manipulate the editor windows with ncurses.
  */
 #pragma once
 
