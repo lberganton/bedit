@@ -17,3 +17,6 @@ typedef struct Section {
   u32 row;
   u32 col;
 } Section;
+
+Section* section_unamed(void);
+Section* section_open(void);

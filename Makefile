@@ -10,7 +10,8 @@ TERM := gnome-terminal
 
 # C Compiler
 CC := gcc
-CFLAGS := -I $(INCLUDE)
+CFLAGS := -Wall -Wextra -Wpedantic
+CINCLUDE := -I $(INCLUDE)
 CLIB := -l ncurses
 
 # Sources
@@ -20,7 +21,7 @@ COBJ := $(CSRC:.c=.o)
 # Rules
 %.o: %.c
 	@echo "Compiling $<. . ."
-	@$(CC) -c $(CINCLUDE) -o $@ $<
+	@$(CC) -c $(CINCLUDE) $(CFLAGS) -o $@ $<
 	@echo "File $@ Generated."
 
 # Targets
