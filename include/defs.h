@@ -1,5 +1,5 @@
 /*
- * File: main.c
+ * File: defs.h
  * Author: Lucas Berganton
  * Created: 05/11/2024
  *

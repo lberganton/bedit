@@ -1,5 +1,5 @@
 /*
- * File: main.c
+ * File: section.h
  * Author: Lucas Berganton
  * Created: 05/11/2024
  *
@@ -19,4 +19,4 @@ typedef struct Section {
 } Section;
 
 Section *section_unamed(void);
-Section *section_open(void);
+Section *section_open(char *file);
