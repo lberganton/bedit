@@ -21,8 +21,8 @@ typedef struct Section {
 
   Buffer *buffer;
   u32 top_row;
-  u32 row;
-  u32 col;
+  u32 cy;
+  u32 cx;
 
   Mode mode;
 } Section;

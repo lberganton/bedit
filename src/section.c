@@ -16,8 +16,8 @@ static Section *section_create(void) {
   new->mode = MODE_NORMAL;
   new->dirty = false;
   new->top_row = 1;
-  new->row = 1;
-  new->col = 1;
+  new->cy = 1;
+  new->cx = 1;
 
   return new;
 }

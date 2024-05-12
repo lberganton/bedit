@@ -109,7 +109,7 @@ static void paint_status_bar(Section *s, WINDOW *w) {
 
   // Print the lines and colunes coordinates.
   wattrset(w, attr);
-  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row, s->col);
+  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->cy, s->cx);
 }
 
 static void paint_rows(Section *s, WINDOW *w) {
@@ -128,7 +128,7 @@ static void paint_rows(Section *s, WINDOW *w) {
     sprintf(str, "%3d ", s->top_row + row++);
 
     // Check if the actual row is where the user is.
-    if (s->top_row + i == s->row) {
+    if (s->top_row + i == s->cy) {
       wattrset(w, COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER));
       mvwprintw(w, i, 0, "%s", str);
       wattrset(w, COLOR_PAIR(PAIR_ROW_NUMBER));
