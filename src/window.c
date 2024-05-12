@@ -57,50 +57,57 @@ static void paint_command_bar(WINDOW *w) {
 }
 
 static void paint_status_bar(Section *s, WINDOW *w) {
+  // Paint the background of status bar.
   for (int i = 0; i < COLS; i++) {
     mvwaddch(w, 0, i, ' ' | COLOR_PAIR(PAIR_STATUS));
   }
 
-  char str[32];
+  char buffer[32];
   attr_t attr = 0;
 
+  // Select what color is gonna be used, based on the actual mode.
   switch (s->mode) {
   case MODE_COMMAND:
   case MODE_NORMAL:
-    sprintf(str, "  NORMAL  ");
+    sprintf(buffer, "  NORMAL  ");
     attr = COLOR_PAIR(PAIR_BLUE);
     break;
   case MODE_INSERT:
-    sprintf(str, " INSERÇÃO ");
+    sprintf(buffer, " INSERÇÃO ");
     attr = COLOR_PAIR(PAIR_TEAL);
     break;
   }
 
+  // Print the actual mode.
   wattrset(w, attr | A_REVERSE);
-  mvwprintw(w, 0, 0, "%s", str);
+  mvwprintw(w, 0, 0, "%s", buffer);
 
+  // Print the actual file.
   wattrset(w, attr);
-  mvwprintw(w, 0, 10, " %.29s%s ", s->file_name,
-            strlen(s->file_name) > 29 ? "..." : "");
+  mvwprintw(w, 0, 10, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN, s->file_name,
+            strlen(s->file_name) > STATUS_BAR_FILE_NAME_LEN ? "..." : "");
 
+  // Select the string to represent the file format.
   switch (s->file_extension) {
   case EXTENSION_UNKNOWN:
-    strcpy(str, FILE_EXTENSION_UNKNOWN);
+    strcpy(buffer, FILE_EXTENSION_UNKNOWN);
     break;
   case EXTENSION_TXT:
-    strcpy(str, FILE_EXTENSION_TXT);
+    strcpy(buffer, FILE_EXTENSION_TXT);
     break;
   case EXTENSION_C:
-    strcpy(str, FILE_EXTENSION_C);
+    strcpy(buffer, FILE_EXTENSION_C);
     break;
   case EXTENSION_CPP:
-    strcpy(str, FILE_EXTENSION_CPP);
+    strcpy(buffer, FILE_EXTENSION_CPP);
     break;
   }
 
+  // Print the file format.
   wattrset(w, COLOR_PAIR(PAIR_STATUS));
-  mvwprintw(w, 0, COLS - 20 - strlen(str), " Formato: %s ", str);
+  mvwprintw(w, 0, COLS - 20 - strlen(buffer), " Formato: %s ", buffer);
 
+  // Print the lines and colunes coordinates.
   wattrset(w, attr);
   mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row, s->col);
 }

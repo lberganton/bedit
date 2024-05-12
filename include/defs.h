@@ -20,6 +20,8 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
+#define STATUS_BAR_FILE_NAME_LEN 29
+
 #define ERROR_WRONG_ARGS_NUM                                                   \
   "Forneça argumentos válidos.\n"                                            \
   "bedit [arquivo]"
