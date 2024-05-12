@@ -7,12 +7,6 @@
  */
 #include <ncurses.h>
 
-int main(void) {
-  initscr();
-
-  printw("Hello, world!");
-  getch();
-
-  endwin();
+int main(int argc, char **argv) {
   return 0;
 }

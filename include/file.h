@@ -9,7 +9,6 @@
 
 #include <stdbool.h>
 
-typedef struct FileBuffer {
-  char *name;
-  bool dirty;
-} FileBuffer;
+bool file_exist(const char *name);
+bool file_can_read(const char *name);
+bool file_can_write(const char *name);
