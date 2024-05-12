@@ -7,6 +7,7 @@
 #include "ui.h"
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 Windows *windows_init(void) {
   Windows *new = (Windows *)malloc(sizeof(Windows));
@@ -81,6 +82,27 @@ static void paint_status_bar(Section *s, WINDOW *w) {
   wattrset(w, attr);
   mvwprintw(w, 0, 10, " %.29s%s ", s->file_name,
             strlen(s->file_name) > 29 ? "..." : "");
+
+  switch (s->file_extension) {
+  case EXTENSION_UNKNOWN:
+    strcpy(str, FILE_EXTENSION_UNKNOWN);
+    break;
+  case EXTENSION_TXT:
+    strcpy(str, FILE_EXTENSION_TXT);
+    break;
+  case EXTENSION_C:
+    strcpy(str, FILE_EXTENSION_C);
+    break;
+  case EXTENSION_CPP:
+    strcpy(str, FILE_EXTENSION_CPP);
+    break;
+  }
+
+  wattrset(w, COLOR_PAIR(PAIR_STATUS));
+  mvwprintw(w, 0, COLS - 20 - strlen(str), " Formato: %s ", str);
+
+  wattrset(w, attr);
+  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row, s->col);
 }
 
 void paint_windows(Section *s, Windows *w) {

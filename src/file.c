@@ -16,8 +16,11 @@ bool file_can_write(const char *name) { return !access(name, W_OK); }
 FileExtension file_get_extension(const char *name) {
   size_t limit = 16;
   char *aux;
+  char str[128];
 
-  char *format = strtok(name, ".");
+  strncpy(str, name, 128);
+
+  char *format = strtok(str, ".");
 
   while ((aux = strtok(NULL, "."))) {
     format = aux;
