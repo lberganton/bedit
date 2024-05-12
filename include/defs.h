@@ -29,9 +29,9 @@ typedef uint64_t u64;
 #define NO_NAME_FILE "[Sem nome]"
 
 #define FILE_EXTENSION_UNKNOWN "Sem fmt"
-#define FILE_EXTENSION_TXT     "Texto"
-#define FILE_EXTENSION_C       "C"
-#define FILE_EXTENSION_CPP     "C++"
+#define FILE_EXTENSION_TXT "Texto"
+#define FILE_EXTENSION_C "C"
+#define FILE_EXTENSION_CPP "C++"
 
 #define ABORT(condition, description)                                          \
   if (condition) {                                                             \

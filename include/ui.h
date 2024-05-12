@@ -23,7 +23,7 @@ typedef enum Palletes {
 } Palletes;
 
 typedef enum ColorPairs {
-  PAIR_TEXT,
+  PAIR_TEXT = 1,
   PAIR_BACKGROUND,
   PAIR_SELECTED_ROW,
   PAIR_ROW_NUMBER,

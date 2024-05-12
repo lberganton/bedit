@@ -68,8 +68,12 @@ void buffer_read_file(Buffer *b, FILE *f) {
       insert_end(b);
       aux = b->end;
       b->nodes++;
+      continue;
     }
+
     aux->buffer[aux->buffer_len++] = ch;
+
+    ABORT(aux->buffer_len >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
   }
 }
 
