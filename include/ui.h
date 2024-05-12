@@ -7,6 +7,7 @@
 
 #include "buffer.h"
 #include "defs.h"
+#include "section.h"
 #include <ncurses.h>
 
 #define KEY_ESC 27
@@ -46,4 +47,4 @@ Windows *windows_init(void);
 void windows_end(Windows *w);
 
 int get_key(void);
-void paint_windows(u32 row, u32 top_row, Windows *w, Buffer *b);
+void paint_windows(Section *s, Windows *w);

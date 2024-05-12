@@ -24,6 +24,8 @@ typedef uint64_t u64;
   "Forneça argumentos válidos.\n"                                            \
   "bedit [arquivo]"
 
+#define NO_NAME_FILE "[Sem nome]"
+
 #define ABORT(condition, description)                                          \
   if (condition) {                                                             \
     if (stdscr)                                                                \

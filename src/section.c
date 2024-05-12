@@ -4,25 +4,30 @@
  * Created: 05/11/2024
  */
 #include "section.h"
+#include "ui.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
+
+  new->buffer = buffer_init();
+  new->mode = MODE_NORMAL;
+  new->dirty = false;
+  new->top_row = 1;
+  new->row = 1;
+  new->col = 1;
+
   return new;
 }
 
 Section *section_unamed(void) {
   Section *new = section_create();
 
-  new->file_name = NULL;
-  new->dirty = false;
+  new->file_name = NO_NAME_FILE;
   new->unamed = true;
-  new->row = 0;
-  new->col = 0;
-
-  new->buffer = buffer_init();
+  new->file_extension = EXTENSION_UNKNOWN;
 
   return new;
 }
@@ -31,12 +36,8 @@ Section *section_open(char *file_name) {
   Section *new = section_create();
 
   new->file_name = file_name;
-  new->dirty = false;
   new->unamed = false;
-  new->row = 0;
-  new->col = 0;
-
-  new->buffer = buffer_init();
+  new->file_extension = file_get_extension(file_name);
 
   FILE *file = fopen(file_name, "r");
   ABORT(file == NULL, "Erro: Falha ao abrir o arquivo.");
@@ -50,7 +51,7 @@ void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
   while (true) {
-    paint_windows(s->row, s->top_row, windows, s->buffer);
+    paint_windows(s, windows);
 
     int key = get_key();
 

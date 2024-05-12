@@ -10,7 +10,6 @@
 #include "buffer.h"
 #include "defs.h"
 #include "file.h"
-#include "ui.h"
 
 typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
@@ -18,12 +17,14 @@ typedef struct Section {
   char *file_name;
   bool dirty;
   bool unamed;
+  FileExtension file_extension;
 
   Buffer *buffer;
+  u32 top_row;
   u32 row;
   u32 col;
 
-  u32 top_row;
+  Mode mode;
 } Section;
 
 Section *section_unamed(void);

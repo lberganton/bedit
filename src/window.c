@@ -6,6 +6,7 @@
 #include "defs.h"
 #include "ui.h"
 #include <stdlib.h>
+#include <string.h>
 
 Windows *windows_init(void) {
   Windows *new = (Windows *)malloc(sizeof(Windows));
@@ -48,23 +49,52 @@ void windows_end(Windows *w) {
   free(w);
 }
 
-void paint_windows(u32 row, u32 top_row, Windows *w, Buffer *b) {
+static void paint_command_bar(WINDOW *w) {
+  for (int i = 0; i < COLS; i++) {
+    mvwaddch(w, 0, i, ' ' | COLOR_PAIR(PAIR_BACKGROUND));
+  }
+}
+
+static void paint_status_bar(Section *s, WINDOW *w) {
+  for (int i = 0; i < COLS; i++) {
+    mvwaddch(w, 0, i, ' ' | COLOR_PAIR(PAIR_STATUS));
+  }
+
+  char str[32];
+  attr_t attr = 0;
+
+  switch (s->mode) {
+  case MODE_COMMAND:
+  case MODE_NORMAL:
+    sprintf(str, "  NORMAL  ");
+    attr = COLOR_PAIR(PAIR_BLUE);
+    break;
+  case MODE_INSERT:
+    sprintf(str, " INSERÇÃO ");
+    attr = COLOR_PAIR(PAIR_TEAL);
+    break;
+  }
+
+  wattrset(w, attr | A_REVERSE);
+  mvwprintw(w, 0, 0, "%s", str);
+
+  wattrset(w, attr);
+  mvwprintw(w, 0, 10, " %.29s%s ", s->file_name,
+            strlen(s->file_name) > 29 ? "..." : "");
+}
+
+void paint_windows(Section *s, Windows *w) {
   int i;
 
-  for (i = 0; i < COLS; i++) {
-    mvwaddch(w->command, 0, i, ' ' | COLOR_PAIR(PAIR_BACKGROUND));
-  }
-
-  for (i = 0; i < COLS; i++) {
-    mvwaddch(w->status, 0, i, ' ' | COLOR_PAIR(PAIR_STATUS));
-  }
+  paint_command_bar(w->command);
+  paint_status_bar(s, w->status);
 
   wattrset(w->rows, COLOR_PAIR(PAIR_ROW_NUMBER));
-  for (i = 0; (size_t)i < b->nodes; i++) {
+  for (i = 0; (size_t)i < s->buffer->nodes; i++) {
     char str[16];
-    sprintf(str, "%3d", top_row + i);
+    sprintf(str, "%3d", s->top_row + i);
 
-    if (top_row + i == row) {
+    if (s->top_row + i == s->row) {
       wattrset(w->rows, COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER));
       mvwprintw(w->rows, i, 0, "%s", str);
       wattrset(w->rows, COLOR_PAIR(PAIR_ROW_NUMBER));

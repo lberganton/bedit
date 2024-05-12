@@ -46,16 +46,14 @@ Buffer *buffer_init(void) {
   Buffer *new = (Buffer *)malloc(sizeof(Buffer));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
-  new->begin = NULL;
-  new->end = NULL;
+  new->begin = node_create(NULL, NULL);
+  new->end = new->begin;
   new->nodes = 0;
 
   return new;
 }
 
 void buffer_read_file(Buffer *b, FILE *f) {
-  insert_begin(b);
-
   if (fgetc(f) == EOF) {
     return;
   }
@@ -69,6 +67,7 @@ void buffer_read_file(Buffer *b, FILE *f) {
     if (ch == '\n') {
       insert_end(b);
       aux = b->end;
+      b->nodes++;
     }
     aux->buffer[aux->buffer_len++] = ch;
   }

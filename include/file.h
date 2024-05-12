@@ -9,6 +9,14 @@
 
 #include <stdbool.h>
 
+typedef enum FileExtension {
+  EXTENSION_UNKNOWN,
+  EXTENSION_TXT,
+  EXTENSION_C,
+  EXTENSION_CPP,
+} FileExtension;
+
 bool file_exist(const char *name);
 bool file_can_read(const char *name);
 bool file_can_write(const char *name);
+FileExtension file_get_extension(const char *name);
