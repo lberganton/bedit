@@ -21,6 +21,11 @@ int main(int argc, char **argv) {
   else {
     section = section_open(argv[1]);
   }
+
+  mode_normal(section);
   
+  section_end(section);
+  
+  endwin();
   return 0;
 }
