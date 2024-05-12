@@ -5,9 +5,9 @@
  */
 #pragma once
 
-#include <ncurses.h>
 #include "buffer.h"
 #include "defs.h"
+#include <ncurses.h>
 
 #define KEY_ESC 27
 

@@ -18,7 +18,7 @@ void ui_init(void) {
   curs_set(false);
 
   start_color();
-  
+
   init_color(PALETTE_TEXT, 800, 835, 953);
   init_color(PALETTE_BASE, 117, 117, 179);
   init_color(PALETTE_SURFACE_0, 191, 195, 265);
@@ -39,6 +39,4 @@ void ui_init(void) {
   refresh();
 }
 
-void ui_end(void) {
-  endwin();
-}
+void ui_end(void) { endwin(); }

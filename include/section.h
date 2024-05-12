@@ -24,8 +24,6 @@ typedef struct Section {
   u32 col;
 
   u32 top_row;
-
-  Windows *windows;
 } Section;
 
 Section *section_unamed(void);

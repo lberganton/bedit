@@ -5,6 +5,4 @@
  */
 #include "ui.h"
 
-int get_key(void) {
-  return getch();
-}
+int get_key(void) { return getch(); }

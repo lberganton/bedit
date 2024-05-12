@@ -22,7 +22,6 @@ Section *section_unamed(void) {
   new->row = 0;
   new->col = 0;
 
-  new->windows = windows_init();
   new->buffer = buffer_init();
 
   return new;
@@ -37,7 +36,6 @@ Section *section_open(char *file_name) {
   new->row = 0;
   new->col = 0;
 
-  new->windows = windows_init();
   new->buffer = buffer_init();
 
   FILE *file = fopen(file_name, "r");
@@ -49,8 +47,10 @@ Section *section_open(char *file_name) {
 }
 
 void mode_normal(Section *s) {
+  Windows *windows = windows_init();
+
   while (true) {
-    paint_windows(s->row, s->top_row, s->windows, s->buffer);
+    paint_windows(s->row, s->top_row, windows, s->buffer);
 
     int key = get_key();
 

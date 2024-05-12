@@ -3,8 +3,8 @@
  * Author: Lucas Berganton
  * Created: 05/11/2024
  */
-#include "ui.h"
 #include "defs.h"
+#include "ui.h"
 #include <stdlib.h>
 
 Windows *windows_init(void) {
@@ -25,7 +25,7 @@ Windows *windows_init(void) {
   wrefresh(new->status);
   wrefresh(new->rows);
   wrefresh(new->text);
-  
+
   return new;
 }
 
@@ -39,7 +39,7 @@ void windows_end(Windows *w) {
   wrefresh(w->status);
   wrefresh(w->rows);
   wrefresh(w->text);
-  
+
   delwin(w->command);
   delwin(w->status);
   delwin(w->rows);
@@ -68,8 +68,7 @@ void paint_windows(u32 row, u32 top_row, Windows *w, Buffer *b) {
       wattrset(w->rows, COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER));
       mvwprintw(w->rows, i, 0, "%s", str);
       wattrset(w->rows, COLOR_PAIR(PAIR_ROW_NUMBER));
-    }
-    else {
+    } else {
       mvwprintw(w->rows, i, 0, "%s", str);
     }
   }
