@@ -1,5 +1,5 @@
 # Program
-TARGET := beditor
+TARGET := bedit
 
 # Directories
 INCLUDE := include

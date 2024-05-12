@@ -9,9 +9,7 @@
 #include <ncurses.h>
 
 int main(int argc, char **argv) {
-  if (argc > 2) {
-    
-  }
+  ABORT(argc > 2, ERROR_WRONG_ARGS_NUM);
   
   return 0;
 }

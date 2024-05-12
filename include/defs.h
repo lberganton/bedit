@@ -19,9 +19,13 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-#define ABORT(condition, description)               \
-  if (condition) {                                  \
-    if (stdscr)                                     \
-      endwin();                                     \
-    fprintf(stderr, "Beditor: %s\n", description);  \
-  }                                                 \
+#define ERROR_WRONG_ARGS_NUM                                                   \
+  "Erro: Forneça argumentos válidos.\n\n"                                    \
+  "bedit [arquivo]"
+
+#define ABORT(condition, description)                                          \
+  if (condition) {                                                             \
+    if (stdscr)                                                                \
+      endwin();                                                                \
+    fprintf(stderr, "bedit: %s\n", description);                             \
+  }\

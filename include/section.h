@@ -3,7 +3,7 @@
  * Author: Lucas Berganton
  * Created: 05/11/2024
  *
- * Basic things for a Beditor section.
+ * Basic things for a Bedit section.
  */
 #pragma once
 
@@ -18,5 +18,5 @@ typedef struct Section {
   u32 col;
 } Section;
 
-Section* section_unamed(void);
-Section* section_open(void);
+Section *section_unamed(void);
+Section *section_open(void);
