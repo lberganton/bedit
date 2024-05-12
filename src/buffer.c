@@ -8,13 +8,13 @@
 #include <stdlib.h>
 
 static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
-  BufferNode *new = (BufferNode*) malloc(sizeof(BufferNode));
+  BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
   new->prev = prev;
   new->next = next;
   new->buffer_len = 0;
-  
+
   return new;
 }
 
@@ -23,8 +23,7 @@ static void insert_begin(Buffer *b) {
 
   if (b->begin == NULL) {
     b->end = new;
-  }
-  else {
+  } else {
     b->begin->prev = new;
   }
 
@@ -36,8 +35,7 @@ static void insert_end(Buffer *b) {
 
   if (b->begin == NULL) {
     b->begin = new;
-  }
-  else {
+  } else {
     b->end->next = new;
   }
 
@@ -45,7 +43,7 @@ static void insert_end(Buffer *b) {
 }
 
 Buffer *buffer_init(void) {
-  Buffer *new = (Buffer*) malloc(sizeof(Buffer));
+  Buffer *new = (Buffer *)malloc(sizeof(Buffer));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
   new->begin = NULL;

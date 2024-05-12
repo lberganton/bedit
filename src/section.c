@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 static Section *section_create(void) {
-  Section *new = (Section*) malloc(sizeof(Section));
+  Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
   return new;
 }
@@ -42,21 +42,14 @@ Section *section_open(char *file_name) {
 
   FILE *file = fopen(file_name, "r");
   ABORT(file == NULL, "Erro: Falha ao abrir o arquivo.");
-
+#include <ncurses.h>
   buffer_read_file(new->buffer, file);
 
   return new;
 }
 
-void mode_normal(Section *s) {
-  
-}
+void mode_normal(Section *s) {}
 
-void mode_insert(Section *s) {
+void mode_insert(Section *s) {}
 
-}
-
-void mode_command(Section *s) {
-
-}
-
+void mode_command(Section *s) {}

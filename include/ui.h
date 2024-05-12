@@ -14,4 +14,6 @@ typedef struct Windows {
   WINDOW *command;
 } Windows;
 
-Windows *window_init(void);
+void init_ui(void);
+Windows *windows_init(void);
+void windows_end(Windows *w);

@@ -7,16 +7,12 @@
  */
 #pragma once
 
+#include "buffer.h"
 #include "defs.h"
 #include "file.h"
-#include "buffer.h"
-#include "window.h"
+#include "ui.h"
 
-typedef enum Mode {
-  MODE_NORMAL,
-  MODE_INSERT,
-  MODE_COMMAND
-} Mode;
+typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
 typedef struct Section {
   char *file_name;

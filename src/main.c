@@ -17,8 +17,7 @@ int main(int argc, char **argv) {
   // in a 'unamed' style.
   if (argc == 1 || !file_exist(argv[1])) {
     section = section_unamed();
-  }
-  else {
+  } else {
     section = section_open(argv[1]);
   }
 
@@ -30,9 +29,9 @@ int main(int argc, char **argv) {
   // mode_normal(section);
 
   endwin();
-  
+
   // section_end(section);
-  
+
   endwin();
   return 0;
 }
