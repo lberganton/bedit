@@ -152,30 +152,48 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   BufferNode *node = s->buffer->begin;
   u32 pos = 0;
 
-  paint_background(text, COLOR_PAIR(PAIR_BACKGROUND));
-
+  // Runs the loop until it has printed all lines or until it reaches the
+  // y-coordinate limit
   while (y < maxy && n < s->buffer->nodes) {
+    // Check if is the next number can be printed or is a continuation of the
+    // previous row.
     if (print_num)
       snprintf(buffer, 16, "%*" PRIu32 " ", len, s->top_row + n);
     else
       snprintf(buffer, 16, "%*c ", len, ' ');
 
-    attr_t attr = s->top_row + y == s->cy ? COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER)
-                                          : COLOR_PAIR(PAIR_ROW_NUMBER);
+    attr_t attr_row, attr_text;
 
-    paint_string(rows, y, 0, attr, 16, buffer);
+    // Verify that the row in this iteration is the user's current row and sets
+    // the appropriate attributes.
+    if (s->top_row + n == s->cy + 1) {
+      attr_row = COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER);
+      attr_text = COLOR_PAIR(PAIR_SELECTED_ROW);
+    } else {
+      attr_row = COLOR_PAIR(PAIR_ROW_NUMBER);
+      attr_text = COLOR_PAIR(PAIR_TEXT);
+    }
 
-    attr = s->top_row + y == s->cy ? COLOR_PAIR(PAIR_SELECTED_ROW)
-                                   : COLOR_PAIR(PAIR_TEXT);
+    // Paint the row number.
+    paint_string(rows, y, 0, attr_row, 16, buffer);
 
+    // Print the characters of the row until the row ends or the x maximum is
+    // reached.
     while (pos < node->buffer_len && x < COLS - begx) {
-      u8 encoding =
-          paint_char(text, y, x, attr, &node->buffer[pos]);
+      u8 encoding = paint_char(text, y, x, attr_text, &node->buffer[pos]);
       pos += encoding;
       x++;
     }
 
+    // Check if the x limit has not been reached.
     if (x < COLS - begx) {
+      // Paints the remaining background of the row.
+      while (x < COLS - begx) {
+        char ch = ' ';
+        paint_char(text, y, x, attr_text, &ch);
+        x++;
+      }
+
       print_num = true;
       node = node->next;
       pos = 0;
@@ -188,9 +206,18 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     y++;
   }
 
+  // Verify that all rows has been printed and the y's limit has not been reached.
   while (y < maxy) {
+    // Put the '~' in a empty row.
     snprintf(buffer, 16, "%-*c ", len, '~');
     paint_string(rows, y, 0, COLOR_PAIR(PAIR_ROW_NUMBER), 16, buffer);
+
+    // Paint the background.
+    for (int x = 0; x < COLS; x++) {
+      char ch = ' ';
+      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), &ch);
+    }
+
     y++;
   }
 }

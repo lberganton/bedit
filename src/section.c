@@ -15,8 +15,8 @@ static Section *section_create(void) {
   new->buffer = buffer_init();
   new->dirty = false;
   new->top_row = 1;
-  new->cy = 1;
-  new->cx = 1;
+  new->cy = 0;
+  new->cx = 0;
 
   return new;
 }
@@ -56,9 +56,10 @@ void mode_normal(Section *s) {
   paint_rows(s, windows->rows, windows->text);
 
   while (true) {
-    refresh_windows(windows);
     curs_set(true);
     cursor_move(windows->text, s->cy, s->cx);
+    
+    refresh_windows(windows);
 
     int key = getch();
 
