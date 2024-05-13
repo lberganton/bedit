@@ -47,11 +47,8 @@ Windows *windows_init(void);
 void windows_end(Windows *w);
 
 int get_key(void);
-void paint_windows(Section *s, Windows *w);
 
-void paint_char(WINDOW *w, u32 y, u32 x, char ch, ColorPair color);
-
-void paint_background(WINDOW *w, ColorPair color);
-void paint_command_bar(Section *s, Windows *w);
-void paint_status_bar(Section *s, Windows *w);
-void paint_rows(Section *s, Windows *w);
+void paint_command_bar(char *msg, attr_t attr, WINDOW *w);
+void paint_status_bar(char *mode, Section *s, WINDOW *w);
+void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
+void refresh_windows(Windows *s);

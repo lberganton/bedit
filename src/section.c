@@ -13,7 +13,6 @@ static Section *section_create(void) {
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
   new->buffer = buffer_init();
-  new->mode = MODE_NORMAL;
   new->dirty = false;
   new->top_row = 1;
   new->cy = 1;
@@ -47,14 +46,17 @@ Section *section_open(char *file_name) {
   return new;
 }
 
+u32 get_rows(Section *s) { return s->buffer->nodes; }
+
 void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
+  paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
+  paint_status_bar(MODE_NORMAL, s, windows->status);
+  paint_rows(s, windows->rows, windows->text);
+
   while (true) {
-    paint_command_bar(s, windows);
-    paint_status_bar(MODE_NORMAL, s, windows);
-    paint_rows(s, windows);
-    paint_windows(s, windows);
+    refresh_windows(windows);
 
     int key = get_key();
 

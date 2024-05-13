@@ -7,8 +7,8 @@
  */
 #pragma once
 
+#include <inttypes.h>
 #include <ncurses.h>
-#include <stdint.h>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -20,7 +20,7 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-#define STATUS_BAR_FILE_NAME_LEN 29
+#define STATUS_BAR_FILE_NAME_LEN 32
 
 #define ERROR_WRONG_ARGS_NUM                                                   \
   "Forneça argumentos válidos.\n"                                            \

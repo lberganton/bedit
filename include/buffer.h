@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include "defs.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -28,4 +29,4 @@ typedef struct Buffer {
 Buffer *buffer_init(void);
 void buffer_read_file(Buffer *b, FILE *f);
 void buffer_print(Buffer *b);
-u32 get_char_encoding(char *ch);
+u8 get_char_encoding(char *ch);

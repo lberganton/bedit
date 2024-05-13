@@ -11,8 +11,8 @@
 #include "defs.h"
 #include "file.h"
 
-#define MODE_NORMAL "NORMAL"
-#define MODE_INSERT "INSERÇÃO"
+#define MODE_NORMAL " NORMAL "
+#define MODE_INSERT " INSERÇÃO "
 #define MODE_COMMAND MODE_NORMAL
 
 typedef struct Section {
@@ -32,3 +32,4 @@ Section *section_open(char *file);
 void mode_normal(Section *s);
 void mode_insert(Section *s);
 void mode_command(Section *s);
+u32 get_rows(Section *s);

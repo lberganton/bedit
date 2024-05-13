@@ -38,4 +38,6 @@ FileExtension file_get_extension(const char *name) {
   if (strncmp(format, "cpp", limit) == 0) {
     return EXTENSION_CPP;
   }
+
+  return EXTENSION_UNKNOWN;
 }
