@@ -57,8 +57,10 @@ void mode_normal(Section *s) {
 
   while (true) {
     refresh_windows(windows);
+    curs_set(true);
+    cursor_move(windows->text, s->cy, s->cx);
 
-    int key = get_key();
+    int key = getch();
 
     switch (key) {
     case 'i':

@@ -43,14 +43,20 @@ void ui_init(void) {
 void ui_end(void) { endwin(); }
 
 static u8 paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
-  int encoding = get_char_encoding(ch);
+  u8 encoding = get_char_encoding(ch);
 
   if (encoding == 1) {
     mvwaddch(w, y, x, *ch | attr);
     return encoding;
   }
 
+  attr_t temp;
+  wattr_get(w, &temp, NULL, NULL);
+
+  wattrset(w, attr);
   mvwprintw(w, y, x, "%.*s", encoding, ch);
+
+  wattrset(w, temp);
   return encoding;
 }
 
@@ -71,6 +77,11 @@ static void paint_background(WINDOW *w, attr_t attr) {
 
 void paint_command_bar(char *msg, attr_t attr, WINDOW *w) {
   paint_background(w, COLOR_PAIR(PAIR_BACKGROUND));
+
+  if (msg == NULL) {
+    return;
+  }
+
   paint_string(w, 0, 0, attr, COLS, msg);
 }
 
@@ -141,9 +152,6 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   BufferNode *node = s->buffer->begin;
   u32 pos = 0;
 
-  wattrset(rows, COLOR_PAIR(PAIR_ROW_NUMBER));
-  wattrset(text, COLOR_PAIR(PAIR_TEXT));
-
   paint_background(text, COLOR_PAIR(PAIR_BACKGROUND));
 
   while (y < maxy && n < s->buffer->nodes) {
@@ -157,9 +165,12 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
 
     paint_string(rows, y, 0, attr, 16, buffer);
 
+    attr = s->top_row + y == s->cy ? COLOR_PAIR(PAIR_SELECTED_ROW)
+                                   : COLOR_PAIR(PAIR_TEXT);
+
     while (pos < node->buffer_len && x < COLS - begx) {
       u8 encoding =
-          paint_char(text, y, x, COLOR_PAIR(PAIR_TEXT), &node->buffer[pos]);
+          paint_char(text, y, x, attr, &node->buffer[pos]);
       pos += encoding;
       x++;
     }
