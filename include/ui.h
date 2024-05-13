@@ -52,4 +52,5 @@ void paint_command_bar(char *msg, attr_t attr, WINDOW *w);
 void paint_status_bar(char *mode, Section *s, WINDOW *w);
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
 void refresh_windows(Windows *s);
-void cursor_move(WINDOW *w, u32 y, u32 x);
+
+void cursor_set(Section *s, WINDOW *w, u32 y, u32 x);

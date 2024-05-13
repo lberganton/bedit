@@ -56,8 +56,7 @@ void mode_normal(Section *s) {
   paint_rows(s, windows->rows, windows->text);
 
   while (true) {
-    curs_set(true);
-    cursor_move(windows->text, s->cy, s->cx);
+    cursor_set(s, windows->text, s->cy, s->cx);
     
     refresh_windows(windows);
 

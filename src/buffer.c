@@ -48,7 +48,7 @@ Buffer *buffer_init(void) {
 
   new->begin = node_create(NULL, NULL);
   new->end = new->begin;
-  new->nodes = 0;
+  new->nodes = 1;
 
   return new;
 }
@@ -74,17 +74,6 @@ void buffer_read_file(Buffer *b, FILE *f) {
     aux->buffer[aux->buffer_len++] = ch;
 
     ABORT(aux->buffer_len >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
-  }
-}
-
-void buffer_print(Buffer *b) {
-  BufferNode *aux = b->begin;
-
-  while (aux) {
-    for (size_t i = 0; i < aux->buffer_len; i++) {
-      addch(aux->buffer[i]);
-    }
-    aux = aux->next;
   }
 }
 
