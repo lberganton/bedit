@@ -28,4 +28,4 @@ typedef struct Buffer {
 Buffer *buffer_init(void);
 void buffer_read_file(Buffer *b, FILE *f);
 void buffer_print(Buffer *b);
-bool is_utf(char ch);
+u32 get_char_encoding(char *ch);

@@ -22,7 +22,7 @@ typedef enum Palletes {
   PALETTE_TEAL       // Green
 } Palletes;
 
-typedef enum ColorPairs {
+typedef enum ColorPair {
   PAIR_TEXT = 1,
   PAIR_BACKGROUND,
   PAIR_SELECTED_ROW,
@@ -31,7 +31,7 @@ typedef enum ColorPairs {
   PAIR_STATUS,
   PAIR_BLUE,
   PAIR_TEAL
-} ColorPairs;
+} ColorPair;
 
 typedef struct Windows {
   WINDOW *text;
@@ -48,3 +48,10 @@ void windows_end(Windows *w);
 
 int get_key(void);
 void paint_windows(Section *s, Windows *w);
+
+void paint_char(WINDOW *w, u32 y, u32 x, char ch, ColorPair color);
+
+void paint_background(WINDOW *w, ColorPair color);
+void paint_command_bar(Section *s, Windows *w);
+void paint_status_bar(Section *s, Windows *w);
+void paint_rows(Section *s, Windows *w);

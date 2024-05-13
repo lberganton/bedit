@@ -11,7 +11,9 @@
 #include "defs.h"
 #include "file.h"
 
-typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
+#define MODE_NORMAL "NORMAL"
+#define MODE_INSERT "INSERÇÃO"
+#define MODE_COMMAND MODE_NORMAL
 
 typedef struct Section {
   char *file_name;
@@ -23,8 +25,6 @@ typedef struct Section {
   u32 top_row;
   u32 cy;
   u32 cx;
-
-  Mode mode;
 } Section;
 
 Section *section_unamed(void);

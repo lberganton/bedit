@@ -40,3 +40,28 @@ void ui_init(void) {
 }
 
 void ui_end(void) { endwin(); }
+
+static void paint_background(WINDOW *w, ColorPair color) {
+  for (int i = 0; i < getmaxy(w); i++) {
+    for (int j = 0; j < getmaxx(w); j++) {
+      mvwaddch(w, i, j, ' ' | COLOR_PAIR(color));
+    }
+  }
+}
+
+void paint_command_bar(Section *s, Windows *w) {
+  paint_background(w->command, PAIR_BACKGROUND);
+}
+
+void paint_status_bar(char *mode, Section *s, Windows *w) {
+  paint_background(w->status, PAIR_STATUS);
+
+  ColorPair color = mode == MODE_INSERT ? PAIR_TEAL : PAIR_BLUE;
+
+  
+}
+
+void paint_rows(Section *s, Windows *w) {
+
+}
+

@@ -51,6 +51,9 @@ void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
   while (true) {
+    paint_command_bar(s, windows);
+    paint_status_bar(MODE_NORMAL, s, windows);
+    paint_rows(s, windows);
     paint_windows(s, windows);
 
     int key = get_key();
