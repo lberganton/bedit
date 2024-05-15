@@ -206,7 +206,8 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     y++;
   }
 
-  // Verify that all rows has been printed and the y's limit has not been reached.
+  // Verify that all rows has been printed and the y's limit has not been
+  // reached.
   while (y < maxy) {
     // Put the '~' in a empty row.
     snprintf(buffer, 16, "%-*c ", len, '~');

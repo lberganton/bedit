@@ -22,7 +22,7 @@ typedef struct Section {
   FileExtension file_extension;
 
   Buffer *buffer;
-  
+
   u32 top_row;
   u32 row;
   u32 col;

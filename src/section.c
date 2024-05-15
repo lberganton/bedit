@@ -59,7 +59,7 @@ void mode_normal(Section *s) {
 
   while (true) {
     cursor_set(s, windows->text, s->cy, s->cx);
-    
+
     refresh_windows(windows);
 
     int key = getch();
