@@ -145,7 +145,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
 
   u32 len = 3;
   u32 maxy = getmaxy(rows);
-  u32 begx = getbegx(text);
+  u32 maxx = getmaxx(text);
 
   char buffer[16];
 
@@ -179,16 +179,16 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
 
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
-    while (pos < node->buffer_len && x < COLS - begx) {
+    while (pos < node->buffer_len && x < maxx) {
       u8 encoding = paint_char(text, y, x, attr_text, &node->buffer[pos]);
       pos += encoding;
       x++;
     }
 
     // Check if the x limit has not been reached.
-    if (x < COLS - begx) {
+    if (x <= maxx && pos == node->buffer_len) {
       // Paints the remaining background of the row.
-      while (x < COLS - begx) {
+      while (x < maxx) {
         char ch = ' ';
         paint_char(text, y, x, attr_text, &ch);
         x++;
