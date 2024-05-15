@@ -16,7 +16,7 @@ void ui_init(void) {
 
   cbreak();
   noecho();
-  curs_set(false);
+  keypad(stdscr, true);
 
   start_color();
 

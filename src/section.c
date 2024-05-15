@@ -53,11 +53,10 @@ u32 get_rows(Section *s) { return s->buffer->nodes; }
 void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
-  paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
-  paint_status_bar(MODE_NORMAL, s, windows->status);
-  paint_rows(s, windows->rows, windows->text);
-
   while (true) {
+    paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
+    paint_status_bar(MODE_NORMAL, s, windows->status);
+    paint_rows(s, windows->rows, windows->text);
     cursor_set(s, windows->text, s->cy, s->cx);
 
     refresh_windows(windows);
@@ -65,6 +64,15 @@ void mode_normal(Section *s) {
     int key = getch();
 
     switch (key) {
+    case KEY_UP:
+      break;
+    case KEY_DOWN:
+      break;
+    case KEY_LEFT:
+      break;
+    case KEY_RIGHT:
+      cursor_right(s, windows->text);
+      break;
     case 'i':
       mode_insert(s);
       break;

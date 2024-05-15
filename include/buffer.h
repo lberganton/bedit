@@ -15,7 +15,7 @@
 
 typedef struct BufferNode {
   char buffer[BUFF_SIZE];
-  size_t buffer_len;
+  u32 buffer_len;
   struct BufferNode *prev;
   struct BufferNode *next;
 } BufferNode;
@@ -25,7 +25,7 @@ typedef struct Buffer {
   BufferNode *end;
   BufferNode *current;
   BufferNode *top;
-  size_t nodes;
+  u32 nodes;
 } Buffer;
 
 Buffer *buffer_init(void);

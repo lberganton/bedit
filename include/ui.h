@@ -54,3 +54,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
 void refresh_windows(Windows *s);
 
 void cursor_set(Section *s, WINDOW *w, u32 y, u32 x);
+void cursor_up(Section *s, WINDOW *w);
+void cursor_down(Section *s, WINDOW *w);
+void cursor_left(Section *s, WINDOW *w);
+void cursor_right(Section *s, WINDOW *w);
