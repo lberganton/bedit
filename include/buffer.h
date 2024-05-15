@@ -24,6 +24,7 @@ typedef struct Buffer {
   BufferNode *begin;
   BufferNode *end;
   BufferNode *current;
+  BufferNode *top;
   size_t nodes;
 } Buffer;
 

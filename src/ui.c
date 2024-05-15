@@ -149,7 +149,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
 
   char buffer[16];
 
-  BufferNode *node = s->buffer->current;
+  BufferNode *node = s->buffer->top;
   u32 pos = 0;
 
   // Runs the loop until it has printed all lines or until it reaches the

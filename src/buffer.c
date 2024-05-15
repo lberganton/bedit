@@ -49,6 +49,7 @@ Buffer *buffer_init(void) {
   new->begin = node_create(NULL, NULL);
   new->end = new->begin;
   new->current = new->begin;
+  new->top = new->begin;
   new->nodes = 1;
 
   return new;
