@@ -4,10 +4,11 @@ TARGET := bedit
 # Directories
 INCLUDE := include
 SRC := src
+TEST := test
 
-# Run Config
+# Test Config
+TESTFILE := rocky.txt
 TERM := gnome-terminal
-ARGS := test.txt
 
 # C Compiler
 CC := gcc
@@ -26,7 +27,7 @@ COBJ := $(CSRC:.c=.o)
 	@echo "File $@ Generated."
 
 # Targets
-all: build run
+all: build test
 
 build: compile link
 
@@ -37,9 +38,10 @@ link:
 	@$(CC) $(CINCLUDE) -o $(TARGET) $(COBJ) $(CLIB)
 	@echo "Beditor compiled."
 
-run:
-	@$(TERM) -- ./$(TARGET) $(ARGS)
-	@echo "Running Beditor application."
+.PHONY: test
+test:
+	@$(TERM) -- ./$(TARGET) $(TEST)/$(TESTFILE)
+	@echo "Running Beditor application with $(TESTFILE) file."
 
 .PHONY: clean
 clean:
