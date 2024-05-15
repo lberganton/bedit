@@ -38,4 +38,5 @@ typedef uint64_t u64;
     if (stdscr)                                                                \
       endwin();                                                                \
     fprintf(stderr, "bedit: %s\n", description);                               \
+    exit(1);                                                                   \
   }
