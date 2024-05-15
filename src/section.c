@@ -17,6 +17,8 @@ static Section *section_create(void) {
   new->top_row = 1;
   new->cy = 0;
   new->cx = 0;
+  new->row = 1;
+  new->col = 1;
 
   return new;
 }

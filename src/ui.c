@@ -134,7 +134,7 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w) {
 
   // Print the lines and colunes coordinates.
   wattrset(w, color);
-  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->cy, s->cx);
+  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row, s->col);
 }
 
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
