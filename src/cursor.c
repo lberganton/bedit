@@ -2,40 +2,45 @@
 #include "section.h"
 #include <ncurses.h>
 
+void cursor_enable(bool state) {
+  curs_set(state);
+}
+
 void cursor_set(Section *s, WINDOW *w, u32 y, u32 x) {
-  s->cx = x;
-  s->cy = y;
   wmove(w, y, x);
 }
 
 void cursor_right(Section *s, WINDOW *w) {
-  u8 encoding = get_char_encoding(&s->buffer->current->buffer[s->col - 1]);
+  if (s->row == get_rows(s) - 1) {
+    return;
+  }
 
-  if (s->col + encoding > s->buffer->current->buffer_len) {
-    if (s->row == get_rows(s)) {
-      return;
-    }
+  u32 maxx = getmaxx(w) - 1;
+  u32 maxy = getmaxy(w) - 1;
+  u8 encoding = get_char_encoding(&s->buffer->current->buffer[s->col]);
 
-    if (s->cx + 1 > getmaxx(w) - getbegx(w)) {
-      s->beg_col++;
-    }
+  if (s->col + encoding > s->buffer->current->buffer_len) {    
+    s->row++;
+    s->cx = 0;
+    s->col = 0;
+    s->beg_col = 0;
 
-    if (s->cy == getmaxy(w) - 1) {
+    if (s->cy == maxy) {
       text_down(s, w);
     }
     else {
       s->cy++;
     }
 
-    s->cx = 0;
-    
-    s->row++;
-    s->col = 1;
-
     s->buffer->current = s->buffer->current->next;
   }
   else {
-    s->cx++;
+    if (s->cx == maxx) {
+      s->beg_col++;
+    }
+    else {
+      s->cx++;
+    }
     s->col += encoding;
   }
 

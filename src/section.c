@@ -14,12 +14,12 @@ static Section *section_create(void) {
 
   new->buffer = buffer_init();
   new->dirty = false;
-  new->beg_row = 1;
-  new->beg_col = 1;
+  new->beg_row = 0;
+  new->beg_col = 0;
   new->cy = 0;
   new->cx = 0;
-  new->row = 1;
-  new->col = 1;
+  new->row = 0;
+  new->col = 0;
 
   return new;
 }
@@ -57,12 +57,15 @@ void mode_normal(Section *s) {
   paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
 
   while (true) {
+    cursor_enable(false);
+
     paint_status_bar(MODE_NORMAL, s, windows->status);
     paint_rows(s, windows->rows, windows->text);
 
     cursor_set(s, windows->text, s->cy, s->cx);
 
     refresh_windows(windows);
+    cursor_enable(true);
 
     int key = getch();
 

@@ -134,7 +134,7 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w) {
 
   // Print the lines and colunes coordinates.
   wattrset(w, color);
-  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row, s->col);
+  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row + 1, s->col + 1);
 }
 
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
@@ -150,12 +150,12 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   char buffer[16];
 
   BufferNode *node = s->buffer->top;
-  u32 begpos = s->beg_col - 1;//s->col - 1 > maxx + begx ? maxx + begx - s->col : 0;
+  u32 begpos = s->beg_col;//s->col - 1 > maxx + begx ? maxx + begx - s->col : 0;
 
   // Runs the loop until it has printed all lines or until it reaches the
   // y-coordinate limit
   while (y < maxy && n < s->buffer->nodes) {
-    snprintf(buffer, 16, "%*" PRIu32 " ", len, s->beg_row + n);
+    snprintf(buffer, 16, "%*" PRIu32 " ", len, 1 + s->beg_row + n);
 
     attr_t attr_row, attr_text;
 
@@ -224,7 +224,7 @@ void refresh_windows(Windows *s) {
 }
 
 void text_up(Section *s, WINDOW *w) {
-  if (s->row == 1)
+  if (s->row == 0)
     return;
   
   s->beg_row--;
@@ -232,7 +232,7 @@ void text_up(Section *s, WINDOW *w) {
 }
 
 void text_down(Section *s, WINDOW *w) {
-  if (s->row == get_rows(s))
+  if (s->row == get_rows(s) - 1)
     return;
   
   s->beg_row++;

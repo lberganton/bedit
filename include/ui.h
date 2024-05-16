@@ -8,6 +8,7 @@
 #include "buffer.h"
 #include "defs.h"
 #include "section.h"
+#include <stdbool.h>
 #include <ncurses.h>
 
 #define KEY_ESC 27
@@ -53,6 +54,7 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w);
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
 void refresh_windows(Windows *s);
 
+void cursor_enable(bool state);
 void cursor_set(Section *s, WINDOW *w, u32 y, u32 x);
 void cursor_up(Section *s, WINDOW *w);
 void cursor_down(Section *s, WINDOW *w);
