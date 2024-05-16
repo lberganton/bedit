@@ -23,7 +23,8 @@ typedef struct Section {
 
   Buffer *buffer;
 
-  u32 top_row;
+  u32 beg_row;
+  u32 beg_col;
   u32 row;
   u32 col;
 

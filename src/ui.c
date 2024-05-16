@@ -141,32 +141,27 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   u32 n = 0;
   u32 y = 0;
   u32 x = 0;
-  bool print_num = true;
 
   u32 len = 3;
   u32 maxy = getmaxy(rows);
   u32 maxx = getmaxx(text);
+  u32 begx = getbegx(text);
 
   char buffer[16];
 
   BufferNode *node = s->buffer->top;
-  u32 pos = 0;
+  u32 begpos = s->beg_col - 1;//s->col - 1 > maxx + begx ? maxx + begx - s->col : 0;
 
   // Runs the loop until it has printed all lines or until it reaches the
   // y-coordinate limit
   while (y < maxy && n < s->buffer->nodes) {
-    // Check if is the next number can be printed or is a continuation of the
-    // previous row.
-    if (print_num)
-      snprintf(buffer, 16, "%*" PRIu32 " ", len, s->top_row + n);
-    else
-      snprintf(buffer, 16, "%*c ", len, ' ');
+    snprintf(buffer, 16, "%*" PRIu32 " ", len, s->beg_row + n);
 
     attr_t attr_row, attr_text;
 
     // Verify that the row in this iteration is the user's current row and sets
     // the appropriate attributes.
-    if (s->top_row + n == s->cy + 1) {
+    if (s->beg_row + n == s->row) {
       attr_row = COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER);
       attr_text = COLOR_PAIR(PAIR_SELECTED_ROW);
     } else {
@@ -177,6 +172,11 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Paint the row number.
     paint_string(rows, y, 0, attr_row, 16, buffer);
 
+    u32 pos = 0;
+    for (u32 i = 0; i < begpos; i++) {
+      pos += get_char_encoding(&node->buffer[pos]);
+    }
+
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
     while (pos < node->buffer_len && x < maxx) {
@@ -185,22 +185,15 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
       x++;
     }
 
-    // Check if the x limit has not been reached.
-    if (x <= maxx && pos == node->buffer_len) {
-      // Paints the remaining background of the row.
-      while (x < maxx) {
-        char ch = ' ';
-        paint_char(text, y, x, attr_text, &ch);
-        x++;
-      }
-
-      print_num = true;
-      node = node->next;
-      pos = 0;
-      n++;
-    } else {
-      print_num = false;
+    // Paints the remaining background of the row.
+    while (x < maxx) {
+      char ch = ' ';
+      paint_char(text, y, x, attr_text, &ch);
+      x++;
     }
+
+    node = node->next;
+    n++;
 
     x = 0;
     y++;
@@ -228,4 +221,20 @@ void refresh_windows(Windows *s) {
   wrefresh(s->rows);
   wrefresh(s->status);
   wrefresh(s->text);
+}
+
+void text_up(Section *s, WINDOW *w) {
+  if (s->row == 1)
+    return;
+  
+  s->beg_row--;
+  s->buffer->top = s->buffer->top->prev;
+}
+
+void text_down(Section *s, WINDOW *w) {
+  if (s->row == get_rows(s))
+    return;
+  
+  s->beg_row++;
+  s->buffer->top = s->buffer->top->next;
 }

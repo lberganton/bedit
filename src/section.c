@@ -14,7 +14,8 @@ static Section *section_create(void) {
 
   new->buffer = buffer_init();
   new->dirty = false;
-  new->top_row = 1;
+  new->beg_row = 1;
+  new->beg_col = 1;
   new->cy = 0;
   new->cx = 0;
   new->row = 1;
@@ -53,10 +54,12 @@ u32 get_rows(Section *s) { return s->buffer->nodes; }
 void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
+  paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
+
   while (true) {
-    paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
     paint_status_bar(MODE_NORMAL, s, windows->status);
     paint_rows(s, windows->rows, windows->text);
+
     cursor_set(s, windows->text, s->cy, s->cx);
 
     refresh_windows(windows);
