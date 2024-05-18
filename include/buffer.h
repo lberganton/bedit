@@ -30,4 +30,6 @@ typedef struct Buffer {
 } Buffer;
 
 Buffer *buffer_init(void);
+void buffer_insert_begin(Buffer *b);
+void buffer_insert_end(Buffer *b);
 void buffer_read_file(Buffer *b, FILE *f);

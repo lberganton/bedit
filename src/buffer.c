@@ -19,7 +19,7 @@ static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   return new;
 }
 
-static void insert_begin(Buffer *b) {
+void buffer_insert_begin(Buffer *b) {
   BufferNode *new = node_create(NULL, b->begin);
 
   if (b->begin == NULL) {
@@ -31,7 +31,7 @@ static void insert_begin(Buffer *b) {
   b->begin = new;
 }
 
-static void insert_end(Buffer *b) {
+void buffer_insert_end(Buffer *b) {
   BufferNode *new = node_create(b->end, NULL);
 
   if (b->begin == NULL) {
@@ -82,7 +82,7 @@ void buffer_read_file(Buffer *b, FILE *f) {
       i += get_encoding(&buffer[i]);
     }
 
-    insert_end(b);
+    buffer_insert_end(b);
     aux = b->end;
     b->nodes++;
     pos = 0;
