@@ -65,10 +65,10 @@ void mode_normal(Section *s) {
 
     paint_status_bar(MODE_NORMAL, s, windows->status);
     paint_rows(s, windows->rows, windows->text);
-
     cursor_set(s, windows->text, s->cy, s->cx);
 
     refresh_windows(windows);
+
     cursor_enable(true);
 
     int key = getch();

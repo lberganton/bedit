@@ -1,3 +1,8 @@
+/*
+ * File: cursor.h
+ * Author: Lucas Berganton
+ * Created: 05/11/2024
+ */
 #include "section.h"
 #include "ui.h"
 #include <ncurses.h>
