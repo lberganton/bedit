@@ -42,28 +42,27 @@ void ui_init(void) {
 
 void ui_end(void) { endwin(); }
 
-static u8 paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
-  u8 encoding = get_char_encoding(ch);
-
-  if (encoding == 1) {
-    mvwaddch(w, y, x, *ch | attr);
-    return encoding;
+static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, Char ch) {
+  if (ch.size == 1) {
+    mvwaddch(w, y, x, ch.data[0] | attr);
+    return;
   }
 
   attr_t temp;
   wattr_get(w, &temp, NULL, NULL);
 
   wattrset(w, attr);
-  mvwprintw(w, y, x, "%.*s", encoding, ch);
+  mvwprintw(w, y, x, "%.*s", ch.size, ch.data);
 
   wattrset(w, temp);
-  return encoding;
 }
 
 static void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
                          char *str) {
   for (size_t i = 0; str[i] && i < len; i++) {
-    paint_char(w, y, x++, attr, &str[i]);
+    Char ch;
+    set_char(str[i], &ch);
+    paint_char(w, y, x++, attr, ch);
   }
 }
 
