@@ -43,53 +43,6 @@ void ui_init(void) {
 
 void ui_end(void) { endwin(); }
 
-static u8 paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
-  u8 encoding = get_encoding(ch);
-
-  if (encoding == 1) {
-    mvwaddch(w, y, x, *ch | attr);
-    return encoding;
-  }
-
-  attr_t temp;
-  wattr_get(w, &temp, NULL, NULL);
-
-  wattrset(w, attr);
-  mvwprintw(w, y, x, "%.*s", encoding, ch);
-
-  wattrset(w, temp);
-  return encoding;
-}
-
-static void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                         char *str) {
-  for (size_t i = 0; str[i] && i < len; i++) {
-    paint_char(w, y, x++, attr, &str[i]);
-  }
-}
-
-static void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
-  if (ch.size == 1) {
-    mvwaddch(w, y, x, ch.data[0] | attr);
-    return;
-  }
-
-  attr_t temp;
-  wattr_get(w, &temp, NULL, NULL);
-
-  wattrset(w, attr);
-  mvwprintw(w, y, x, "%.*s", ch.size, &ch.data[0]);
-
-  wattrset(w, temp);
-}
-
-static void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                         char *str) {
-  // for (size_t i = 0; str[i] && i < len; i++) {
-  //   paint_char(w, y, x++, attr, get_utfchar(&str[i]));
-  // }
-}
-
 static void paint_background(WINDOW *w, attr_t attr) {
   for (int i = 0; i < getmaxy(w); i++) {
     for (int j = 0; j < getmaxx(w); j++) {
