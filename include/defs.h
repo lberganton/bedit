@@ -21,6 +21,8 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
+#define BUFF_SIZE 1024
+
 #define STATUS_BAR_FILE_NAME_LEN 32
 
 #define ERROR_WRONG_ARGS_NUM                                                   \

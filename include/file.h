@@ -19,4 +19,6 @@ typedef enum FileExtension {
 bool file_exist(const char *name);
 bool file_can_read(const char *name);
 bool file_can_write(const char *name);
+void file_get_name(const char *input, char *buff);
+void file_get_directory(const char *name, char *buff);
 FileExtension file_get_extension(const char *name);

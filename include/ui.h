@@ -8,8 +8,8 @@
 #include "buffer.h"
 #include "defs.h"
 #include "section.h"
-#include <stdbool.h>
 #include <ncurses.h>
+#include <stdbool.h>
 
 #define KEY_ESC 27
 

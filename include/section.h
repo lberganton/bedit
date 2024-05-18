@@ -17,9 +17,11 @@
 
 typedef struct Section {
   char *file_name;
-  bool dirty;
+  char *file_directory;
   bool unamed;
   FileExtension file_extension;
+
+  bool dirty;
 
   Buffer *buffer;
 

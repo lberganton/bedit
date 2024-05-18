@@ -7,12 +7,10 @@
  */
 #pragma once
 
-#include "defs.h"
 #include "char.h"
+#include "defs.h"
 #include <stdbool.h>
 #include <stdio.h>
-
-#define BUFF_SIZE 1024
 
 typedef struct BufferNode {
   UTFChar buffer[BUFF_SIZE];

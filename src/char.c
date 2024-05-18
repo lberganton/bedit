@@ -49,14 +49,14 @@ u8 get_encoding(char *ch) {
 }
 
 UTFChar get_utfchar(char *in) {
-    UTFChar ch;
-    ch.size = get_encoding(in);
+  UTFChar ch;
+  ch.size = get_encoding(in);
 
-    for (u8 i = 0; i < ch.size; i++) {
-      ch.data[i] = in[i];
-    }
+  for (u8 i = 0; i < ch.size; i++) {
+    ch.data[i] = in[i];
+  }
 
-    return ch;
+  return ch;
 }
 
 void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
@@ -76,8 +76,7 @@ void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
   wattrset(w, temp);
 }
 
-void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                         char *str) {
+void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str) {
   for (size_t i = 0; str[i] && i < len; i++) {
     paint_char(w, y, x++, attr, &str[i]);
   }

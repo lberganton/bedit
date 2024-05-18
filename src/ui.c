@@ -4,8 +4,8 @@
  * Created: 05/11/2024
  */
 #include "ui.h"
-#include "defs.h"
 #include "char.h"
+#include "defs.h"
 #include <ncurses.h>
 #include <string.h>
 
@@ -110,7 +110,8 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w) {
 
   // Print the lines and colunes coordinates.
   wattrset(w, color);
-  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row + 1, s->col + 1);
+  mvwprintw(w, 0, COLS - 9, " %3" PRIu32 ":%-3" PRIu32 " ", s->row + 1,
+            s->col + 1);
 }
 
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
@@ -121,7 +122,6 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   u32 len = 3;
   u32 maxy = getmaxy(rows);
   u32 maxx = getmaxx(text);
-  u32 begx = getbegx(text);
 
   char buffer[16];
 

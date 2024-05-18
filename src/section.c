@@ -12,6 +12,8 @@ static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
+  new->file_name = (char *)malloc(sizeof(char) * BUFF_SIZE);
+  new->file_directory = (char *)malloc(sizeof(char) * BUFF_SIZE);
   new->buffer = buffer_init();
   new->dirty = false;
   new->beg_row = 0;
@@ -37,8 +39,10 @@ Section *section_unamed(void) {
 Section *section_open(char *file_name) {
   Section *new = section_create();
 
-  new->file_name = file_name;
   new->unamed = false;
+
+  file_get_name(file_name, new->file_name);
+  file_get_directory(file_name, new->file_directory);
   new->file_extension = file_get_extension(file_name);
 
   FILE *file = fopen(file_name, "r");
