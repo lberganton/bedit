@@ -20,6 +20,8 @@ static Section *section_create(void) {
   new->cx = 0;
   new->row = 0;
   new->col = 0;
+  new->buffer_pos = 0;
+  new->buffer_beg = 0;
 
   return new;
 }
@@ -75,6 +77,7 @@ void mode_normal(Section *s) {
     case KEY_DOWN:
       break;
     case KEY_LEFT:
+      cursor_left(s, windows->text);
       break;
     case KEY_RIGHT:
       cursor_right(s, windows->text);

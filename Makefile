@@ -7,7 +7,7 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE := oneline.txt
+TESTFILE := rocky.txt
 TERM := gnome-terminal
 
 # C Compiler
