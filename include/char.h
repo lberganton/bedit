@@ -14,4 +14,4 @@ typedef struct UTFChar {
 
 u8 get_encoding(char *ch);
 UTFChar get_utfchar(char *ch);
-void set_utfchar(char *in, UTFChar *ch);
+UTFChar set_utfchar(char *in, UTFChar *ch);

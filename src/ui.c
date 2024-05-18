@@ -43,7 +43,32 @@ void ui_init(void) {
 
 void ui_end(void) { endwin(); }
 
-static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
+static u8 paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
+  u8 encoding = get_encoding(ch);
+
+  if (encoding == 1) {
+    mvwaddch(w, y, x, *ch | attr);
+    return encoding;
+  }
+
+  attr_t temp;
+  wattr_get(w, &temp, NULL, NULL);
+
+  wattrset(w, attr);
+  mvwprintw(w, y, x, "%.*s", encoding, ch);
+
+  wattrset(w, temp);
+  return encoding;
+}
+
+static void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                         char *str) {
+  for (size_t i = 0; str[i] && i < len; i++) {
+    paint_char(w, y, x++, attr, &str[i]);
+  }
+}
+
+static void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
   if (ch.size == 1) {
     mvwaddch(w, y, x, ch.data[0] | attr);
     return;
@@ -53,16 +78,16 @@ static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
   wattr_get(w, &temp, NULL, NULL);
 
   wattrset(w, attr);
-  mvwprintw(w, y, x, "%.*s", ch.size, ch.data);
+  mvwprintw(w, y, x, "%.*s", ch.size, &ch.data[0]);
 
   wattrset(w, temp);
 }
 
-static void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+static void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
                          char *str) {
-  for (size_t i = 0; str[i] && i < len; i++) {
-    paint_char(w, y, x++, attr, get_utfchar(&str[i]));
-  }
+  // for (size_t i = 0; str[i] && i < len; i++) {
+  //   paint_char(w, y, x++, attr, get_utfchar(&str[i]));
+  // }
 }
 
 static void paint_background(WINDOW *w, attr_t attr) {
@@ -173,7 +198,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
     while (pos < node->buffer_len && x < maxx) {
-      paint_char(text, y, x, attr_text, node->buffer[pos]);
+      paint_utfchar(text, y, x, attr_text, node->buffer[pos]);
       pos++;
       x++;
     }
@@ -181,12 +206,13 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Paints the remaining background of the row.
     while (x < maxx) {
       char ch = ' ';
-      paint_char(text, y, x, attr_text, get_utfchar(&ch));
+      paint_char(text, y, x, attr_text, &ch);
       x++;
     }
 
     node = node->next;
     n++;
+    pos = s->beg_col;
 
     x = 0;
     y++;
@@ -202,7 +228,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Paint the background.
     for (int x = 0; x < COLS; x++) {
       char ch = ' ';
-      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), get_utfchar(&ch));
+      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), &ch);
     }
 
     y++;
@@ -217,17 +243,11 @@ void refresh_windows(Windows *s) {
 }
 
 void text_up(Section *s, WINDOW *w) {
-  if (s->row == 0)
-    return;
-  
   s->beg_row--;
   s->buffer->top = s->buffer->top->prev;
 }
 
 void text_down(Section *s, WINDOW *w) {
-  if (s->row == get_rows(s) - 1)
-    return;
-  
   s->beg_row++;
   s->buffer->top = s->buffer->top->next;
 }

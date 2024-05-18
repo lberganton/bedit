@@ -15,19 +15,32 @@ void cursor_up(Section *s, WINDOW *w) {
     return;
   }
 
-  if (s->row == s->beg_row) {
+  u32 begx = getbegx(w);
+  u32 maxx = getmaxx(w) - 1;
+  u32 begy = getbegy(w);
+
+  if (s->cy == begy) {
     text_up(s, w);
   } else {
     s->cy--;
   }
 
+  s->buffer->current = s->buffer->current->prev;
   s->row--;
 
-  if (s->buffer->current->buffer_len > s->buffer->current->prev->buffer_len) {
+  if (s->buffer->current->buffer_len < s->buffer->current->next->buffer_len && s->col > s->buffer->current->buffer_len) {
+    s->col = s->buffer->current->buffer_len;
+
+    if (s->buffer->current->buffer_len > maxx) {
+      s->beg_col = s->buffer->current->buffer_len - maxx;
+    }
+    else {
+      s->beg_col = 0;
+    }
     
+    s->cx = s->buffer->current->buffer_len - s->beg_col;
   }
 
-  s->buffer->current = s->buffer->current->prev;
   cursor_set(s, w, s->cy, s->cx);
 }
 
@@ -36,19 +49,32 @@ void cursor_down(Section *s, WINDOW *w) {
     return;
   }
 
-  if (s->cy == getmaxy(w) - 1) {
+  u32 begx = getbegx(w);
+  u32 maxx = getmaxx(w) - 1;
+  u32 maxy = getmaxy(w) - 1;
+
+  if (s->cy == maxy) {
     text_down(s, w);
   } else {
     s->cy++;
   }
 
+  s->buffer->current = s->buffer->current->next;
   s->row++;
 
-  if (s->buffer->current->buffer_len > s->buffer->current->prev->buffer_len) {
+  if (s->buffer->current->buffer_len < s->buffer->current->prev->buffer_len && s->col > s->buffer->current->buffer_len) {
+    s->col = s->buffer->current->buffer_len;
+
+    if (s->buffer->current->buffer_len > maxx) {
+      s->beg_col = s->buffer->current->buffer_len - maxx;
+    }
+    else {
+      s->beg_col = 0;
+    }
     
+    s->cx = s->buffer->current->buffer_len - s->beg_col;
   }
 
-  s->buffer->current = s->buffer->current->next;
   cursor_set(s, w, s->cy, s->cx);
 }
 
@@ -101,9 +127,13 @@ void cursor_left(Section *s, WINDOW *w) {
     s->buffer->current = s->buffer->current->prev;
 
     s->row--;
-    s->cx = maxx;
-    s->col = s->buffer->current->buffer_len + 1;
-    s->beg_col = s->buffer->current->buffer_len + 1 - begx;
+    s->col = s->buffer->current->buffer_len;
+
+    if (s->buffer->current->buffer_len > maxx) {
+      s->beg_col = s->buffer->current->buffer_len - maxx;
+    }
+
+    s->cx = s->buffer->current->buffer_len - s->beg_col;
 
     if (s->cy == 0) {
       text_up(s, w);
@@ -119,7 +149,7 @@ void cursor_left(Section *s, WINDOW *w) {
     else {
       s->cx--;
     }
-    s->col++;
+    s->col--;
   }
 
   cursor_set(s, w, s->cy, s->cx);

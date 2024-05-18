@@ -64,18 +64,27 @@ void buffer_read_file(Buffer *b, FILE *f) {
   fseek(f, 0, SEEK_SET);
 
   BufferNode *aux = b->begin;
+  char buffer[BUFF_SIZE];
+  u32 pos = 0;
   int ch;
 
   while ((ch = fgetc(f)) != EOF) {
-    if (ch == '\n') {
-      insert_end(b);
-      aux = b->end;
-      b->nodes++;
+    ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
+
+    if (ch != '\n') {
+      buffer[pos++] = ch;
       continue;
     }
 
-    aux->buffer[aux->buffer_len++] = get_utfchar((char*) &ch);
+    u32 i = 0;
+    while (i < pos) {
+      aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
+      i += get_encoding(&buffer[i]);
+    }
 
-    ABORT(aux->buffer_len >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
+    insert_end(b);
+    aux = b->end;
+    b->nodes++;
+    pos = 0;
   }
 }

@@ -44,7 +44,7 @@ u8 get_encoding(char *ch) {
     return 4;
   }
 
-  return 1;
+  return 0;
 }
 
 UTFChar get_utfchar(char *in) {
@@ -52,7 +52,7 @@ UTFChar get_utfchar(char *in) {
     ch.size = get_encoding(in);
 
     for (u8 i = 0; i < ch.size; i++) {
-        ch.data[i] = in[i];
+      ch.data[i] = in[i];
     }
 
     return ch;
