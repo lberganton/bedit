@@ -10,6 +10,48 @@ void cursor_set(Section *s, WINDOW *w, u32 y, u32 x) {
   wmove(w, y, x);
 }
 
+void cursor_up(Section *s, WINDOW *w) {
+  if (s->row == 0) {
+    return;
+  }
+
+  if (s->row == s->beg_row) {
+    text_up(s, w);
+  } else {
+    s->cy--;
+  }
+
+  s->row--;
+
+  if (s->buffer->current->buffer_len > s->buffer->current->prev->buffer_len) {
+    
+  }
+
+  s->buffer->current = s->buffer->current->prev;
+  cursor_set(s, w, s->cy, s->cx);
+}
+
+void cursor_down(Section *s, WINDOW *w) {
+  if (s->row == get_rows(s) - 1) {
+    return;
+  }
+
+  if (s->cy == getmaxy(w) - 1) {
+    text_down(s, w);
+  } else {
+    s->cy++;
+  }
+
+  s->row++;
+
+  if (s->buffer->current->buffer_len > s->buffer->current->prev->buffer_len) {
+    
+  }
+
+  s->buffer->current = s->buffer->current->next;
+  cursor_set(s, w, s->cy, s->cx);
+}
+
 void cursor_right(Section *s, WINDOW *w) {
   u32 maxx = getmaxx(w) - 1;
   u32 maxy = getmaxy(w) - 1;
