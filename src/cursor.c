@@ -53,7 +53,7 @@ void cursor_left(Section *s, WINDOW *w) {
   u32 maxy = getmaxy(w) - 1;
   u8 encoding = get_char_encoding(&s->buffer->current->buffer[s->col]);
 
-  if (s->col < encoding) {    
+  if (s->col == encoding - 1) {    
     if (s->row == 0) {
       return;
     }

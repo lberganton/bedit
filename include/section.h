@@ -22,8 +22,6 @@ typedef struct Section {
   FileExtension file_extension;
 
   Buffer *buffer;
-  u32 buffer_pos;
-  u32 buffer_beg;
 
   u32 beg_row;
   u32 beg_col;
