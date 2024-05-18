@@ -5,6 +5,7 @@
  */
 #include "ui.h"
 #include "defs.h"
+#include "char.h"
 #include <ncurses.h>
 #include <string.h>
 
@@ -42,7 +43,7 @@ void ui_init(void) {
 
 void ui_end(void) { endwin(); }
 
-static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, Char ch) {
+static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
   if (ch.size == 1) {
     mvwaddch(w, y, x, ch.data[0] | attr);
     return;
@@ -60,9 +61,7 @@ static void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, Char ch) {
 static void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
                          char *str) {
   for (size_t i = 0; str[i] && i < len; i++) {
-    Char ch;
-    set_char(str[i], &ch);
-    paint_char(w, y, x++, attr, ch);
+    paint_char(w, y, x++, attr, get_utfchar(&str[i]));
   }
 }
 
@@ -149,7 +148,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   char buffer[16];
 
   BufferNode *node = s->buffer->top;
-  u32 begpos = s->beg_col;//s->col - 1 > maxx + begx ? maxx + begx - s->col : 0;
+  u32 pos = s->beg_col;
 
   // Runs the loop until it has printed all lines or until it reaches the
   // y-coordinate limit
@@ -171,23 +170,18 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Paint the row number.
     paint_string(rows, y, 0, attr_row, 16, buffer);
 
-    u32 pos = 0;
-    for (u32 i = 0; i < begpos; i++) {
-      pos += get_char_encoding(&node->buffer[pos]);
-    }
-
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
     while (pos < node->buffer_len && x < maxx) {
-      u8 encoding = paint_char(text, y, x, attr_text, &node->buffer[pos]);
-      pos += encoding;
+      paint_char(text, y, x, attr_text, node->buffer[pos]);
+      pos++;
       x++;
     }
 
     // Paints the remaining background of the row.
     while (x < maxx) {
       char ch = ' ';
-      paint_char(text, y, x, attr_text, &ch);
+      paint_char(text, y, x, attr_text, get_utfchar(&ch));
       x++;
     }
 
@@ -208,7 +202,7 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
     // Paint the background.
     for (int x = 0; x < COLS; x++) {
       char ch = ' ';
-      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), &ch);
+      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), get_utfchar(&ch));
     }
 
     y++;

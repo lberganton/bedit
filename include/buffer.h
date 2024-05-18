@@ -15,7 +15,7 @@
 #define BUFF_SIZE 1024
 
 typedef struct BufferNode {
-  Char buffer[BUFF_SIZE];
+  UTFChar buffer[BUFF_SIZE];
   u32 buffer_len;
   struct BufferNode *prev;
   struct BufferNode *next;

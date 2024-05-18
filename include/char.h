@@ -7,12 +7,11 @@
 
 #include "defs.h"
 
-typedef struct Char {
+typedef struct UTFChar {
     char data[4];
     u8 size;
-} Char;
+} UTFChar;
 
-u8 get_encoding(char ch);
-char get_char(Char *ch);
-void set_char(char in, Char *ch);
-Char to_special_char(char ch);
+u8 get_encoding(char *ch);
+UTFChar get_utfchar(char *ch);
+void set_utfchar(char *in, UTFChar *ch);

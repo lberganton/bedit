@@ -55,9 +55,8 @@ void cursor_down(Section *s, WINDOW *w) {
 void cursor_right(Section *s, WINDOW *w) {
   u32 maxx = getmaxx(w) - 1;
   u32 maxy = getmaxy(w) - 1;
-  u8 encoding = get_char_encoding(&s->buffer->current->buffer[s->col]);
 
-  if (s->col + encoding > s->buffer->current->buffer_len) {
+  if (s->col + 1 > s->buffer->current->buffer_len) {
     if (s->row == get_rows(s) - 1) {
       return;
     }
@@ -83,7 +82,7 @@ void cursor_right(Section *s, WINDOW *w) {
     else {
       s->cx++;
     }
-    s->col += encoding;
+    s->col++;
   }
 
   cursor_set(s, w, s->cy, s->cx);
@@ -93,9 +92,8 @@ void cursor_left(Section *s, WINDOW *w) {
   u32 begx = getbegx(w);
   u32 maxx = getmaxx(w) - 1;
   u32 maxy = getmaxy(w) - 1;
-  u8 encoding = get_char_encoding(&s->buffer->current->buffer[s->col]);
 
-  if (s->col == encoding - 1) {    
+  if (s->col == 0) {    
     if (s->row == 0) {
       return;
     }
@@ -121,7 +119,7 @@ void cursor_left(Section *s, WINDOW *w) {
     else {
       s->cx--;
     }
-    s->col -= encoding;
+    s->col++;
   }
 
   cursor_set(s, w, s->cy, s->cx);

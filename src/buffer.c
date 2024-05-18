@@ -74,7 +74,7 @@ void buffer_read_file(Buffer *b, FILE *f) {
       continue;
     }
 
-    set_char(ch, &aux->buffer[aux->buffer_len++]);
+    aux->buffer[aux->buffer_len++] = get_utfchar((char*) &ch);
 
     ABORT(aux->buffer_len >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
   }
