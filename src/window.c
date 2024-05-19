@@ -14,7 +14,7 @@ Windows *windows_init(void) {
   ABORT(new == NULL, "Erro: Falha ao alocar memória para janelas.");
 
   new->command = newwin(1, COLS, LINES - 1, 0);
-  new->status = newwin(1, 0, LINES - 2, 0);
+  new->status = newwin(1, COLS, LINES - 2, 0);
   new->rows = newwin(LINES - 2, 4, 0, 0);
   new->text = newwin(LINES - 2, COLS - 4, 0, 4);
 
