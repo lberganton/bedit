@@ -57,10 +57,12 @@ Buffer *buffer_init(void) {
 }
 
 void buffer_read_file(Buffer *b, FILE *f) {
+  // Return the function if the file is empty.
   if (fgetc(f) == EOF) {
     return;
   }
 
+  // Moves the file cursor to start.
   fseek(f, 0, SEEK_SET);
 
   BufferNode *aux = b->begin;
@@ -68,23 +70,33 @@ void buffer_read_file(Buffer *b, FILE *f) {
   u32 pos = 0;
   int ch;
 
+  // Loops until the file reaches the end.
   while ((ch = fgetc(f)) != EOF) {
     ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
 
+    // If the character read isn't a new line, put it in the buffer and go to
+    // the next iteration.
     if (ch != '\n') {
       buffer[pos++] = ch;
       continue;
     }
 
     u32 i = 0;
+    
+    // Iterates over the buffer converting the default char type in UTFChar to
+    // put it in the node (line) buffer.
     while (i < pos) {
       aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
-      i += get_encoding(&buffer[i]);
+      i += get_utf_len(&buffer[i]);
     }
 
+    // Inserts a new node at the end of the list.
     buffer_insert_end(b);
     aux = b->end;
+
+    // Increases the number of nodes (lines).
     b->nodes++;
+
     pos = 0;
   }
 }

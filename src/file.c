@@ -16,6 +16,7 @@ bool file_can_write(const char *name) { return !access(name, W_OK); }
 
 void file_get_name(const char *input, char *buff) {
   char *slash = strrchr(input, '/');
+  slash = slash == NULL ? input : slash;
   strncpy(buff, slash + 1, BUFF_SIZE);
 }
 

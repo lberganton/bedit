@@ -14,13 +14,13 @@
 #define KEY_ESC 27
 
 typedef enum Palletes {
-  PALETTE_TEXT = 8,  // Text
-  PALETTE_BASE,      // Background
-  PALETTE_SURFACE_0, // Selected row
-  PALETTE_SURFACE_1, // Row number
-  PALETTE_LAVENDER,  // Selected row number
-  PALETTE_BLUE,      // Blue
-  PALETTE_TEAL       // Green
+  PALETTE_TEXT = 8,
+  PALETTE_BASE,
+  PALETTE_SURFACE_0,
+  PALETTE_SURFACE_1,
+  PALETTE_LAVENDER,
+  PALETTE_BLUE,
+  PALETTE_TEAL
 } Palletes;
 
 typedef enum ColorPair {

@@ -6,7 +6,10 @@
 #include "char.h"
 #include <ncurses.h>
 
-u8 get_encoding(char *ch) {
+// Gets the utf-8 length of the char. Code adapted from an answer of a
+// Stack Overflow's user named Christoph.
+// https://stackoverflow.com/questions/1031645/how-to-detect-utf-8-in-plain-c
+u8 get_utf_len(char *ch) {
   ABORT(ch == NULL, "Erro: Falha em descobrir o encoding de um caractere.");
 
   unsigned char *bytes = (unsigned char *)ch;
@@ -50,8 +53,9 @@ u8 get_encoding(char *ch) {
 
 UTFChar get_utfchar(char *in) {
   UTFChar ch;
-  ch.size = get_encoding(in);
+  ch.size = get_utf_len(in);
 
+  // Set the array's data based on the utf-8 length.
   for (u8 i = 0; i < ch.size; i++) {
     ch.data[i] = in[i];
   }
@@ -60,12 +64,7 @@ UTFChar get_utfchar(char *in) {
 }
 
 void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
-  u8 encoding = get_encoding(ch);
-
-  if (encoding == 1) {
-    mvwaddch(w, y, x, *ch | attr);
-    return;
-  }
+  u8 encoding = get_utf_len(ch);
 
   attr_t temp;
   wattr_get(w, &temp, NULL, NULL);
@@ -83,11 +82,6 @@ void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str) {
 }
 
 void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
-  if (ch.size == 1) {
-    mvwaddch(w, y, x, ch.data[0] | attr);
-    return;
-  }
-
   attr_t temp;
   wattr_get(w, &temp, NULL, NULL);
 
