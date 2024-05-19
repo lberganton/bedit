@@ -82,7 +82,7 @@ void buffer_read_file(Buffer *b, FILE *f) {
     }
 
     u32 i = 0;
-    
+
     // Iterates over the buffer converting the default char type in UTFChar to
     // put it in the node (line) buffer.
     while (i < pos) {

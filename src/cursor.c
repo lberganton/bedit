@@ -7,10 +7,6 @@
 #include "ui.h"
 #include <ncurses.h>
 
-void cursor_enable(bool state) { curs_set(state); }
-
-void cursor_set(Section *s, WINDOW *w, u32 y, u32 x) { wmove(w, y, x); }
-
 void cursor_up(Section *s, WINDOW *w) {
   if (s->row == 0) {
     return;
@@ -32,20 +28,18 @@ void cursor_up(Section *s, WINDOW *w) {
     if (s->buffer->current->buffer_len <= s->beg_col) {
       if (s->buffer->current->buffer_len > maxx) {
         s->beg_col = s->buffer->current->buffer_len - maxx;
-      }
-      else {
+      } else {
         s->beg_col = 0;
       }
       s->cx = s->buffer->current->buffer_len - s->beg_col;
-    }
-    else {
+    } else {
       s->cx = s->buffer->current->buffer_len - s->beg_col;
     }
 
     s->col = s->buffer->current->buffer_len;
   }
 
-  cursor_set(s, w, s->cy, s->cx);
+  wmove(w, s->cy, s->cx);
 }
 
 void cursor_down(Section *s, WINDOW *w) {
@@ -70,20 +64,18 @@ void cursor_down(Section *s, WINDOW *w) {
     if (s->buffer->current->buffer_len <= s->beg_col) {
       if (s->buffer->current->buffer_len > maxx) {
         s->beg_col = s->buffer->current->buffer_len - maxx;
-      }
-      else {
+      } else {
         s->beg_col = 0;
       }
       s->cx = s->buffer->current->buffer_len - s->beg_col;
-    }
-    else {
+    } else {
       s->cx = s->buffer->current->buffer_len - s->beg_col;
     }
 
     s->col = s->buffer->current->buffer_len;
   }
 
-  cursor_set(s, w, s->cy, s->cx);
+  wmove(w, s->cy, s->cx);
 }
 
 void cursor_right(Section *s, WINDOW *w) {
@@ -116,7 +108,7 @@ void cursor_right(Section *s, WINDOW *w) {
     s->col++;
   }
 
-  cursor_set(s, w, s->cy, s->cx);
+  wmove(w, s->cy, s->cx);
 }
 
 void cursor_left(Section *s, WINDOW *w) {
@@ -152,5 +144,5 @@ void cursor_left(Section *s, WINDOW *w) {
     s->col--;
   }
 
-  cursor_set(s, w, s->cy, s->cx);
+  wmove(w, s->cy, s->cx);
 }

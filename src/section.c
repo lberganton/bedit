@@ -61,15 +61,16 @@ void mode_normal(Section *s) {
   paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
 
   while (true) {
-    cursor_enable(false);
+    curs_set(false);
 
     paint_status_bar(MODE_NORMAL, s, windows->status);
     paint_rows(s, windows->rows, windows->text);
-    cursor_set(s, windows->text, s->cy, s->cx);
+
+    wmove(windows->text, s->cy, s->cx);
 
     refresh_windows(windows);
 
-    cursor_enable(true);
+    curs_set(true);
 
     int key = getch();
 
