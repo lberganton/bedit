@@ -56,9 +56,14 @@ Buffer *buffer_init(void) {
   return new;
 }
 
-void buffer_read_file(Buffer *b, FILE *f) {
+void buffer_read_file(const char *file_name, Buffer *b) {
+  // Open the file.
+  FILE *f = fopen(file_name, "r");
+  ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
+  
   // Return the function if the file is empty.
   if (fgetc(f) == EOF) {
+    fclose(f);
     return;
   }
 
@@ -99,4 +104,6 @@ void buffer_read_file(Buffer *b, FILE *f) {
 
     pos = 0;
   }
+
+  fclose(f);
 }

@@ -45,10 +45,7 @@ Section *section_open(char *file_name) {
   file_get_directory(file_name, new->file_directory);
   new->file_extension = file_get_extension(file_name);
 
-  FILE *file = fopen(file_name, "r");
-  ABORT(file == NULL, "Erro: Falha ao abrir o arquivo.");
-
-  buffer_read_file(new->buffer, file);
+  buffer_read_file(file_name, new->buffer);
 
   return new;
 }
@@ -76,15 +73,19 @@ void mode_normal(Section *s) {
 
     switch (key) {
     case KEY_UP:
+    case 'k':
       cursor_up(s, windows->text);
       break;
     case KEY_DOWN:
+    case 'j':
       cursor_down(s, windows->text);
       break;
     case KEY_LEFT:
+    case 'h':
       cursor_left(s, windows->text);
       break;
     case KEY_RIGHT:
+    case 'l':
       cursor_right(s, windows->text);
       break;
     case KEY_HOME:
