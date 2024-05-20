@@ -75,13 +75,13 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w) {
   }
 
   // Print the actual mode.
-  paint_string(w, 0, 0, color | A_REVERSE, 16, mode);
+  paint_utfstring(w, 0, 0, color | A_REVERSE, 16, mode);
 
   // Print the actual file.
   snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN, s->file_name,
            strlen(s->file_name) > STATUS_BAR_FILE_NAME_LEN ? "..." : "");
 
-  paint_string(w, 0, 8, color, STATUS_BAR_FILE_NAME_LEN, buffer);
+  paint_string(w, 0, getcurx(w), color, STATUS_BAR_FILE_NAME_LEN, buffer);
 
   if (s->dirty) {
     paint_string(w, 0, 8 + strlen(buffer), COLOR_PAIR(PAIR_STATUS), 16,

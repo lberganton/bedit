@@ -81,6 +81,20 @@ void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str) {
   }
 }
 
+void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                     char *str) {
+  size_t i = 0;
+  size_t times = 0;
+
+  while (str[i] && times < len) {
+    u8 size = get_utf_len(&str[i]);
+    UTFChar ch = get_utfchar(&str[i]);
+    paint_utfchar(w, y, x++, attr, ch);
+    i += size;
+    times++;
+  }
+}
+
 void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch) {
   attr_t temp;
   wattr_get(w, &temp, NULL, NULL);

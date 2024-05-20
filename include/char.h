@@ -19,3 +19,5 @@ UTFChar set_utfchar(char *in, UTFChar *ch);
 void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch);
 void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str);
 void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch);
+void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                     char *str);
