@@ -22,6 +22,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define BUFF_SIZE 1024
+#define TAB_SIZE 4
 
 #define STATUS_BAR_FILE_NAME_LEN 32
 

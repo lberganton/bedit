@@ -83,6 +83,15 @@ void buffer_read_file(const char *file_name, Buffer *b) {
     // the next iteration.
     if (ch != '\n') {
       buffer[pos++] = ch;
+
+      // If the characters is a tab, fill the next indexes with spaces.
+      if (ch == '\t') {
+        for (u32 i = 1; i < TAB_SIZE; i++) {
+          ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
+          buffer[pos++] = ' ';
+        }
+      }
+
       continue;
     }
 
