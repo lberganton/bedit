@@ -67,6 +67,10 @@ void loop(void) {
     case KEY_ESC:
       mode = MODE_NORMAL;
       continue;
+    case KEY_RESIZE:
+      windows_end(section->window);
+      section->window = windows_init();
+      continue;
     }
 
     if (mode == MODE_INSERT) {

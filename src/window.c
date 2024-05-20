@@ -51,6 +51,7 @@ void windows_end(Windows *w) {
 }
 
 void refresh_windows(Windows *s) {
+  refresh();
   wrefresh(s->command);
   wrefresh(s->rows);
   wrefresh(s->status);
