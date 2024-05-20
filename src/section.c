@@ -55,6 +55,16 @@ Section *section_open(const char *file_name) {
 
 u32 get_rows(Section *s) { return s->buffer->nodes; }
 
+void text_up(Section *s) {
+  s->beg_row--;
+  s->buffer->top = s->buffer->top->prev;
+}
+
+void text_down(Section *s) {
+  s->beg_row++;
+  s->buffer->top = s->buffer->top->next;
+}
+
 void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
