@@ -1,16 +1,17 @@
+/*
+ * File: insert.c
+ * Author: Lucas Berganton
+ * Created: 05/20/2024
+ */
+#include "section.h"
 #include "buffer.h"
+#include "ui.h"
 #include <string.h>
+#include <ctype.h>
 
-bool insert_char_at(UTFChar ch, u32 index, BufferNode *n) {
-  if (n->buffer_len == BUFF_SIZE) {
+bool insert_at(Section *s, UTFChar ch, u32 index) {
+  if (!buffer_insert_at(ch, s->col, s->buffer->current)) {
     return false;
   }
-
-  memcpy(&n->buffer[index + 1], &n->buffer[index],
-         (n->buffer_len - index) * sizeof(UTFChar));
-  
-  n->buffer[index] = ch;
-  n->buffer_len++;
-
   return true;
 }

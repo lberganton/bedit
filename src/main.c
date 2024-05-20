@@ -65,8 +65,13 @@ void loop(void) {
     }
 
     if (mode == MODE_INSERT) {
-      insert_char_at(get_utfchar((char *)key), section->col,
-                     section->buffer->current);
+      UTFChar ch = get_utfchar((char *)&key);
+
+      if (!insert_at(section, ch, section->col)) {
+        paint_command_bar("Erro: Falha ao inserir, buffer de linha cheio",
+                          COLOR_PAIR(PAIR_TEXT), windows->command);
+      }
+
       continue;
     }
 

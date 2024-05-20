@@ -6,6 +6,7 @@
 #include "buffer.h"
 #include "defs.h"
 #include <stdlib.h>
+#include <string.h>
 
 static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
@@ -115,4 +116,18 @@ void buffer_insert_end(Buffer *b) {
   }
 
   b->end = new;
+}
+
+bool buffer_insert_at(UTFChar ch, u32 index, BufferNode *n) {
+  if (n->buffer_len == BUFF_SIZE) {
+    return false;
+  }
+
+  memcpy(&n->buffer[index + 1], &n->buffer[index],
+         (n->buffer_len - index) * sizeof(UTFChar));
+  
+  n->buffer[index] = ch;
+  n->buffer_len++;
+
+  return true;
 }
