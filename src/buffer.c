@@ -85,17 +85,16 @@ void buffer_read_file(const char *file_name, Buffer *b) {
     buffer_insert_end(b);
     aux = b->end;
 
-    // Increases the number of nodes (lines).
-    b->nodes++;
-
     pos = 0;
   }
 
   fclose(f);
 }
 
-void buffer_insert_begin(Buffer *b) {
+BufferNode *buffer_insert_begin(Buffer *b) {
   BufferNode *new = node_create(NULL, b->begin);
+
+  b->nodes++;
 
   if (b->begin == NULL) {
     b->end = new;
@@ -104,10 +103,13 @@ void buffer_insert_begin(Buffer *b) {
   }
 
   b->begin = new;
+  return new;
 }
 
-void buffer_insert_end(Buffer *b) {
+BufferNode *buffer_insert_end(Buffer *b) {
   BufferNode *new = node_create(b->end, NULL);
+
+  b->nodes++;
 
   if (b->begin == NULL) {
     b->begin = new;
@@ -116,9 +118,27 @@ void buffer_insert_end(Buffer *b) {
   }
 
   b->end = new;
+  return new;
 }
 
-bool buffer_insert_at(UTFChar ch, u32 index, BufferNode *n) {
+BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
+  BufferNode *new = node_create(n, n->next);
+
+  b->nodes++;
+
+  if (b->end == n) {
+    b->end = n;
+  }
+
+  if (new->next) {
+    new->next->prev = new;
+  }
+
+  n->next = new;
+  return new;
+}
+
+bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n) {
   if (n->buffer_len == BUFF_SIZE) {
     return false;
   }
@@ -128,6 +148,19 @@ bool buffer_insert_at(UTFChar ch, u32 index, BufferNode *n) {
 
   n->buffer[index] = ch;
   n->buffer_len++;
+
+  return true;
+}
+
+bool buffer_delete_char(u32 index, BufferNode *n) {
+  if (index == n->buffer_len) {
+    return false;
+  }
+  
+  memcpy(&n->buffer[index], &n->buffer[index + 1],
+         (n->buffer_len - index) * sizeof(UTFChar));
+  
+  n->buffer_len--;
 
   return true;
 }

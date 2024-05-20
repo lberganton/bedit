@@ -59,17 +59,31 @@ void loop(void) {
     case KEY_NPAGE:
       cursor_pgdown(section);
       continue;
+    case KEY_DC:
+      delete_char(section);
+      continue;
     case KEY_ESC:
       mode = MODE_NORMAL;
       continue;
     }
 
     if (mode == MODE_INSERT) {
-      UTFChar ch = get_utfchar((char *)&key);
-
-      insert_at(section, ch, section->col);
-
-      continue;
+      switch (key) {
+      case KEY_BACKSPACE:
+        backspace_char(section);
+        continue;
+      case '\t':
+        for (u8 i = 0; i < TAB_SIZE; i++) {
+          insert_char(section, ' ');
+        }
+        continue;
+      case '\n':
+        insert_new_line(section);
+        continue;
+      default:
+        insert_char(section, key);
+        continue;
+      }
     }
 
     switch (key) {
