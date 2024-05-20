@@ -28,7 +28,7 @@ void cursor_up(Section *s, WINDOW *w) {
     s->col = s->buffer->current->buffer_len;
 
     if (s->col <= s->beg_col) {
-      s->beg_col = s->col - 1 % maxx;
+      s->beg_col = s->col % maxx;
     }
 
     s->cx = s->col - s->beg_col;
@@ -58,7 +58,7 @@ void cursor_down(Section *s, WINDOW *w) {
     s->col = s->buffer->current->buffer_len;
 
     if (s->col <= s->beg_col) {
-      s->beg_col = s->col - 1 % maxx;
+      s->beg_col = s->col % maxx;
     }
 
     s->cx = s->col - s->beg_col;

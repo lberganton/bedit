@@ -7,7 +7,7 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE := genesis.txt
+TESTFILE := long.txt
 TERM := gnome-terminal
 
 # C Compiler

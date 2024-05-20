@@ -115,8 +115,6 @@ void mode_normal(Section *s) {
     case KEY_NPAGE:
       cursor_pgdown(s, windows->text);
       break;
-    case 'p':
-      break;
     case 'i':
       mode_insert(s);
       break;
