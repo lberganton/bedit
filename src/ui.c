@@ -15,7 +15,7 @@ void ui_init(void) {
   ABORT(!has_colors() || !can_change_color(),
         "O terminal atual não suporta cores.");
 
-  cbreak();
+  raw();
   noecho();
   keypad(stdscr, true);
 
