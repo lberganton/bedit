@@ -34,13 +34,6 @@ typedef enum ColorPair {
   PAIR_TEAL
 } ColorPair;
 
-typedef struct Windows {
-  WINDOW *text;
-  WINDOW *rows;
-  WINDOW *status;
-  WINDOW *command;
-} Windows;
-
 void ui_init(void);
 void ui_end(void);
 
@@ -50,15 +43,15 @@ void refresh_windows(Windows *s);
 
 int get_key(void);
 
-void paint_command_bar(char *msg, attr_t attr, WINDOW *w);
-void paint_status_bar(Mode mode, Section *s, WINDOW *w);
-void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
+void paint_command_bar(char *msg, attr_t attr, Section *s);
+void paint_status_bar(Mode mode, Section *s);
+void paint_rows(Section *s);
 
-void cursor_up(Section *s, WINDOW *w);
-void cursor_down(Section *s, WINDOW *w);
-void cursor_left(Section *s, WINDOW *w);
-void cursor_right(Section *s, WINDOW *w);
-void cursor_home(Section *s, WINDOW *w);
-void cursor_end(Section *s, WINDOW *w);
-void cursor_pgup(Section *s, WINDOW *w);
-void cursor_pgdown(Section *s, WINDOW *w);
+void cursor_up(Section *s);
+void cursor_down(Section *s);
+void cursor_left(Section *s);
+void cursor_right(Section *s);
+void cursor_home(Section *s);
+void cursor_end(Section *s);
+void cursor_pgup(Section *s);
+void cursor_pgdown(Section *s);

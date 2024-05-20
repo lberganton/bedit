@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include <stdbool.h>
 #include "defs.h"
+#include <stdbool.h>
 
 typedef enum FileExtension {
   EXTENSION_UNKNOWN,

@@ -37,7 +37,7 @@ void buffer_read_file(const char *file_name, Buffer *b) {
   // Open the file.
   FILE *f = fopen(file_name, "r");
   ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
-  
+
   // Return the function if the file is empty.
   if (fgetc(f) == EOF) {
     fclose(f);
@@ -125,7 +125,7 @@ bool buffer_insert_at(UTFChar ch, u32 index, BufferNode *n) {
 
   memcpy(&n->buffer[index + 1], &n->buffer[index],
          (n->buffer_len - index) * sizeof(UTFChar));
-  
+
   n->buffer[index] = ch;
   n->buffer_len++;
 

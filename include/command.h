@@ -8,4 +8,4 @@
 #include "section.h"
 #include <ncurses.h>
 
-void paint_command_bar_file_info(Section *s, WINDOW *w);
+void paint_command_bar_file_info(Section *s);

@@ -9,7 +9,7 @@
 // Gets the utf-8 length of the char. Code adapted from an answer of a
 // Stack Overflow's user named Christoph.
 // https://stackoverflow.com/questions/1031645/how-to-detect-utf-8-in-plain-c
-u8 get_utf_len(char *ch) {
+u8 get_utf_len(const char *ch) {
   ABORT(ch == NULL, "Erro: Falha em descobrir o encoding de um caractere.");
 
   unsigned char *bytes = (unsigned char *)ch;
@@ -51,7 +51,7 @@ u8 get_utf_len(char *ch) {
   return 0;
 }
 
-UTFChar get_utfchar(char *in) {
+UTFChar get_utfchar(const char *in) {
   UTFChar ch;
   ch.size = get_utf_len(in);
 
@@ -63,7 +63,7 @@ UTFChar get_utfchar(char *in) {
   return ch;
 }
 
-void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
+void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, const char *ch) {
   u8 encoding = get_utf_len(ch);
 
   attr_t temp;
@@ -75,14 +75,15 @@ void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch) {
   wattrset(w, temp);
 }
 
-void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str) {
+void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                  const char *str) {
   for (size_t i = 0; str[i] && i < len; i++) {
     paint_char(w, y, x++, attr, &str[i]);
   }
 }
 
 void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                     char *str) {
+                     const char *str) {
   size_t i = 0;
   size_t times = 0;
 

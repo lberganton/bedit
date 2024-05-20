@@ -13,11 +13,12 @@ typedef struct UTFChar {
   u8 size;
 } UTFChar;
 
-u8 get_utf_len(char *ch);
-UTFChar get_utfchar(char *ch);
-UTFChar set_utfchar(char *in, UTFChar *ch);
-void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, char *ch);
-void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len, char *str);
+u8 get_utf_len(const char *ch);
+UTFChar get_utfchar(const char *ch);
+UTFChar set_utfchar(const char *in, UTFChar *ch);
+void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, const char *ch);
+void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                  const char *str);
 void paint_utfchar(WINDOW *w, u32 y, u32 x, attr_t attr, UTFChar ch);
 void paint_utfstring(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                     char *str);
+                     const char *str);

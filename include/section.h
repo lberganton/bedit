@@ -9,6 +9,13 @@
 #include "defs.h"
 #include "file.h"
 
+typedef struct Windows {
+  WINDOW *text;
+  WINDOW *rows;
+  WINDOW *status;
+  WINDOW *command;
+} Windows;
+
 typedef struct Section {
   char *file_input;
   char *file_name;
@@ -27,6 +34,8 @@ typedef struct Section {
 
   u32 cy;
   u32 cx;
+
+  Windows *window;
 } Section;
 
 Section *section_unamed(void);

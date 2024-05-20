@@ -14,9 +14,7 @@ bool file_can_read(const char *name) { return !access(name, R_OK); }
 
 bool file_can_write(const char *name) { return !access(name, W_OK); }
 
-void file_get_input(const char *input, char *buff) {
-  strcpy(buff, input);
-}
+void file_get_input(const char *input, char *buff) { strcpy(buff, input); }
 
 void file_get_name(const char *input, char *buff) {
   const char *slash = strrchr(input, '/');

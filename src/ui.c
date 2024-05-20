@@ -51,23 +51,20 @@ static void paint_background(WINDOW *w, attr_t attr) {
   }
 }
 
-void paint_command_bar(char *msg, attr_t attr, WINDOW *w) {
-  paint_background(w, COLOR_PAIR(PAIR_BACKGROUND));
+void paint_command_bar(char *msg, attr_t attr, Section *s) {
+  paint_background(s->window->command, COLOR_PAIR(PAIR_BACKGROUND));
 
   if (msg == NULL) {
     return;
   }
 
-  paint_string(w, 0, 0, attr, COLS, msg);
+  paint_string(s->window->command, 0, 0, attr, COLS, msg);
 }
 
-void paint_status_bar(Mode mode, Section *s, WINDOW *w) {
+void paint_status_bar(Mode mode, Section *s) {
   char buffer[64];
-  static const char *mode_string[] = {
-    " NORMAL ",
-    " INSERÇÃO ",
-    " NORMAL "
-  };
+  WINDOW *w = s->window->status;
+  static const char *mode_string[] = {" NORMAL ", " INSERÇÃO ", " NORMAL "};
 
   paint_background(w, COLOR_PAIR(PAIR_STATUS));
 
@@ -120,7 +117,10 @@ void paint_status_bar(Mode mode, Section *s, WINDOW *w) {
             s->col + 1);
 }
 
-void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
+void paint_rows(Section *s) {
+  WINDOW *rows = s->window->rows;
+  WINDOW *text = s->window->text;
+
   u32 n = s->beg_row;
   u32 y = 0;
   u32 x = 0;

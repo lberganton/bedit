@@ -7,13 +7,13 @@
 #include "ui.h"
 #include <ncurses.h>
 
-void cursor_up(Section *s, WINDOW *w) {
+void cursor_up(Section *s) {
   if (s->row == 0) {
     return;
   }
 
-  u32 maxx = getmaxx(w) - 1;
-  u32 begy = getbegy(w);
+  u32 maxx = getmaxx(s->window->text) - 1;
+  u32 begy = getbegy(s->window->text);
 
   if (s->cy == begy) {
     text_up(s);
@@ -34,16 +34,16 @@ void cursor_up(Section *s, WINDOW *w) {
     s->cx = s->col - s->beg_col;
   }
 
-  wmove(w, s->cy, s->cx);
+  wmove(s->window->text, s->cy, s->cx);
 }
 
-void cursor_down(Section *s, WINDOW *w) {
+void cursor_down(Section *s) {
   if (s->row == get_rows(s) - 1) {
     return;
   }
 
-  u32 maxx = getmaxx(w) - 1;
-  u32 maxy = getmaxy(w) - 1;
+  u32 maxx = getmaxx(s->window->text) - 1;
+  u32 maxy = getmaxy(s->window->text) - 1;
 
   if (s->cy == maxy) {
     text_down(s);
@@ -64,12 +64,12 @@ void cursor_down(Section *s, WINDOW *w) {
     s->cx = s->col - s->beg_col;
   }
 
-  wmove(w, s->cy, s->cx);
+  wmove(s->window->text, s->cy, s->cx);
 }
 
-void cursor_right(Section *s, WINDOW *w) {
-  u32 maxx = getmaxx(w) - 1;
-  u32 maxy = getmaxy(w) - 1;
+void cursor_right(Section *s) {
+  u32 maxx = getmaxx(s->window->text) - 1;
+  u32 maxy = getmaxy(s->window->text) - 1;
 
   if (s->col + 1 > s->buffer->current->buffer_len) {
     if (s->row == get_rows(s) - 1) {
@@ -97,11 +97,11 @@ void cursor_right(Section *s, WINDOW *w) {
     s->col++;
   }
 
-  wmove(w, s->cy, s->cx);
+  wmove(s->window->text, s->cy, s->cx);
 }
 
-void cursor_left(Section *s, WINDOW *w) {
-  u32 maxx = getmaxx(w) - 1;
+void cursor_left(Section *s) {
+  u32 maxx = getmaxx(s->window->text) - 1;
 
   if (s->col == 0) {
     if (s->row == 0) {
@@ -133,17 +133,17 @@ void cursor_left(Section *s, WINDOW *w) {
     s->col--;
   }
 
-  wmove(w, s->cy, s->cx);
+  wmove(s->window->text, s->cy, s->cx);
 }
 
-void cursor_home(Section *s, WINDOW *w) {
+void cursor_home(Section *s) {
   s->beg_col = 0;
   s->cx = 0;
   s->col = 0;
 }
 
-void cursor_end(Section *s, WINDOW *w) {
-  u32 maxx = getmaxx(w) - 1;
+void cursor_end(Section *s) {
+  u32 maxx = getmaxx(s->window->text) - 1;
 
   s->col = s->buffer->current->buffer_len;
 
@@ -154,8 +154,8 @@ void cursor_end(Section *s, WINDOW *w) {
   s->cx = s->col - s->beg_col;
 }
 
-void cursor_pgup(Section *s, WINDOW *w) {
-  u32 maxy = getmaxy(w);
+void cursor_pgup(Section *s) {
+  u32 maxy = getmaxy(s->window->text);
 
   for (u32 i = 0; i < maxy && s->beg_row > 0; i++) {
     s->beg_row--;
@@ -171,8 +171,8 @@ void cursor_pgup(Section *s, WINDOW *w) {
   s->beg_col = 0;
 }
 
-void cursor_pgdown(Section *s, WINDOW *w) {
-  u32 maxy = getmaxy(w);
+void cursor_pgdown(Section *s) {
+  u32 maxy = getmaxy(s->window->text);
 
   for (u32 i = 0; i < maxy && s->beg_row < get_rows(s) - 1; i++) {
     s->beg_row++;
