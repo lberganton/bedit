@@ -7,42 +7,6 @@
 #include "defs.h"
 #include <stdlib.h>
 
-static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
-  BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
-
-  new->prev = prev;
-  new->next = next;
-  new->buffer_len = 0;
-  new->buffer->size = 0;
-
-  return new;
-}
-
-void buffer_insert_begin(Buffer *b) {
-  BufferNode *new = node_create(NULL, b->begin);
-
-  if (b->begin == NULL) {
-    b->end = new;
-  } else {
-    b->begin->prev = new;
-  }
-
-  b->begin = new;
-}
-
-void buffer_insert_end(Buffer *b) {
-  BufferNode *new = node_create(b->end, NULL);
-
-  if (b->begin == NULL) {
-    b->begin = new;
-  } else {
-    b->end->next = new;
-  }
-
-  b->end = new;
-}
-
 Buffer *buffer_init(void) {
   Buffer *new = (Buffer *)malloc(sizeof(Buffer));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
@@ -115,4 +79,40 @@ void buffer_read_file(const char *file_name, Buffer *b) {
   }
 
   fclose(f);
+}
+
+static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
+  BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
+  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
+
+  new->prev = prev;
+  new->next = next;
+  new->buffer_len = 0;
+  new->buffer->size = 0;
+
+  return new;
+}
+
+void buffer_insert_begin(Buffer *b) {
+  BufferNode *new = node_create(NULL, b->begin);
+
+  if (b->begin == NULL) {
+    b->end = new;
+  } else {
+    b->begin->prev = new;
+  }
+
+  b->begin = new;
+}
+
+void buffer_insert_end(Buffer *b) {
+  BufferNode *new = node_create(b->end, NULL);
+
+  if (b->begin == NULL) {
+    b->begin = new;
+  } else {
+    b->end->next = new;
+  }
+
+  b->end = new;
 }
