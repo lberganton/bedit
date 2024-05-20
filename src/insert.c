@@ -11,4 +11,6 @@ bool insert_char_at(UTFChar ch, u32 index, BufferNode *n) {
   
   n->buffer[index] = ch;
   n->buffer_len++;
+
+  return true;
 }

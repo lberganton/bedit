@@ -9,10 +9,6 @@
 #include "defs.h"
 #include "file.h"
 
-#define MODE_NORMAL " NORMAL "
-#define MODE_INSERT " INSERÇÃO "
-#define MODE_COMMAND MODE_NORMAL
-
 typedef struct Section {
   char *file_input;
   char *file_name;

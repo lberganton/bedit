@@ -5,6 +5,7 @@
  *
  * The entry of Beditor application.
  */
+#include "command.h"
 #include "section.h"
 #include "ui.h"
 #include <locale.h>
@@ -13,6 +14,7 @@ static Section *section;
 
 void loop(void) {
   Windows *windows = windows_init();
+  Mode mode = MODE_NORMAL;
 
   if (!section->unamed) {
     paint_command_bar_file_info(section, windows->command);
@@ -21,7 +23,7 @@ void loop(void) {
   while (true) {
     curs_set(false);
 
-    paint_status_bar(MODE_NORMAL, section, windows->status);
+    paint_status_bar(mode, section, windows->status);
     paint_rows(section, windows->rows, windows->text);
 
     wmove(windows->text, section->cy, section->cx);
@@ -34,41 +36,56 @@ void loop(void) {
 
     switch (key) {
     case KEY_UP:
-    case 'k':
       cursor_up(section, windows->text);
-      break;
+      continue;
     case KEY_DOWN:
-    case 'j':
       cursor_down(section, windows->text);
-      break;
+      continue;
     case KEY_LEFT:
-    case 'h':
       cursor_left(section, windows->text);
-      break;
+      continue;
     case KEY_RIGHT:
-    case 'l':
       cursor_right(section, windows->text);
-      break;
+      continue;
     case KEY_HOME:
       cursor_home(section, windows->text);
-      break;
+      continue;
     case KEY_END:
       cursor_end(section, windows->text);
-      break;
+      continue;
     case KEY_PPAGE:
       cursor_pgup(section, windows->text);
-      break;
+      continue;
     case KEY_NPAGE:
       cursor_pgdown(section, windows->text);
-      break;
+      continue;
+    case KEY_ESC:
+      mode = MODE_NORMAL;
+      continue;
+    }
+
+    if (mode == MODE_INSERT) {
+      insert_char_at(get_utfchar((char *)key), section->col,
+                     section->buffer->current);
+      continue;
+    }
+
+    switch (key) {
+    case 'k':
+      cursor_up(section, windows->text);
+      continue;
+    case 'j':
+      cursor_down(section, windows->text);
+      continue;
+    case 'h':
+      cursor_left(section, windows->text);
+      continue;
+    case 'l':
+      cursor_right(section, windows->text);
+      continue;
     case 'i':
-      mode_insert(section);
-      break;
-    case ':':
-      mode_command(section);
-      break;
-    default:
-      insert_char_at(get_utfchar((char *) &key), section->col, section->buffer->current);
+      mode = MODE_INSERT;
+      continue;
     }
   }
 }

@@ -61,21 +61,27 @@ void paint_command_bar(char *msg, attr_t attr, WINDOW *w) {
   paint_string(w, 0, 0, attr, COLS, msg);
 }
 
-void paint_status_bar(char *mode, Section *s, WINDOW *w) {
-  paint_background(w, COLOR_PAIR(PAIR_STATUS));
+void paint_status_bar(Mode mode, Section *s, WINDOW *w) {
   char buffer[64];
+  static const char *mode_string[] = {
+    " NORMAL ",
+    " INSERÇÃO ",
+    " NORMAL "
+  };
+
+  paint_background(w, COLOR_PAIR(PAIR_STATUS));
 
   // Set color scheme.
   attr_t color;
 
-  if (strncmp(mode, MODE_INSERT, 32) == 0) {
+  if (mode == MODE_INSERT) {
     color = COLOR_PAIR(PAIR_TEAL);
   } else {
     color = COLOR_PAIR(PAIR_BLUE);
   }
 
   // Print the actual mode.
-  paint_utfstring(w, 0, 0, color | A_REVERSE, 16, mode);
+  paint_utfstring(w, 0, 0, color | A_REVERSE, 16, mode_string[mode]);
 
   // Print the actual file.
   snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN, s->file_name,

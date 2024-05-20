@@ -51,7 +51,7 @@ void refresh_windows(Windows *s);
 int get_key(void);
 
 void paint_command_bar(char *msg, attr_t attr, WINDOW *w);
-void paint_status_bar(char *mode, Section *s, WINDOW *w);
+void paint_status_bar(Mode mode, Section *s, WINDOW *w);
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
 
 void cursor_up(Section *s, WINDOW *w);
