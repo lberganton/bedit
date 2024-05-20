@@ -60,3 +60,5 @@ void cursor_left(Section *s, WINDOW *w);
 void cursor_right(Section *s, WINDOW *w);
 void cursor_home(Section *s, WINDOW *w);
 void cursor_end(Section *s, WINDOW *w);
+void cursor_pgup(Section *s, WINDOW *w);
+void cursor_pgdown(Section *s, WINDOW *w);

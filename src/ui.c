@@ -115,7 +115,7 @@ void paint_status_bar(char *mode, Section *s, WINDOW *w) {
 }
 
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
-  u32 n = 0;
+  u32 n = s->beg_row;
   u32 y = 0;
   u32 x = 0;
 
@@ -131,13 +131,13 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   // Runs the loop until it has printed all lines or until it reaches the
   // y-coordinate limit
   while (y < maxy && n < s->buffer->nodes) {
-    snprintf(buffer, 16, "%*" PRIu32 " ", len, 1 + s->beg_row + n);
+    snprintf(buffer, 16, "%*" PRIu32 " ", len, 1 + s->beg_row + y);
 
     attr_t attr_row, attr_text;
 
     // Verify that the row in this iteration is the user's current row and sets
     // the appropriate attributes.
-    if (s->beg_row + n == s->row) {
+    if (s->beg_row + y == s->row) {
       attr_row = COLOR_PAIR(PAIR_SELECTED_ROW_NUMBER);
       attr_text = COLOR_PAIR(PAIR_SELECTED_ROW);
     } else {

@@ -153,3 +153,37 @@ void cursor_end(Section *s, WINDOW *w) {
 
   s->cx = s->col - s->beg_col;
 }
+
+void cursor_pgup(Section *s, WINDOW *w) {
+  u32 maxy = getmaxy(w);
+
+  for (u32 i = 0; i < maxy && s->beg_row > 0; i++) {
+    s->beg_row--;
+    s->buffer->top = s->buffer->top->prev;
+  }
+
+  s->col = 0;
+  s->row = s->beg_row;
+  s->buffer->current = s->buffer->top;
+
+  s->cy = 0;
+  s->cx = 0;
+  s->beg_col = 0;
+}
+
+void cursor_pgdown(Section *s, WINDOW *w) {
+  u32 maxy = getmaxy(w);
+
+  for (u32 i = 0; i < maxy && s->beg_row < get_rows(s) - 1; i++) {
+    s->beg_row++;
+    s->buffer->top = s->buffer->top->next;
+  }
+
+  s->col = 0;
+  s->row = s->beg_row;
+  s->buffer->current = s->buffer->top;
+
+  s->cy = 0;
+  s->cx = 0;
+  s->beg_col = 0;
+}
