@@ -25,12 +25,13 @@ void cursor_up(Section *s, WINDOW *w) {
   s->row--;
 
   if (s->col > s->buffer->current->buffer_len) {
-    if (s->buffer->current->buffer_len <= s->beg_col) {
-      s->beg_col = s->buffer->current->buffer_len - 1 % maxx;
+    s->col = s->buffer->current->buffer_len;
+
+    if (s->col <= s->beg_col) {
+      s->beg_col = s->col - 1 % maxx;
     }
 
-    s->cx = s->buffer->current->buffer_len - s->beg_col;
-    s->col = s->buffer->current->buffer_len;
+    s->cx = s->col - s->beg_col;
   }
 
   wmove(w, s->cy, s->cx);
@@ -54,12 +55,13 @@ void cursor_down(Section *s, WINDOW *w) {
   s->row++;
 
   if (s->col > s->buffer->current->buffer_len) {
-    if (s->buffer->current->buffer_len <= s->beg_col) {
-      s->beg_col = s->buffer->current->buffer_len - 1 % maxx;
+    s->col = s->buffer->current->buffer_len;
+
+    if (s->col <= s->beg_col) {
+      s->beg_col = s->col - 1 % maxx;
     }
 
-    s->cx = s->buffer->current->buffer_len - s->beg_col;
-    s->col = s->buffer->current->buffer_len;
+    s->cx = s->col - s->beg_col;
   }
 
   wmove(w, s->cy, s->cx);
@@ -111,11 +113,11 @@ void cursor_left(Section *s, WINDOW *w) {
     s->row--;
     s->col = s->buffer->current->buffer_len;
 
-    if (s->buffer->current->buffer_len > maxx) {
-      s->beg_col = s->buffer->current->buffer_len - maxx;
+    if (s->col > maxx) {
+      s->beg_col = s->col - maxx;
     }
 
-    s->cx = s->buffer->current->buffer_len - s->beg_col;
+    s->cx = s->col - s->beg_col;
 
     if (s->cy == 0) {
       text_up(s, w);
@@ -132,4 +134,22 @@ void cursor_left(Section *s, WINDOW *w) {
   }
 
   wmove(w, s->cy, s->cx);
+}
+
+void cursor_home(Section *s, WINDOW *w) {
+  s->beg_col = 0;
+  s->cx = 0;
+  s->col = 0;
+}
+
+void cursor_end(Section *s, WINDOW *w) {
+  u32 maxx = getmaxx(w) - 1;
+
+  s->col = s->buffer->current->buffer_len;
+
+  if (s->col > maxx && s->col - s->beg_col > maxx) {
+    s->beg_col = s->col - maxx;
+  }
+
+  s->cx = s->col - s->beg_col;
 }

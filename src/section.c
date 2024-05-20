@@ -87,6 +87,12 @@ void mode_normal(Section *s) {
     case KEY_RIGHT:
       cursor_right(s, windows->text);
       break;
+    case KEY_HOME:
+      cursor_home(s, windows->text);
+      break;
+    case KEY_END: 
+      cursor_end(s, windows->text);
+      break;
     case 'i':
       mode_insert(s);
       break;
