@@ -15,19 +15,19 @@ bool file_can_read(const char *name) { return !access(name, R_OK); }
 bool file_can_write(const char *name) { return !access(name, W_OK); }
 
 void file_get_name(const char *input, char *buff) {
-  char *slash = strrchr(input, '/');
+  const char *slash = strrchr(input, '/');
   slash = slash == NULL ? input : slash;
   strncpy(buff, slash + 1, BUFF_SIZE);
 }
 
 void file_get_directory(const char *name, char *buff) {
-  char *slash = strrchr(name, '/');
+  const char *slash = strrchr(name, '/');
   u32 index = (u32)(slash - name);
   strncpy(buff, name, index);
 }
 
 FileExtension file_get_extension(const char *name) {
-  char *dot = strrchr(name, '.');
+  const char *dot = strrchr(name, '.');
 
   if (strcmp(dot, ".txt") == 0) {
     return EXTENSION_TXT;
