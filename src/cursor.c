@@ -26,16 +26,10 @@ void cursor_up(Section *s, WINDOW *w) {
 
   if (s->col > s->buffer->current->buffer_len) {
     if (s->buffer->current->buffer_len <= s->beg_col) {
-      if (s->buffer->current->buffer_len > maxx) {
-        s->beg_col = s->buffer->current->buffer_len - maxx;
-      } else {
-        s->beg_col = 0;
-      }
-      s->cx = s->buffer->current->buffer_len - s->beg_col;
-    } else {
-      s->cx = s->buffer->current->buffer_len - s->beg_col;
+      s->beg_col = s->buffer->current->buffer_len - 1 % maxx;
     }
 
+    s->cx = s->buffer->current->buffer_len - s->beg_col;
     s->col = s->buffer->current->buffer_len;
   }
 
@@ -47,7 +41,6 @@ void cursor_down(Section *s, WINDOW *w) {
     return;
   }
 
-  u32 begx = getbegx(w);
   u32 maxx = getmaxx(w) - 1;
   u32 maxy = getmaxy(w) - 1;
 
@@ -62,16 +55,10 @@ void cursor_down(Section *s, WINDOW *w) {
 
   if (s->col > s->buffer->current->buffer_len) {
     if (s->buffer->current->buffer_len <= s->beg_col) {
-      if (s->buffer->current->buffer_len > maxx) {
-        s->beg_col = s->buffer->current->buffer_len - maxx;
-      } else {
-        s->beg_col = 0;
-      }
-      s->cx = s->buffer->current->buffer_len - s->beg_col;
-    } else {
-      s->cx = s->buffer->current->buffer_len - s->beg_col;
+      s->beg_col = s->buffer->current->buffer_len - 1 % maxx;
     }
 
+    s->cx = s->buffer->current->buffer_len - s->beg_col;
     s->col = s->buffer->current->buffer_len;
   }
 
