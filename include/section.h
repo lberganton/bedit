@@ -35,9 +35,6 @@ typedef struct Section {
 
 Section *section_unamed(void);
 Section *section_open(const char *file_name);
-void mode_normal(Section *s);
-void mode_insert(Section *s);
-void mode_command(Section *s);
 u32 get_rows(Section *s);
 void text_up(Section *s);
 void text_down(Section *s);
