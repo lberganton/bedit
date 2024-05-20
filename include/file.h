@@ -8,6 +8,7 @@
 #pragma once
 
 #include "defs.h"
+#include "buffer.h"
 #include <stdbool.h>
 
 typedef enum FileExtension {
@@ -20,8 +21,12 @@ typedef enum FileExtension {
 bool file_exist(const char *name);
 bool file_can_read(const char *name);
 bool file_can_write(const char *name);
+
 void file_get_input(const char *input, char *buff);
 void file_get_name(const char *input, char *buff);
 void file_get_directory(const char *name, char *buff);
 FileExtension file_get_extension(const char *name);
 u32 file_get_size(const char *input);
+
+void file_load(const char *input, Buffer *b);
+void file_save(const char *input, Buffer *b);

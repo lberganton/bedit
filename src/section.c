@@ -48,7 +48,7 @@ Section *section_open(const char *file_name) {
   file_get_directory(file_name, new->file_directory);
   new->file_extension = file_get_extension(file_name);
 
-  buffer_read_file(file_name, new->buffer);
+  file_load(file_name, new->buffer);
 
   return new;
 }

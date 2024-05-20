@@ -18,6 +18,8 @@ void loop(void) {
 
   if (!section->unamed) {
     paint_command_bar_file_info(section);
+  } else {
+    paint_command_bar("", COLOR_PAIR(PAIR_TEXT), section);
   }
 
   while (true) {
@@ -68,6 +70,8 @@ void loop(void) {
     }
 
     if (mode == MODE_INSERT) {
+      section->dirty = true;
+
       switch (key) {
       case KEY_BACKSPACE:
         backspace_char(section);

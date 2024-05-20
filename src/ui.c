@@ -87,7 +87,7 @@ void paint_status_bar(Mode mode, Section *s) {
   paint_string(w, 0, getcurx(w), color, STATUS_BAR_FILE_NAME_LEN, buffer);
 
   if (s->dirty) {
-    paint_string(w, 0, 8 + strlen(buffer), COLOR_PAIR(PAIR_STATUS), 16,
+    paint_string(w, 0, getcurx(w), COLOR_PAIR(PAIR_STATUS), 16,
                  " [Modificado] ");
   }
 

@@ -33,64 +33,6 @@ Buffer *buffer_init(void) {
   return new;
 }
 
-void buffer_read_file(const char *file_name, Buffer *b) {
-  // Open the file.
-  FILE *f = fopen(file_name, "r");
-  ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
-
-  // Return the function if the file is empty.
-  if (fgetc(f) == EOF) {
-    fclose(f);
-    return;
-  }
-
-  // Moves the file cursor to start.
-  fseek(f, 0, SEEK_SET);
-
-  BufferNode *aux = b->begin;
-  char buffer[BUFF_SIZE];
-  u32 pos = 0;
-  int ch;
-
-  // Loops until the file reaches the end.
-  while ((ch = fgetc(f)) != EOF) {
-    ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
-
-    // If the character read isn't a new line, put it in the buffer and go to
-    // the next iteration.
-    if (ch != '\n') {
-      buffer[pos++] = ch;
-
-      // If the characters is a tab, fill the next indexes with spaces.
-      if (ch == '\t') {
-        for (u32 i = 1; i < TAB_SIZE; i++) {
-          ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
-          buffer[pos++] = ' ';
-        }
-      }
-
-      continue;
-    }
-
-    u32 i = 0;
-
-    // Iterates over the buffer converting the default char type in UTFChar to
-    // put it in the node (line) buffer.
-    while (i < pos) {
-      aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
-      i += get_utf_len(&buffer[i]);
-    }
-
-    // Inserts a new node at the end of the list.
-    buffer_insert_end(b);
-    aux = b->end;
-
-    pos = 0;
-  }
-
-  fclose(f);
-}
-
 BufferNode *buffer_insert_begin(Buffer *b) {
   BufferNode *new = node_create(NULL, b->begin);
 
