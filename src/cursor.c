@@ -16,7 +16,7 @@ void cursor_up(Section *s, WINDOW *w) {
   u32 begy = getbegy(w);
 
   if (s->cy == begy) {
-    text_up(s, w);
+    text_up(s);
   } else {
     s->cy--;
   }
@@ -46,7 +46,7 @@ void cursor_down(Section *s, WINDOW *w) {
   u32 maxy = getmaxy(w) - 1;
 
   if (s->cy == maxy) {
-    text_down(s, w);
+    text_down(s);
   } else {
     s->cy++;
   }
@@ -82,7 +82,7 @@ void cursor_right(Section *s, WINDOW *w) {
     s->beg_col = 0;
 
     if (s->cy == maxy) {
-      text_down(s, w);
+      text_down(s);
     } else {
       s->cy++;
     }
@@ -120,7 +120,7 @@ void cursor_left(Section *s, WINDOW *w) {
     s->cx = s->col - s->beg_col;
 
     if (s->cy == 0) {
-      text_up(s, w);
+      text_up(s);
     } else {
       s->cy--;
     }

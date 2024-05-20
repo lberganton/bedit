@@ -2,8 +2,6 @@
  * File: section.h
  * Author: Lucas Berganton
  * Created: 05/11/2024
- *
- * Basic things for a Bedit section.
  */
 #pragma once
 
@@ -16,6 +14,7 @@
 #define MODE_COMMAND MODE_NORMAL
 
 typedef struct Section {
+  char *file_input;
   char *file_name;
   char *file_directory;
   bool unamed;
@@ -35,7 +34,7 @@ typedef struct Section {
 } Section;
 
 Section *section_unamed(void);
-Section *section_open(char *file);
+Section *section_open(const char *file_name);
 void mode_normal(Section *s);
 void mode_insert(Section *s);
 void mode_command(Section *s);

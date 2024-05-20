@@ -61,5 +61,5 @@ void cursor_right(Section *s, WINDOW *w);
 void cursor_home(Section *s, WINDOW *w);
 void cursor_end(Section *s, WINDOW *w);
 
-void text_up(Section *s, WINDOW *w);
-void text_down(Section *s, WINDOW *w);
+void text_up(Section *s);
+void text_down(Section *s);

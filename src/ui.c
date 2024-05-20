@@ -188,12 +188,12 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   }
 }
 
-void text_up(Section *s, WINDOW *w) {
+void text_up(Section *s) {
   s->beg_row--;
   s->buffer->top = s->buffer->top->prev;
 }
 
-void text_down(Section *s, WINDOW *w) {
+void text_down(Section *s) {
   s->beg_row++;
   s->buffer->top = s->buffer->top->next;
 }

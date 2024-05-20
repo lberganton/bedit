@@ -4,6 +4,7 @@
  * Created: 05/11/2024
  */
 #include "section.h"
+#include "command.h"
 #include "ui.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,7 @@ static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
+  new->file_input = (char *)malloc(sizeof(char) * BUFF_SIZE);
   new->file_name = (char *)malloc(sizeof(char) * BUFF_SIZE);
   new->file_directory = (char *)malloc(sizeof(char) * BUFF_SIZE);
   new->buffer = buffer_init();
@@ -36,11 +38,12 @@ Section *section_unamed(void) {
   return new;
 }
 
-Section *section_open(char *file_name) {
+Section *section_open(const char *file_name) {
   Section *new = section_create();
 
   new->unamed = false;
 
+  file_get_input(file_name, new->file_input);
   file_get_name(file_name, new->file_name);
   file_get_directory(file_name, new->file_directory);
   new->file_extension = file_get_extension(file_name);
@@ -55,7 +58,9 @@ u32 get_rows(Section *s) { return s->buffer->nodes; }
 void mode_normal(Section *s) {
   Windows *windows = windows_init();
 
-  paint_command_bar("Teste", COLOR_PAIR(PAIR_TEXT), windows->command);
+  if (!s->unamed) {
+    paint_command_bar_file_info(s, windows->command);
+  }
 
   while (true) {
     curs_set(false);
@@ -91,7 +96,7 @@ void mode_normal(Section *s) {
     case KEY_HOME:
       cursor_home(s, windows->text);
       break;
-    case KEY_END: 
+    case KEY_END:
       cursor_end(s, windows->text);
       break;
     case 'i':

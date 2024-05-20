@@ -14,6 +14,10 @@ bool file_can_read(const char *name) { return !access(name, R_OK); }
 
 bool file_can_write(const char *name) { return !access(name, W_OK); }
 
+void file_get_input(const char *input, char *buff) {
+  strcpy(buff, input);
+}
+
 void file_get_name(const char *input, char *buff) {
   const char *slash = strrchr(input, '/');
   slash = slash == NULL ? input : slash;
@@ -40,4 +44,12 @@ FileExtension file_get_extension(const char *name) {
   }
 
   return EXTENSION_UNKNOWN;
+}
+
+u32 file_get_size(const char *input) {
+  FILE *f = fopen(input, "r");
+  ABORT(f == NULL, "Erro: Falha ao determinar tamanho de arquivo.\n");
+
+  fseek(f, 0, SEEK_END);
+  return (u32)ftell(f);
 }
