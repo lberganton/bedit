@@ -46,13 +46,13 @@ void ui_end(void);
 
 Windows *windows_init(void);
 void windows_end(Windows *w);
+void refresh_windows(Windows *s);
 
 int get_key(void);
 
 void paint_command_bar(char *msg, attr_t attr, WINDOW *w);
 void paint_status_bar(char *mode, Section *s, WINDOW *w);
 void paint_rows(Section *s, WINDOW *rows, WINDOW *text);
-void refresh_windows(Windows *s);
 
 void cursor_up(Section *s, WINDOW *w);
 void cursor_down(Section *s, WINDOW *w);

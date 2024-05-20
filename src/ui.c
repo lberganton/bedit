@@ -188,13 +188,6 @@ void paint_rows(Section *s, WINDOW *rows, WINDOW *text) {
   }
 }
 
-void refresh_windows(Windows *s) {
-  wrefresh(s->command);
-  wrefresh(s->rows);
-  wrefresh(s->status);
-  wrefresh(s->text);
-}
-
 void text_up(Section *s, WINDOW *w) {
   s->beg_row--;
   s->buffer->top = s->buffer->top->prev;

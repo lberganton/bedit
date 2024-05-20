@@ -49,3 +49,10 @@ void windows_end(Windows *w) {
 
   free(w);
 }
+
+void refresh_windows(Windows *s) {
+  wrefresh(s->command);
+  wrefresh(s->rows);
+  wrefresh(s->status);
+  wrefresh(s->text);
+}
