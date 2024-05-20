@@ -121,6 +121,8 @@ void mode_normal(Section *s) {
     case ':':
       mode_command(s);
       break;
+    default:
+      insert_char_at(get_utfchar((char *) &key), s->col, s->buffer->current);
     }
   }
 }

@@ -31,3 +31,5 @@ Buffer *buffer_init(void);
 void buffer_read_file(const char *file_name, Buffer *b);
 void buffer_insert_begin(Buffer *b);
 void buffer_insert_end(Buffer *b);
+
+bool insert_char_at(UTFChar ch, u32 index, BufferNode *n);

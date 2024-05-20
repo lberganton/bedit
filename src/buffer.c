@@ -7,6 +7,18 @@
 #include "defs.h"
 #include <stdlib.h>
 
+static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
+  BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
+  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
+
+  new->prev = prev;
+  new->next = next;
+  new->buffer_len = 0;
+  new->buffer->size = 0;
+
+  return new;
+}
+
 Buffer *buffer_init(void) {
   Buffer *new = (Buffer *)malloc(sizeof(Buffer));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
@@ -79,18 +91,6 @@ void buffer_read_file(const char *file_name, Buffer *b) {
   }
 
   fclose(f);
-}
-
-static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
-  BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
-
-  new->prev = prev;
-  new->next = next;
-  new->buffer_len = 0;
-  new->buffer->size = 0;
-
-  return new;
 }
 
 void buffer_insert_begin(Buffer *b) {
