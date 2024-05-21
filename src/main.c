@@ -6,6 +6,7 @@
  * The entry of Beditor application.
  */
 #include "command.h"
+#include "input.h"
 #include "section.h"
 #include "ui.h"
 #include <locale.h>
@@ -76,9 +77,7 @@ void loop(void) {
         backspace_char(section);
         continue;
       case '\t':
-        for (u8 i = 0; i < TAB_SIZE; i++) {
-          insert_char(section, ' ');
-        }
+        insert_tab(section);
         continue;
       case '\n':
         insert_new_line(section);

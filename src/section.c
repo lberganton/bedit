@@ -29,7 +29,6 @@ static Section *section_create(void) {
 Section *section_unamed(void) {
   Section *new = section_create();
 
-  strcpy(new->file_name, NO_NAME_FILE);
   new->unamed = true;
   new->file_extension = EXTENSION_UNKNOWN;
 

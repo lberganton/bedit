@@ -9,6 +9,7 @@
 
 #include <inttypes.h>
 #include <ncurses.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 typedef int8_t i8;
@@ -24,9 +25,8 @@ typedef uint64_t u64;
 #define BUFF_ROW 10000
 #define BUFF_COL 1024
 #define BUFF_STR 128
-#define STATUS_BAR_FILE_NAME_LEN 32
 
-#define TAB_SIZE 4
+#define STATUS_BAR_FILE_NAME_LEN 32
 
 #define ERROR_WRONG_ARGS_NUM                                                   \
   "Forneça argumentos válidos.\n"                                            \

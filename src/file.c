@@ -5,6 +5,7 @@
  */
 #include "file.h"
 #include "defs.h"
+#include "input.h"
 #include "unistd.h"
 #include <string.h>
 

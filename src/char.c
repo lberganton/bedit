@@ -63,6 +63,14 @@ UTFChar get_utfchar(const char *in) {
   return ch;
 }
 
+int utfchar_to_int(UTFChar ch) {
+  if (ch.size > 1) {
+    return 0;
+  }
+
+  return ch.data[0];
+}
+
 void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, const char *ch) {
   u8 encoding = get_utf_len(ch);
 
