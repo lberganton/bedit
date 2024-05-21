@@ -42,6 +42,7 @@ Buffer *buffer_init(void) {
 }
 
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
+  ABORT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
   BufferNode *new = node_create(n, n->next);
 
   b->nodes++;
@@ -51,6 +52,27 @@ BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
   }
 
   return new;
+}
+
+void buffer_remove_node(Buffer *b, BufferNode *n) {
+  ABORT(n == NULL, "Erro: Tentativa de remover de um buffer vazio.");
+
+  if (b->begin == n) {
+    b->begin = b->begin->next;
+  }
+  if (b->end == n) {
+    b->end = b->end->prev;
+  }
+
+  if (n->prev) {
+    n->prev->next = n->next;
+  }
+  if (n->next) {
+    n->next->prev = n->prev;
+  }
+
+  b->nodes--;
+  free(n);
 }
 
 bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n) {

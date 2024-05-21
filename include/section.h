@@ -41,10 +41,15 @@ typedef struct Section {
 
 Section *section_unamed(void);
 Section *section_open(const char *file_name);
+void section_set_msg(Section *s, const char *msg);
 u32 get_rows(Section *s);
+
 void text_up(Section *s);
 void text_down(Section *s);
+
 void insert_char(Section *s, char ch);
 void delete_char(Section *s);
 void backspace_char(Section *s);
 void insert_new_line(Section *s);
+void delete_line(Section *s);
+void backspace_line(Section *s);

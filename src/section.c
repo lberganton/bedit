@@ -56,6 +56,10 @@ Section *section_open(const char *file_name) {
   return new;
 }
 
+void section_set_msg(Section *s, const char *msg) {
+  strncpy(s->msg, msg, BUFF_STR);
+}
+
 u32 get_rows(Section *s) { return s->buffer->nodes; }
 
 void text_up(Section *s) {

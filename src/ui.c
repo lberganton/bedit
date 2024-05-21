@@ -58,7 +58,7 @@ void paint_command_bar(char *msg, attr_t attr, Section *s) {
     return;
   }
 
-  paint_string(s->window->command, 0, 0, attr, COLS, msg);
+  paint_utfstring(s->window->command, 0, 0, attr, COLS, msg);
 }
 
 void paint_status_bar(Mode mode, Section *s) {
