@@ -42,7 +42,7 @@ void backspace_char(Section *s) {
     cursor_left(s);
     return;
   }
-  
+
   u32 len = s->buffer->current->prev->buffer_len;
 
   if (!merge_line(s, s->buffer->current->prev, s->buffer->current)) {
@@ -69,6 +69,13 @@ void insert_new_line(Section *s) {
 
   cursor_down(s);
   cursor_home(s);
+
+  for (u32 i = 0; i < current->buffer_len &&
+                  current->buffer[i].size == 1 &&
+                  current->buffer[i].data[0] == ' ';
+                  i++) {
+    insert_char(s, ' ');
+  }
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
@@ -84,7 +91,7 @@ bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
 
   memcpy(&dest->buffer[dest->buffer_len], &src->buffer[0],
          src->buffer_len * sizeof(UTFChar));
-  
+
   dest->buffer_len += src->buffer_len;
 
   return true;
