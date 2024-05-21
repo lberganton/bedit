@@ -81,7 +81,8 @@ void paint_status_bar(Mode mode, Section *s) {
   paint_utfstring(w, 0, 0, color | A_REVERSE, 16, mode_string[mode]);
 
   // Print the actual file.
-  snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN, s->file_name,
+  snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN,
+           s->unamed ? NO_NAME_FILE : s->file_name,
            strlen(s->file_name) > STATUS_BAR_FILE_NAME_LEN ? "..." : "");
 
   paint_string(w, 0, getcurx(w), color, STATUS_BAR_FILE_NAME_LEN, buffer);
