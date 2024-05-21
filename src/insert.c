@@ -20,26 +20,37 @@ void insert_char(Section *s, char ch) {
 }
 
 void delete_char(Section *s) {
-  if (s->col == s->buffer->current->buffer_len) {
-    delete_line(s);
-  } else {
+  if (s->col < s->buffer->current->buffer_len) {
     buffer_delete_char(s->col, s->buffer->current);
-  }
-}
-
-void backspace_char(Section *s) {
-  if (s->row == 0 && s->col == 0) {
     return;
   }
 
-  if (s->col == 0) {
-    backspace_line(s);
-  } else {
-    buffer_delete_char(s->col - 1, s->buffer->current);
+  if (s->row == s->buffer->nodes - 1) {
+    return;
   }
 
+  merge_line(s, s->buffer->current, s->buffer->current->next);
 
-  cursor_left(s);
+  buffer_remove_node(s->buffer, s->buffer->current->next);
+}
+
+void backspace_char(Section *s) {
+  if (s->col > 0) {
+    buffer_delete_char(s->col - 1, s->buffer->current);
+    cursor_left(s);
+    return;
+  }
+  
+  u32 len = s->buffer->current->prev->buffer_len;
+
+  merge_line(s, s->buffer->current->prev, s->buffer->current);
+
+  cursor_up(s);
+  for (u32 i = 0; i < len; i++) {
+    cursor_right(s);
+  }
+
+  buffer_remove_node(s->buffer, s->buffer->current->next);
 }
 
 void insert_new_line(Section *s) {
@@ -56,42 +67,19 @@ void insert_new_line(Section *s) {
   cursor_home(s);
 }
 
-void delete_line(Section *s) {
-  if (s->row == s->buffer->nodes - 1) {
+void merge_line(Section *s, BufferNode *dest, BufferNode *src) {
+  if (dest == NULL || src == NULL) {
+    section_set_msg(s, "Erro: Falha ao mesclar as linhas.");
     return;
   }
 
-  BufferNode *current = s->buffer->current;
-  BufferNode *next = current->next;
-
-  if (current->buffer_len + next->buffer_len >= BUFF_COL) {
-    section_set_msg(s, "Erro: Apagar a linha estouraria o buffer");
+  if (dest->buffer_len + src->buffer_len >= BUFF_COL) {
+    section_set_msg(s, "Erro: Mesclar as linhas estouraria o buffer");
     return;
   }
 
-  memcpy(&current->buffer[current->buffer_len], &next->buffer[0],
-         next->buffer_len * sizeof(UTFChar));
-  current->buffer_len += next->buffer_len;
-
-  buffer_remove_node(s->buffer, next);
-}
-
-void backspace_line(Section *s) {
-  if (s->row == 0) {
-    return;
-  }
-
-  BufferNode *prev = s->buffer->current->prev;
-  BufferNode *current = prev->next;
-
-  if (current->buffer_len + prev->buffer_len >= BUFF_COL) {
-    section_set_msg(s, "Erro: Apagar a linha estouraria o buffer");
-    return;
-  }
-
-  memcpy(&prev->buffer[prev->buffer_len], &current->buffer[0],
-         current->buffer_len * sizeof(UTFChar));
-  prev->buffer_len += current->buffer_len;
-
-  buffer_remove_node(s->buffer, current);
+  memcpy(&dest->buffer[dest->buffer_len], &src->buffer[0],
+         src->buffer_len * sizeof(UTFChar));
+  
+  dest->buffer_len += src->buffer_len;
 }
