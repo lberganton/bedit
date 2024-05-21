@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 typedef struct BufferNode {
+  bool activated;
   UTFChar buffer[BUFF_COL];
   u32 buffer_len;
   struct BufferNode *prev;
@@ -28,8 +29,6 @@ typedef struct Buffer {
 } Buffer;
 
 Buffer *buffer_init(void);
-BufferNode *buffer_insert_begin(Buffer *b);
-BufferNode *buffer_insert_end(Buffer *b);
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n);
 
 bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n);

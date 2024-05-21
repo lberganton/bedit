@@ -73,7 +73,7 @@ void file_load(const char *input, Buffer *b) {
 
   // Loops until the file reaches the end.
   while ((ch = fgetc(f)) != EOF) {
-    ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de linha.");
+    ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
 
     // If the character read isn't a new line, put it in the buffer and go to
     // the next iteration.
@@ -83,13 +83,16 @@ void file_load(const char *input, Buffer *b) {
       // If the characters is a tab, fill the next indexes with spaces.
       if (ch == '\t') {
         for (u32 i = 1; i < TAB_SIZE; i++) {
-          ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de linha.");
+          ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
           buffer[pos++] = ' ';
         }
       }
 
       continue;
     }
+
+    ABORT(b->nodes >= BUFF_ROW,
+          "Erro: O arquivo tem um número de linhas maior que o permitido.")
 
     u32 i = 0;
 
@@ -101,8 +104,7 @@ void file_load(const char *input, Buffer *b) {
     }
 
     // Inserts a new node at the end of the list.
-    buffer_insert_end(b);
-    aux = b->end;
+    aux = buffer_insert_next(b, b->end);
 
     pos = 0;
   }

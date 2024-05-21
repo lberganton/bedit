@@ -12,10 +12,18 @@ static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
+  new->activated = true;
   new->prev = prev;
   new->next = next;
   new->buffer_len = 0;
   new->buffer->size = 0;
+
+  if (prev) {
+    prev->next = new;
+  }
+  if (next) {
+    next->prev = new;
+  }
 
   return new;
 }
@@ -33,50 +41,15 @@ Buffer *buffer_init(void) {
   return new;
 }
 
-BufferNode *buffer_insert_begin(Buffer *b) {
-  BufferNode *new = node_create(NULL, b->begin);
-
-  b->nodes++;
-
-  if (b->begin == NULL) {
-    b->end = new;
-  } else {
-    b->begin->prev = new;
-  }
-
-  b->begin = new;
-  return new;
-}
-
-BufferNode *buffer_insert_end(Buffer *b) {
-  BufferNode *new = node_create(b->end, NULL);
-
-  b->nodes++;
-
-  if (b->begin == NULL) {
-    b->begin = new;
-  } else {
-    b->end->next = new;
-  }
-
-  b->end = new;
-  return new;
-}
-
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
   BufferNode *new = node_create(n, n->next);
 
   b->nodes++;
 
   if (b->end == n) {
-    b->end = n;
+    b->end = new;
   }
 
-  if (new->next) {
-    new->next->prev = new;
-  }
-
-  n->next = new;
   return new;
 }
 
