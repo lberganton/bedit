@@ -21,10 +21,12 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-#define BUFF_SIZE 1024
-#define TAB_SIZE 4
-
+#define BUFF_ROW 10000
+#define BUFF_COL 1024
+#define BUFF_STR 128
 #define STATUS_BAR_FILE_NAME_LEN 32
+
+#define TAB_SIZE 4
 
 #define ERROR_WRONG_ARGS_NUM                                                   \
   "Forneça argumentos válidos.\n"                                            \

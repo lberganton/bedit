@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 typedef struct BufferNode {
-  UTFChar buffer[BUFF_SIZE];
+  UTFChar buffer[BUFF_COL];
   u32 buffer_len;
   struct BufferNode *prev;
   struct BufferNode *next;
@@ -28,7 +28,6 @@ typedef struct Buffer {
 } Buffer;
 
 Buffer *buffer_init(void);
-void buffer_read_file(const char *file_name, Buffer *b);
 BufferNode *buffer_insert_begin(Buffer *b);
 BufferNode *buffer_insert_end(Buffer *b);
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n);

@@ -19,9 +19,7 @@ void insert_char(Section *s, char ch) {
   cursor_right(s);
 }
 
-void delete_char(Section *s) {
-  buffer_delete_char(s->col, s->buffer->current);
-}
+void delete_char(Section *s) { buffer_delete_char(s->col, s->buffer->current); }
 
 void backspace_char(Section *s) {
   if (s->col == 0) {
@@ -37,7 +35,8 @@ void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
-  memcpy(&new->buffer[0], &current->buffer[s->col], (current->buffer_len - s->col) * sizeof(UTFChar));
+  memcpy(&new->buffer[0], &current->buffer[s->col],
+         (current->buffer_len - s->col) * sizeof(UTFChar));
   new->buffer_len = (current->buffer_len - s->col);
   current->buffer_len = s->col;
 

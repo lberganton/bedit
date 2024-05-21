@@ -81,7 +81,7 @@ BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
 }
 
 bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n) {
-  if (n->buffer_len == BUFF_SIZE) {
+  if (n->buffer_len == BUFF_COL) {
     return false;
   }
 
@@ -98,10 +98,10 @@ bool buffer_delete_char(u32 index, BufferNode *n) {
   if (index == n->buffer_len) {
     return false;
   }
-  
+
   memcpy(&n->buffer[index], &n->buffer[index + 1],
          (n->buffer_len - index) * sizeof(UTFChar));
-  
+
   n->buffer_len--;
 
   return true;

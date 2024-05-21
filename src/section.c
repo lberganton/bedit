@@ -8,14 +8,12 @@
 #include "ui.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
-  new->file_input = (char *)malloc(sizeof(char) * BUFF_SIZE);
-  new->file_name = (char *)malloc(sizeof(char) * BUFF_SIZE);
-  new->file_directory = (char *)malloc(sizeof(char) * BUFF_SIZE);
   new->buffer = buffer_init();
   new->dirty = false;
   new->beg_row = 0;
@@ -31,7 +29,7 @@ static Section *section_create(void) {
 Section *section_unamed(void) {
   Section *new = section_create();
 
-  new->file_name = NO_NAME_FILE;
+  strcpy(new->file_name, NO_NAME_FILE);
   new->unamed = true;
   new->file_extension = EXTENSION_UNKNOWN;
 
@@ -39,6 +37,9 @@ Section *section_unamed(void) {
 }
 
 Section *section_open(const char *file_name) {
+  ABORT(strlen(file_name) >= BUFF_STR,
+        "Erro: O caminho do arquivo é muito grande.");
+
   Section *new = section_create();
 
   new->unamed = false;
@@ -46,9 +47,11 @@ Section *section_open(const char *file_name) {
   file_get_input(file_name, new->file_input);
   file_get_name(file_name, new->file_name);
   file_get_directory(file_name, new->file_directory);
+  file_load(file_name, new->buffer);
   new->file_extension = file_get_extension(file_name);
 
-  file_load(file_name, new->buffer);
+  sprintf(new->msg, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_name,
+          new->buffer->nodes, file_get_size(file_name));
 
   return new;
 }

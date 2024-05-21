@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include "defs.h"
 #include "buffer.h"
+#include "defs.h"
 #include <stdbool.h>
 
 typedef enum FileExtension {

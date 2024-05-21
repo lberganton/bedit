@@ -17,11 +17,11 @@ typedef struct Windows {
 } Windows;
 
 typedef struct Section {
-  char *file_input;
-  char *file_name;
-  char *file_directory;
-  bool unamed;
+  char file_input[BUFF_STR];
+  char file_name[BUFF_STR];
+  char file_directory[BUFF_STR];
   FileExtension file_extension;
+  bool unamed;
 
   bool dirty;
 
@@ -36,6 +36,7 @@ typedef struct Section {
   u32 cx;
 
   Windows *window;
+  char msg[BUFF_STR];
 } Section;
 
 Section *section_unamed(void);

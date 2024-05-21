@@ -19,7 +19,7 @@ void file_get_input(const char *input, char *buff) { strcpy(buff, input); }
 void file_get_name(const char *input, char *buff) {
   const char *slash = strrchr(input, '/');
   slash = slash == NULL ? input : slash;
-  strncpy(buff, slash + 1, BUFF_SIZE);
+  strncpy(buff, slash + 1, BUFF_STR);
 }
 
 void file_get_directory(const char *name, char *buff) {
@@ -67,13 +67,13 @@ void file_load(const char *input, Buffer *b) {
   fseek(f, 0, SEEK_SET);
 
   BufferNode *aux = b->begin;
-  char buffer[BUFF_SIZE];
+  char buffer[BUFF_COL];
   u32 pos = 0;
   int ch;
 
   // Loops until the file reaches the end.
   while ((ch = fgetc(f)) != EOF) {
-    ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
+    ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de linha.");
 
     // If the character read isn't a new line, put it in the buffer and go to
     // the next iteration.
@@ -83,7 +83,7 @@ void file_load(const char *input, Buffer *b) {
       // If the characters is a tab, fill the next indexes with spaces.
       if (ch == '\t') {
         for (u32 i = 1; i < TAB_SIZE; i++) {
-          ABORT(pos >= BUFF_SIZE, "Erro: Estouro no buffer de linha.");
+          ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de linha.");
           buffer[pos++] = ' ';
         }
       }

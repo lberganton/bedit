@@ -16,15 +16,10 @@ void loop(void) {
   section->window = windows_init();
   Mode mode = MODE_NORMAL;
 
-  if (!section->unamed) {
-    paint_command_bar_file_info(section);
-  } else {
-    paint_command_bar("", COLOR_PAIR(PAIR_TEXT), section);
-  }
-
   while (true) {
     curs_set(false);
 
+    paint_command_bar(section->msg, COLOR_PAIR(PAIR_TEXT), section);
     paint_status_bar(mode, section);
     paint_rows(section);
 
