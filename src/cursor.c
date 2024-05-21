@@ -8,6 +8,8 @@
 #include <ncurses.h>
 
 void cursor_up(Section *s) {
+  // Returns if the current row is the first. Obviously, if it is, it cannot
+  // move up.
   if (s->row == 0) {
     return;
   }
@@ -15,19 +17,26 @@ void cursor_up(Section *s) {
   u32 maxx = getmaxx(s->window->text) - 1;
   u32 begy = getbegy(s->window->text);
 
+  // If the cursor is at the top of the screen, move the text up. In the other
+  // hand, just decreases your height.
   if (s->cy == begy) {
     text_up(s);
   } else {
     s->cy--;
   }
 
+  // Set the current row as the previous row.
   s->buffer->current = s->buffer->current->prev;
   s->row--;
 
   if (s->col > s->buffer->current->buffer_len) {
+    // If the row we're going to is shorter than the one we were on, set the
+    // column to the end of the row.
     s->col = s->buffer->current->buffer_len;
 
     if (s->col <= s->beg_col) {
+      // If the end of the row is behind of the current begining column, set the
+      // new begining column based on the text screen width.
       s->beg_col = s->col % maxx;
     }
 
@@ -38,6 +47,8 @@ void cursor_up(Section *s) {
 }
 
 void cursor_down(Section *s) {
+  // Returns if the current row is the last. Obviously, if it is, it cannot
+  // move down.
   if (s->row == get_rows(s) - 1) {
     return;
   }
@@ -45,6 +56,8 @@ void cursor_down(Section *s) {
   u32 maxx = getmaxx(s->window->text) - 1;
   u32 maxy = getmaxy(s->window->text) - 1;
 
+  // If the cursor is at the bottom of the screen, move the text down. In the
+  // other hand, just increase your height.
   if (s->cy == maxy) {
     text_down(s);
   } else {
@@ -55,9 +68,13 @@ void cursor_down(Section *s) {
   s->row++;
 
   if (s->col > s->buffer->current->buffer_len) {
+    // If the row we're going to is shorter than the one we were on, set the
+    // column to the end of the row.
     s->col = s->buffer->current->buffer_len;
 
     if (s->col <= s->beg_col) {
+      // If the end of the row is behind of the current begining column, set the
+      // new begining column based on the text screen width.
       s->beg_col = s->col % maxx;
     }
 
