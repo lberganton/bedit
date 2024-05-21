@@ -51,4 +51,4 @@ void insert_char(Section *s, char ch);
 void delete_char(Section *s);
 void backspace_char(Section *s);
 void insert_new_line(Section *s);
-void merge_line(Section *s, BufferNode *dest, BufferNode *src);
+bool merge_line(Section *s, BufferNode *dest, BufferNode *src);

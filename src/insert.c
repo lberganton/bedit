@@ -29,7 +29,9 @@ void delete_char(Section *s) {
     return;
   }
 
-  merge_line(s, s->buffer->current, s->buffer->current->next);
+  if (!merge_line(s, s->buffer->current, s->buffer->current->next)) {
+    return;
+  }
 
   buffer_remove_node(s->buffer, s->buffer->current->next);
 }
@@ -43,7 +45,9 @@ void backspace_char(Section *s) {
   
   u32 len = s->buffer->current->prev->buffer_len;
 
-  merge_line(s, s->buffer->current->prev, s->buffer->current);
+  if (!merge_line(s, s->buffer->current->prev, s->buffer->current)) {
+    return;
+  }
 
   cursor_up(s);
   for (u32 i = 0; i < len; i++) {
@@ -67,19 +71,21 @@ void insert_new_line(Section *s) {
   cursor_home(s);
 }
 
-void merge_line(Section *s, BufferNode *dest, BufferNode *src) {
+bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
   if (dest == NULL || src == NULL) {
     section_set_msg(s, "Erro: Falha ao mesclar as linhas.");
-    return;
+    return false;
   }
 
   if (dest->buffer_len + src->buffer_len >= BUFF_COL) {
     section_set_msg(s, "Erro: Mesclar as linhas estouraria o buffer");
-    return;
+    return false;
   }
 
   memcpy(&dest->buffer[dest->buffer_len], &src->buffer[0],
          src->buffer_len * sizeof(UTFChar));
   
   dest->buffer_len += src->buffer_len;
+
+  return true;
 }
