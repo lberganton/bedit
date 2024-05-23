@@ -35,10 +35,9 @@ typedef enum ColorPair {
 } ColorPair;
 
 void ui_init(void);
-void ui_end(void);
 
 Windows *windows_init(void);
-void windows_end(Windows *w);
+void windows_free(Windows *w);
 void refresh_windows(Windows *s);
 
 int get_key(void);

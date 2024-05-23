@@ -13,6 +13,15 @@
 
 static Section *section;
 
+void exit_bedit(void) {
+  windows_free(section->window);
+  buffer_free(section->buffer);
+
+  if (stdscr) {
+    endwin();
+  }
+}
+
 void loop(void) {
   section->window = windows_init();
   Mode mode = MODE_NORMAL;
@@ -64,7 +73,7 @@ void loop(void) {
       mode = MODE_NORMAL;
       continue;
     case KEY_RESIZE:
-      windows_end(section->window);
+      windows_free(section->window);
       section->window = windows_init();
       continue;
     }
@@ -124,13 +133,13 @@ int main(int argc, char **argv) {
     section = section_open(argv[1]);
   }
 
+  atexit(exit_bedit);
+
   ui_init();
 
   loop();
 
-  ui_end();
-
-  // section_end(section);
+  exit_bedit();
 
   return 0;
 }

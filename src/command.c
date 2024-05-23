@@ -79,7 +79,7 @@ void input_command(Section *s) {
 }
 
 void set_command(Section *s, Command c) {
-  // Write
+  // Write.
   if (strncmp(c.token[0], "w", BUFF_STR) == 0) {
     if (c.amount == 1) {
       if (s->unamed) {
@@ -117,6 +117,32 @@ void set_command(Section *s, Command c) {
     return;
   }
 
+  // Quit.
+  if (strncmp(c.token[0], "q", BUFF_STR) == 0) {
+    if (c.amount > 1) {
+      section_set_msg( s, "Erro: O comando sair não exige argumentos.");
+      return;
+    }
+
+    if (s->dirty) {
+      section_set_msg(
+          s, "Erro: Alterações não foram gravadas (Use q! para forçar).");
+      return;
+    }
+
+    exit(0);
+  }
+
+  // Force quit.
+  if (strncmp(c.token[0], "q!", BUFF_STR) == 0) {
+    if (c.amount > 1) {
+      section_set_msg( s, "Erro: O comando sair não exige argumentos.");
+      return;
+    }
+
+    exit(0);
+  }
+
   section_set_msg(s, "Erro: Comando inválido.");
 }
 
@@ -128,6 +154,6 @@ void command_write(Section *s) {
 
   snprintf(s->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B (Gravados)",
            s->file_name, s->buffer->nodes, file_get_size(s->file_input));
-  
+
   s->dirty = false;
 }

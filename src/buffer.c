@@ -107,3 +107,15 @@ bool buffer_delete_char(u32 index, BufferNode *n) {
 
   return true;
 }
+
+void buffer_free(Buffer *b) {
+  BufferNode *node = b->begin;
+
+  while (node) {
+    BufferNode *temp = node->next;
+    free(node);
+    node = temp;
+  }
+
+  free(b);
+}

@@ -31,6 +31,7 @@ typedef struct Buffer {
 Buffer *buffer_init(void);
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n);
 void buffer_remove_node(Buffer *b, BufferNode *n);
+void buffer_free(Buffer *b);
 
 bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n);
 bool buffer_delete_char(u32 index, BufferNode *n);

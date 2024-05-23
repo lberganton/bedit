@@ -41,8 +41,6 @@ void ui_init(void) {
   refresh();
 }
 
-void ui_end(void) { endwin(); }
-
 void paint_background(WINDOW *w, attr_t attr) {
   for (int i = 0; i < getmaxy(w); i++) {
     for (int j = 0; j < getmaxx(w); j++) {

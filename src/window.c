@@ -31,7 +31,7 @@ Windows *windows_init(void) {
   return new;
 }
 
-void windows_end(Windows *w) {
+void windows_free(Windows *w) {
   wclear(w->command);
   wclear(w->status);
   wclear(w->rows);
