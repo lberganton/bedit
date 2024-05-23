@@ -40,8 +40,7 @@ void input_command(Section *s) {
     }
 
     if (key == KEY_RESIZE) {
-      windows_end(s->window);
-      s->window = windows_init();
+      // Code
       continue;
     }
 

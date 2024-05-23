@@ -7,7 +7,7 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE := write.txt
+TESTFILE := $(TESTFILE)/write.txt
 TERM := gnome-terminal
 
 # C Compiler
@@ -40,7 +40,7 @@ link:
 
 .PHONY: test
 test:
-	@$(TERM) -- ./$(TARGET) $(TEST)/$(TESTFILE)
+	@$(TERM) -- ./$(TARGET) $(TESTFILE)
 	@echo "Running Beditor application with $(TESTFILE) file."
 
 .PHONY: clean
