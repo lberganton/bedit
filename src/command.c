@@ -125,4 +125,6 @@ void command_write(Section *s) {
 
   snprintf(s->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B (Gravados)",
            s->file_name, s->buffer->nodes, file_get_size(s->file_input));
+  
+  s->dirty = false;
 }
