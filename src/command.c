@@ -61,10 +61,9 @@ void input_command(Section *s) {
 
     if (isgraph(key) || key == ' ') {
       buffer[pos] = key;
+      mvwaddch(s->window->command, 0, pos + 1, buffer[pos]);
+      pos++;
     }
-
-    mvwaddch(s->window->command, 0, pos + 1, buffer[pos]);
-    pos++;
   }
 
   buffer[pos] = '\0';
