@@ -98,7 +98,7 @@ void file_read(const char *input, Buffer *b) {
     u32 i = 0;
 
     // Iterates over the buffer converting the default char type in UTFChar to
-    // put it in the node (line) buffer.
+    // put it in the node (row) buffer.
     while (i < pos) {
       aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
       i += get_utf_len(&buffer[i]);
@@ -111,6 +111,13 @@ void file_read(const char *input, Buffer *b) {
   }
 
   fclose(f);
+
+  // Fill the last node with the last file row buffer.
+  u32 i = 0;
+  while (i < pos) {
+    aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
+    i += get_utf_len(&buffer[i]);
+  }
 }
 
 bool file_write(const char *input, Buffer *b) {
