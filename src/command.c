@@ -44,6 +44,11 @@ void input_command(Section *s) {
       continue;
     }
 
+    if (key == KEY_ESC) {
+      section_set_msg(s, "");
+      return;
+    }
+
     if (key == KEY_BACKSPACE) {
       if (pos == 0) {
         continue;
