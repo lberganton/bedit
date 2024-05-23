@@ -104,6 +104,8 @@ void loop(void) {
     case 'i':
       mode = MODE_INSERT;
       continue;
+    case '/':
+      
     }
   }
 }

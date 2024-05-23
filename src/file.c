@@ -53,7 +53,7 @@ u32 file_get_size(const char *input) {
   return (u32)ftell(f);
 }
 
-void file_load(const char *input, Buffer *b) {
+void buffer_read(const char *input, Buffer *b) {
   // Open the file.
   FILE *f = fopen(input, "r");
   ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
@@ -111,4 +111,28 @@ void file_load(const char *input, Buffer *b) {
   }
 
   fclose(f);
+}
+
+bool buffer_write(const char *input, Buffer *b) {
+  FILE *f = fopen(input, "w");
+  if (f == NULL) {
+    return false;
+  }
+
+  BufferNode *node = b->begin;
+
+  while (node) {
+    for (u32 i = 0; i < node->buffer_len; i++) {
+      fwrite(&node->buffer[i], sizeof(char), node->buffer[i].size, f);
+    }
+
+    if (node->next) {
+      fputc('\n', f);
+    }
+
+    node = node->next;
+  }
+
+  fclose(f);
+  return true;
 }

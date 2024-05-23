@@ -29,4 +29,4 @@ FileExtension file_get_extension(const char *name);
 u32 file_get_size(const char *input);
 
 void file_load(const char *input, Buffer *b);
-void file_save(const char *input, Buffer *b);
+bool file_save(const char *input, Buffer *b);
