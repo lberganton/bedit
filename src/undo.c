@@ -26,7 +26,7 @@ void undo_stack_free(UndoStack *s) {
   free(s);
 }
 
-UndoNode *undo_node_create(UndoStack *s, UndoType t, BufferNode *b) {
+UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
   ABORT(new == NULL,
         "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
@@ -34,6 +34,7 @@ UndoNode *undo_node_create(UndoStack *s, UndoType t, BufferNode *b) {
   new->prev = NULL;
   new->next = s->top;
   new->type = t;
+  new->row = b;
   
   if (s->bot == NULL) {
     s->bot = new;
@@ -41,7 +42,9 @@ UndoNode *undo_node_create(UndoStack *s, UndoType t, BufferNode *b) {
 
   switch (t) {
   case UNDO_ROW:
+    new->state = (UTFChar *)malloc(sizeof(UTFChar) * b->buffer_len);
     memcpy(new->state, b->buffer, sizeof(UTFChar) * b->buffer_len);
+    new->length = b->buffer_len;
     break;
   case UNDO_NEW_ROW:
     new->state = NULL;
@@ -52,5 +55,30 @@ UndoNode *undo_node_create(UndoStack *s, UndoType t, BufferNode *b) {
     break;
   }
 
+  s->nodes++;
   return new;
+}
+
+void undo_bottom_free(UndoStack *s) {
+  if (s->nodes == 0) {
+    s->bot->prev = NULL;
+  }
+
+  UndoNode *temp = s->bot->prev;
+  free(s->bot);
+
+  s->bot = temp;
+}
+
+UndoNode *undo_node_pop(UndoStack *s) {
+  UndoNode *node = s->top;
+
+  if (s->nodes == 1) {
+    s->bot = NULL;
+  }
+
+  s->top = s->top->next;
+  s->nodes--;
+
+  return node;
 }

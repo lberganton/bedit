@@ -74,6 +74,39 @@ void text_down(Section *s) {
 
 void push_undo(Section *s, UndoType type) {
   if (s->undo->nodes == UNDO_MAX_STACK) {
-
+    undo_bottom_free(s->undo);
   }
+  undo_node_push(s->undo, type, s->buffer->current);
+}
+
+void pop_undo(Section *s) {
+  UndoStack *stack = s->undo;
+
+  if (stack->nodes == 0) {
+    section_set_msg(s, "Já está na alteração mais antiga.");
+    return;
+  }
+
+  UndoNode *pop = undo_node_pop(s->undo);
+  BufferNode *row = pop->row;
+
+  switch (pop->type) {
+  case UNDO_ROW:
+    memcpy(row->buffer, pop->state, sizeof(UTFChar) * pop->length);
+    row->buffer_len = pop->length;
+    break;
+  case UNDO_NEW_ROW:
+    buffer_remove_node(s->buffer, row);
+    free(pop);
+    pop_undo(s);
+    break;
+  case UNDO_REMOVE_ROW:
+    row->activated = true;
+    free(pop);
+    pop_undo(s);
+    break;
+  }
+
+  free(pop->state);
+  free(pop);
 }

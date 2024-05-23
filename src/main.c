@@ -116,6 +116,19 @@ void loop(void) {
     case ':':
       input_command(section);
       continue;
+    case 'u':
+      BufferNode *n = section->buffer->begin;
+      move(0, 0);
+      while (n) {
+        if (!n->activated) printw("!");
+        for (u32 i = 0; i < n->buffer_len; i++) {
+          printw("%.*s", n->buffer[i].size, n->buffer[i].data);
+        }
+        printw("\n");
+        n = n->next;
+      }
+      getch();
+      continue;
     }
   }
 }
