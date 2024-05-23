@@ -38,15 +38,18 @@ void delete_char(Section *s) {
     return;
   }
 
-  if (s->row == s->buffer->nodes - 1) {
+  if (s->row == s->rows - 1) {
     return;
   }
 
-  if (!merge_line(s, s->buffer->current, s->buffer->current->next)) {
+  BufferNode *next = buffer_valid_next(s->buffer->current);
+
+  if (!merge_line(s, s->buffer->current, next)) {
     return;
   }
 
-  buffer_remove_node(s->buffer, s->buffer->current->next);
+  next->activated = false;
+  s->rows--;
 }
 
 void backspace_char(Section *s) {
@@ -78,9 +81,11 @@ void backspace_char(Section *s) {
     return;
   }
 
-  u32 len = s->buffer->current->prev->buffer_len;
+  BufferNode *prev = buffer_valid_prev(s->buffer->current);
 
-  if (!merge_line(s, s->buffer->current->prev, s->buffer->current)) {
+  u32 len = prev->buffer_len;
+
+  if (!merge_line(s, prev, s->buffer->current)) {
     return;
   }
 
@@ -89,7 +94,8 @@ void backspace_char(Section *s) {
     cursor_right(s);
   }
 
-  buffer_remove_node(s->buffer, s->buffer->current->next);
+  buffer_valid_next(s->buffer->current)->activated = false;
+  s->rows--;
 }
 
 void insert_pairs(Section *s, char ch) {
@@ -124,6 +130,8 @@ void insert_new_line(Section *s) {
        i++) {
     insert_char(s, ' ');
   }
+
+  s->rows++;
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {

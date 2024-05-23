@@ -119,3 +119,19 @@ void buffer_free(Buffer *b) {
 
   free(b);
 }
+
+BufferNode *buffer_valid_prev(BufferNode *n) {
+  n = n->prev;
+  while (n && !n->activated) {
+    n = n->prev;
+  }
+  return n;
+}
+
+BufferNode *buffer_valid_next(BufferNode *n) {
+  n = n->next;
+  while (n && !n->activated) {
+    n = n->next;
+  }
+  return n;
+}

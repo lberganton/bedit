@@ -135,7 +135,7 @@ void paint_rows(Section *s) {
 
   // Runs the loop until it has printed all lines or until it reaches the
   // y-coordinate limit
-  while (y < maxy && n < s->buffer->nodes) {
+  while (y < maxy && n < s->rows) {
     snprintf(buffer, 16, "%*" PRIu32 " ", len, 1 + s->beg_row + y);
 
     attr_t attr_row, attr_text;
@@ -168,7 +168,7 @@ void paint_rows(Section *s) {
       x++;
     }
 
-    node = node->next;
+    node = buffer_valid_next(node);
     n++;
     pos = s->beg_col;
 

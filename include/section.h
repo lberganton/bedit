@@ -8,6 +8,7 @@
 #include "buffer.h"
 #include "defs.h"
 #include "file.h"
+#include "undo.h"
 
 typedef struct Windows {
   WINDOW *text;
@@ -43,6 +44,9 @@ typedef struct Section {
   // The pointer to the buffer that stores all the characters.
   Buffer *buffer;
 
+  // The total of rows.
+  u32 rows;
+
   // The actual row and column number.
   u32 row;
   u32 col;
@@ -60,14 +64,17 @@ typedef struct Section {
   // In NCurses a delimited part of a screen is called 'window'. This is a
   // pointer to all the windows needed by the editor.
   Windows *window;
+
+  // The stack that stores the user's changes.
+  UndoStack *undo;
 } Section;
 
 Section *section_unamed(void);
 Section *section_open(const char *file_name);
 void section_set_msg(Section *s, const char *msg);
-u32 get_rows(Section *s);
 
 void text_up(Section *s);
 void text_down(Section *s);
 
 void file_save(Section *s);
+void push_undo(Section *s, UndoType type);

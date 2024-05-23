@@ -33,5 +33,8 @@ BufferNode *buffer_insert_next(Buffer *b, BufferNode *n);
 void buffer_remove_node(Buffer *b, BufferNode *n);
 void buffer_free(Buffer *b);
 
+BufferNode *buffer_valid_prev(BufferNode *n);
+BufferNode *buffer_valid_next(BufferNode *n);
+
 bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n);
 bool buffer_delete_char(u32 index, BufferNode *n);

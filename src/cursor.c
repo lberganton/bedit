@@ -26,7 +26,7 @@ void cursor_up(Section *s) {
   }
 
   // Set the current row as the previous row.
-  s->buffer->current = s->buffer->current->prev;
+  s->buffer->current = buffer_valid_prev(s->buffer->current);
   s->row--;
 
   if (s->col > s->buffer->current->buffer_len) {
@@ -49,7 +49,7 @@ void cursor_up(Section *s) {
 void cursor_down(Section *s) {
   // Returns if the current row is the last. Obviously, if it is, it cannot
   // move down.
-  if (s->row == get_rows(s) - 1) {
+  if (s->row == s->rows - 1) {
     return;
   }
 
@@ -64,7 +64,7 @@ void cursor_down(Section *s) {
     s->cy++;
   }
 
-  s->buffer->current = s->buffer->current->next;
+  s->buffer->current = buffer_valid_next(s->buffer->current);
   s->row++;
 
   if (s->col > s->buffer->current->buffer_len) {
@@ -89,7 +89,7 @@ void cursor_right(Section *s) {
   u32 maxy = getmaxy(s->window->text) - 1;
 
   if (s->col + 1 > s->buffer->current->buffer_len) {
-    if (s->row == get_rows(s) - 1) {
+    if (s->row == s->rows - 1) {
       return;
     }
 
@@ -104,7 +104,7 @@ void cursor_right(Section *s) {
       s->cy++;
     }
 
-    s->buffer->current = s->buffer->current->next;
+    s->buffer->current = buffer_valid_next(s->buffer->current);
   } else {
     if (s->cx == maxx) {
       s->beg_col++;
@@ -125,7 +125,7 @@ void cursor_left(Section *s) {
       return;
     }
 
-    s->buffer->current = s->buffer->current->prev;
+    s->buffer->current = buffer_valid_prev(s->buffer->current);
 
     s->row--;
     s->col = s->buffer->current->buffer_len;
@@ -176,7 +176,7 @@ void cursor_pgup(Section *s) {
 
   for (u32 i = 0; i < maxy && s->beg_row > 0; i++) {
     s->beg_row--;
-    s->buffer->top = s->buffer->top->prev;
+    s->buffer->top = buffer_valid_prev(s->buffer->top);
   }
 
   s->col = 0;
@@ -191,9 +191,9 @@ void cursor_pgup(Section *s) {
 void cursor_pgdown(Section *s) {
   u32 maxy = getmaxy(s->window->text);
 
-  for (u32 i = 0; i < maxy && s->beg_row < get_rows(s) - 1; i++) {
+  for (u32 i = 0; i < maxy && s->beg_row < s->rows - 1; i++) {
     s->beg_row++;
-    s->buffer->top = s->buffer->top->next;
+    s->buffer->top = buffer_valid_next(s->buffer->top);
   }
 
   s->col = 0;

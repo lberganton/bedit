@@ -14,6 +14,7 @@ static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
   ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
+  new->undo = undo_stack_create();
   new->buffer = buffer_init();
   new->dirty = false;
   new->beg_row = 0;
@@ -31,6 +32,7 @@ Section *section_unamed(void) {
 
   new->unamed = true;
   new->file_extension = EXTENSION_UNKNOWN;
+  new->rows = 1;
 
   return new;
 }
@@ -52,14 +54,13 @@ Section *section_open(const char *file_name) {
   snprintf(new->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_name,
            new->buffer->nodes, file_get_size(file_name));
 
+  new->rows = new->buffer->nodes;
   return new;
 }
 
 void section_set_msg(Section *s, const char *msg) {
   strncpy(s->msg, msg, BUFF_STR);
 }
-
-u32 get_rows(Section *s) { return s->buffer->nodes; }
 
 void text_up(Section *s) {
   s->beg_row--;
@@ -69,4 +70,10 @@ void text_up(Section *s) {
 void text_down(Section *s) {
   s->beg_row++;
   s->buffer->top = s->buffer->top->next;
+}
+
+void push_undo(Section *s, UndoType type) {
+  if (s->undo->nodes == UNDO_MAX_STACK) {
+
+  }
 }
