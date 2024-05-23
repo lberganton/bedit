@@ -43,7 +43,7 @@ void ui_init(void) {
 
 void ui_end(void) { endwin(); }
 
-static void paint_background(WINDOW *w, attr_t attr) {
+void paint_background(WINDOW *w, attr_t attr) {
   for (int i = 0; i < getmaxy(w); i++) {
     for (int j = 0; j < getmaxx(w); j++) {
       mvwaddch(w, i, j, ' ' | attr);

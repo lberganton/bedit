@@ -19,13 +19,13 @@ void file_get_input(const char *input, char *buff) { strcpy(buff, input); }
 
 void file_get_name(const char *input, char *buff) {
   const char *slash = strrchr(input, '/');
-  slash = slash == NULL ? input : slash;
-  strncpy(buff, slash + 1, BUFF_STR);
+  slash = slash == NULL ? input : slash + 1;
+  strncpy(buff, slash, BUFF_STR);
 }
 
 void file_get_directory(const char *name, char *buff) {
   const char *slash = strrchr(name, '/');
-  u32 index = (u32)(slash - name);
+  u32 index = slash == NULL ? 0 : (u32)(slash - name);
   strncpy(buff, name, index);
 }
 
@@ -53,7 +53,7 @@ u32 file_get_size(const char *input) {
   return (u32)ftell(f);
 }
 
-void buffer_read(const char *input, Buffer *b) {
+void file_read(const char *input, Buffer *b) {
   // Open the file.
   FILE *f = fopen(input, "r");
   ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
@@ -113,7 +113,7 @@ void buffer_read(const char *input, Buffer *b) {
   fclose(f);
 }
 
-bool buffer_write(const char *input, Buffer *b) {
+bool file_write(const char *input, Buffer *b) {
   FILE *f = fopen(input, "w");
   if (f == NULL) {
     return false;

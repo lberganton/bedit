@@ -25,6 +25,7 @@ typedef uint64_t u64;
 #define BUFF_ROW 10000
 #define BUFF_COL 1024
 #define BUFF_STR 128
+#define BUFF_TOK 16
 
 #define STATUS_BAR_FILE_NAME_LEN 32
 

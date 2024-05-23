@@ -46,11 +46,11 @@ Section *section_open(const char *file_name) {
   file_get_input(file_name, new->file_input);
   file_get_name(file_name, new->file_name);
   file_get_directory(file_name, new->file_directory);
-  buffer_read(file_name, new->buffer);
+  file_read(file_name, new->buffer);
   new->file_extension = file_get_extension(file_name);
 
-  sprintf(new->msg, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_name,
-          new->buffer->nodes, file_get_size(file_name));
+  snprintf(new->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_name,
+           new->buffer->nodes, file_get_size(file_name));
 
   return new;
 }

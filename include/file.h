@@ -28,5 +28,5 @@ void file_get_directory(const char *name, char *buff);
 FileExtension file_get_extension(const char *name);
 u32 file_get_size(const char *input);
 
-void file_load(const char *input, Buffer *b);
-bool file_save(const char *input, Buffer *b);
+void file_read(const char *input, Buffer *b);
+bool file_write(const char *input, Buffer *b);

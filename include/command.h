@@ -8,4 +8,13 @@
 #include "section.h"
 #include <ncurses.h>
 
-void paint_command_bar_file_info(Section *s);
+typedef struct Command {
+  char *token[BUFF_TOK];
+  u8 amount;
+} Command;
+
+void input_command(Section *s);
+Command tokenize_command(char *input);
+void set_command(Section *s, Command c);
+
+void command_write(Section *s);

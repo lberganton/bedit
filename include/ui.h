@@ -43,6 +43,7 @@ void refresh_windows(Windows *s);
 
 int get_key(void);
 
+void paint_background(WINDOW *w, attr_t attr);
 void paint_command_bar(char *msg, attr_t attr, Section *s);
 void paint_status_bar(Mode mode, Section *s);
 void paint_rows(Section *s);
