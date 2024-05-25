@@ -93,7 +93,7 @@ void file_read(const char *input, Buffer *b) {
     }
 
     ASSERT(b->nodes >= BUFF_ROW,
-          "Erro: O arquivo tem um número de linhas maior que o permitido.")
+          "Erro: O arquivo tem um número de linhas maior que o permitido.");
 
     u32 i = 0;
 

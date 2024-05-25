@@ -3,6 +3,7 @@
 
 # Related-program files
 bedit
+log
 *.swp
 
 # Object files

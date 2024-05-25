@@ -42,10 +42,22 @@ typedef uint64_t u64;
 
 typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
-#define ASSERT(condition, description)                                          \
-  if (condition) {                                                             \
-    if (stdscr)                                                                \
-      endwin();                                                                \
-    fprintf(stderr, "bedit: %s\n", description);                               \
-    exit(1);                                                                   \
-  }
+#define WRITE_LOG(message, ...)                                                \
+  do {                                                                         \
+    FILE *file = fopen("log", "a");                                            \
+    if (file) {                                                                \
+      fprintf(file, "<%s>: %d: " message "\n", __FILE__, __LINE__, message,    \
+              ##__VA_ARGS__);                                                  \
+      fclose(file);                                                            \
+    }                                                                          \
+  } while (false)
+
+#define ASSERT(condition, description)                                         \
+  do {                                                                         \
+    if (condition) {                                                           \
+      if (stdscr)                                                              \
+        endwin();                                                              \
+      fprintf(stderr, "bedit: %s\n", description);                             \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (false)
