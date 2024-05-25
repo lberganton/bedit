@@ -28,12 +28,21 @@ void insert_char(Section *s, char ch) {
     return;
   }
 
+  if (!s->undo->dirty) {
+    s->undo->dirty = true;
+    push_undo(s, UNDO_ROW);
+  }
+
   buffer_insert_char(get_utfchar(&ch), s->col, s->buffer->current);
   cursor_right(s);
 }
 
 void delete_char(Section *s) {
   if (s->col < s->buffer->current->buffer_len) {
+    if (!s->undo->dirty) {
+      s->undo->dirty = true;
+      push_undo(s, UNDO_ROW);
+    }
     buffer_delete_char(s->col, s->buffer->current);
     return;
   }
@@ -54,6 +63,11 @@ void delete_char(Section *s) {
 
 void backspace_char(Section *s) {
   if (s->col > 0) {
+    if (!s->undo->dirty) {
+      s->undo->dirty = true;
+      push_undo(s, UNDO_ROW);
+    }
+
     char ch = utfchar_to_int(s->buffer->current->buffer[s->col - 1]);
 
     buffer_delete_char(s->col - 1, s->buffer->current);

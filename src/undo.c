@@ -36,6 +36,8 @@ UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
   new->type = t;
   new->row = b;
   
+  s->top = new;
+
   if (s->bot == NULL) {
     s->bot = new;
   }

@@ -43,6 +43,7 @@ void cursor_up(Section *s) {
     s->cx = s->col - s->beg_col;
   }
 
+  s->undo->dirty = false;
   wmove(s->window->text, s->cy, s->cx);
 }
 
@@ -81,6 +82,7 @@ void cursor_down(Section *s) {
     s->cx = s->col - s->beg_col;
   }
 
+  s->undo->dirty = false;
   wmove(s->window->text, s->cy, s->cx);
 }
 
@@ -92,6 +94,8 @@ void cursor_right(Section *s) {
     if (s->row == s->rows - 1) {
       return;
     }
+    
+    s->undo->dirty = false;
 
     s->row++;
     s->cx = 0;
@@ -125,6 +129,7 @@ void cursor_left(Section *s) {
       return;
     }
 
+    s->undo->dirty = false;
     s->buffer->current = buffer_valid_prev(s->buffer->current);
 
     s->row--;
@@ -157,6 +162,8 @@ void cursor_home(Section *s) {
   s->beg_col = 0;
   s->cx = 0;
   s->col = 0;
+
+  s->undo->dirty = false;
 }
 
 void cursor_end(Section *s) {
@@ -169,6 +176,8 @@ void cursor_end(Section *s) {
   }
 
   s->cx = s->col - s->beg_col;
+
+  s->undo->dirty = false;
 }
 
 void cursor_pgup(Section *s) {
@@ -186,6 +195,8 @@ void cursor_pgup(Section *s) {
   s->cy = 0;
   s->cx = 0;
   s->beg_col = 0;
+
+  s->undo->dirty = false;
 }
 
 void cursor_pgdown(Section *s) {
@@ -203,4 +214,6 @@ void cursor_pgdown(Section *s) {
   s->cy = 0;
   s->cx = 0;
   s->beg_col = 0;
+
+  s->undo->dirty = false;
 }
