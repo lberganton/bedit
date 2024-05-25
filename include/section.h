@@ -10,13 +10,6 @@
 #include "file.h"
 #include "undo.h"
 
-typedef struct Windows {
-  WINDOW *text;
-  WINDOW *rows;
-  WINDOW *status;
-  WINDOW *command;
-} Windows;
-
 typedef struct Section {
   // This is the argument that the user passed in the command line or in the
   // program itself to save the file. It can be either only file name or the
@@ -63,14 +56,15 @@ typedef struct Section {
 
   // In NCurses a delimited part of a screen is called 'window'. This is a
   // pointer to all the windows needed by the editor.
-  Windows *window;
+  WINDOW *window_text;
+  WINDOW *window_rows;
+  WINDOW *window_status;
+  WINDOW *window_command;
 
   // The stack that stores the user's changes.
   UndoStack *undo;
 } Section;
 
-Section *section_unamed(void);
-Section *section_open(const char *file_name);
 void section_set_msg(Section *s, const char *msg);
 
 void text_up(Section *s);

@@ -10,54 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static Section *section_create(void) {
-  Section *new = (Section *)malloc(sizeof(Section));
-  ASSERT(new == NULL, "Erro: Falha ao alocar memória para seção.");
-
-  new->undo = undo_stack_create();
-  new->buffer = buffer_init();
-  new->dirty = false;
-  new->beg_row = 0;
-  new->beg_col = 0;
-  new->cy = 0;
-  new->cx = 0;
-  new->row = 0;
-  new->col = 0;
-
-  return new;
-}
-
-Section *section_unamed(void) {
-  Section *new = section_create();
-
-  new->unamed = true;
-  new->file_extension = EXTENSION_UNKNOWN;
-  new->rows = 1;
-
-  return new;
-}
-
-Section *section_open(const char *file_name) {
-  ASSERT(strlen(file_name) >= BUFF_STR,
-        "Erro: O caminho do arquivo é muito grande.");
-
-  Section *new = section_create();
-
-  new->unamed = false;
-
-  file_get_input(file_name, new->file_input);
-  file_get_name(file_name, new->file_name);
-  file_get_directory(file_name, new->file_directory);
-  file_read(file_name, new->buffer);
-  new->file_extension = file_get_extension(file_name);
-
-  snprintf(new->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_name,
-           new->buffer->nodes, file_get_size(file_name));
-
-  new->rows = new->buffer->nodes;
-  return new;
-}
-
 void section_set_msg(Section *s, const char *msg) {
   strncpy(s->msg, msg, BUFF_STR);
 }

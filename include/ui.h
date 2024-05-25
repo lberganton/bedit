@@ -34,11 +34,11 @@ typedef enum ColorPair {
   PAIR_TEAL
 } ColorPair;
 
-void ui_init(void);
+void initialize_colors(void);
 
-Windows *windows_init(void);
-void windows_free(Windows *w);
-void refresh_windows(Windows *s);
+void initialize_windows(Section *s);
+void free_windows(Section *s);
+void refresh_windows(Section *s);
 
 int get_key(void);
 

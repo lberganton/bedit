@@ -9,15 +9,9 @@
 #include <ncurses.h>
 #include <string.h>
 
-void ui_init(void) {
-  initscr();
-
+void initialize_colors(void) {
   ASSERT(!has_colors() || !can_change_color(),
-        "O terminal atual não suporta cores.");
-
-  raw();
-  noecho();
-  keypad(stdscr, true);
+         "O terminal atual não suporta cores.");
 
   start_color();
 
@@ -37,8 +31,6 @@ void ui_init(void) {
   init_pair(PAIR_STATUS, PALETTE_BLUE, PALETTE_SURFACE_1);
   init_pair(PAIR_BLUE, PALETTE_BLUE, PALETTE_BASE);
   init_pair(PAIR_TEAL, PALETTE_TEAL, PALETTE_BASE);
-
-  refresh();
 }
 
 void paint_background(WINDOW *w, attr_t attr) {
@@ -50,18 +42,18 @@ void paint_background(WINDOW *w, attr_t attr) {
 }
 
 void paint_command_bar(char *msg, attr_t attr, Section *s) {
-  paint_background(s->window->command, COLOR_PAIR(PAIR_BACKGROUND));
+  paint_background(s->window_command, COLOR_PAIR(PAIR_BACKGROUND));
 
   if (msg == NULL) {
     return;
   }
 
-  paint_utfstring(s->window->command, 0, 0, attr, COLS, msg);
+  paint_utfstring(s->window_command, 0, 0, attr, COLS, msg);
 }
 
 void paint_status_bar(Mode mode, Section *s) {
   char buffer[64];
-  WINDOW *w = s->window->status;
+  WINDOW *w = s->window_status;
   static const char *mode_string[] = {" NORMAL ", " INSERÇÃO ", " NORMAL "};
 
   paint_background(w, COLOR_PAIR(PAIR_STATUS));
@@ -117,8 +109,8 @@ void paint_status_bar(Mode mode, Section *s) {
 }
 
 void paint_rows(Section *s) {
-  WINDOW *rows = s->window->rows;
-  WINDOW *text = s->window->text;
+  WINDOW *rows = s->window_rows;
+  WINDOW *text = s->window_text;
 
   u32 n = s->beg_row;
   u32 y = 0;

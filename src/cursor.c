@@ -14,8 +14,8 @@ void cursor_up(Section *s) {
     return;
   }
 
-  u32 maxx = getmaxx(s->window->text) - 1;
-  u32 begy = getbegy(s->window->text);
+  u32 maxx = getmaxx(s->window_text) - 1;
+  u32 begy = getbegy(s->window_text);
 
   // If the cursor is at the top of the screen, move the text up. In the other
   // hand, just decreases your height.
@@ -44,7 +44,7 @@ void cursor_up(Section *s) {
   }
 
   s->undo->dirty = false;
-  wmove(s->window->text, s->cy, s->cx);
+  wmove(s->window_text, s->cy, s->cx);
 }
 
 void cursor_down(Section *s) {
@@ -54,8 +54,8 @@ void cursor_down(Section *s) {
     return;
   }
 
-  u32 maxx = getmaxx(s->window->text) - 1;
-  u32 maxy = getmaxy(s->window->text) - 1;
+  u32 maxx = getmaxx(s->window_text) - 1;
+  u32 maxy = getmaxy(s->window_text) - 1;
 
   // If the cursor is at the bottom of the screen, move the text down. In the
   // other hand, just increase your height.
@@ -83,12 +83,12 @@ void cursor_down(Section *s) {
   }
 
   s->undo->dirty = false;
-  wmove(s->window->text, s->cy, s->cx);
+  wmove(s->window_text, s->cy, s->cx);
 }
 
 void cursor_right(Section *s) {
-  u32 maxx = getmaxx(s->window->text) - 1;
-  u32 maxy = getmaxy(s->window->text) - 1;
+  u32 maxx = getmaxx(s->window_text) - 1;
+  u32 maxy = getmaxy(s->window_text) - 1;
 
   if (s->col + 1 > s->buffer->current->buffer_len) {
     if (s->row == s->rows - 1) {
@@ -118,11 +118,11 @@ void cursor_right(Section *s) {
     s->col++;
   }
 
-  wmove(s->window->text, s->cy, s->cx);
+  wmove(s->window_text, s->cy, s->cx);
 }
 
 void cursor_left(Section *s) {
-  u32 maxx = getmaxx(s->window->text) - 1;
+  u32 maxx = getmaxx(s->window_text) - 1;
 
   if (s->col == 0) {
     if (s->row == 0) {
@@ -155,7 +155,7 @@ void cursor_left(Section *s) {
     s->col--;
   }
 
-  wmove(s->window->text, s->cy, s->cx);
+  wmove(s->window_text, s->cy, s->cx);
 }
 
 void cursor_home(Section *s) {
@@ -167,7 +167,7 @@ void cursor_home(Section *s) {
 }
 
 void cursor_end(Section *s) {
-  u32 maxx = getmaxx(s->window->text) - 1;
+  u32 maxx = getmaxx(s->window_text) - 1;
 
   s->col = s->buffer->current->buffer_len;
 
@@ -181,7 +181,7 @@ void cursor_end(Section *s) {
 }
 
 void cursor_pgup(Section *s) {
-  u32 maxy = getmaxy(s->window->text);
+  u32 maxy = getmaxy(s->window_text);
 
   for (u32 i = 0; i < maxy && s->beg_row > 0; i++) {
     s->beg_row--;
@@ -200,7 +200,7 @@ void cursor_pgup(Section *s) {
 }
 
 void cursor_pgdown(Section *s) {
-  u32 maxy = getmaxy(s->window->text);
+  u32 maxy = getmaxy(s->window_text);
 
   for (u32 i = 0; i < maxy && s->beg_row < s->rows - 1; i++) {
     s->beg_row++;

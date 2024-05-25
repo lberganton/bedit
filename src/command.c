@@ -25,16 +25,16 @@ void input_command(Section *s) {
   char buffer[BUFF_STR];
   u32 pos = 0;
 
-  paint_background(s->window->command, COLOR_PAIR(PAIR_TEXT));
-  wattrset(s->window->command, COLOR_PAIR(PAIR_TEXT));
-  mvwaddch(s->window->command, 0, 0, ':');
+  paint_background(s->window_command, COLOR_PAIR(PAIR_TEXT));
+  wattrset(s->window_command, COLOR_PAIR(PAIR_TEXT));
+  mvwaddch(s->window_command, 0, 0, ':');
 
-  wmove(s->window->command, 0, 1);
+  wmove(s->window_command, 0, 1);
 
-  u32 maxx = getmaxx(s->window->command) - 1;
+  u32 maxx = getmaxx(s->window_command) - 1;
   int key;
 
-  while ((key = wgetch(s->window->command)) != '\n') {
+  while ((key = wgetch(s->window_command)) != '\n') {
     if (pos == maxx - 1) {
       continue;
     }
@@ -53,15 +53,15 @@ void input_command(Section *s) {
       if (pos == 0) {
         continue;
       }
-      mvwaddch(s->window->command, 0, pos, ' ');
-      wmove(s->window->command, 0, pos);
+      mvwaddch(s->window_command, 0, pos, ' ');
+      wmove(s->window_command, 0, pos);
       pos--;
       continue;
     }
 
     if (isgraph(key) || key == ' ') {
       buffer[pos] = key;
-      mvwaddch(s->window->command, 0, pos + 1, buffer[pos]);
+      mvwaddch(s->window_command, 0, pos + 1, buffer[pos]);
       pos++;
     }
   }
