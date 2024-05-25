@@ -12,7 +12,7 @@
 void ui_init(void) {
   initscr();
 
-  ABORT(!has_colors() || !can_change_color(),
+  ASSERT(!has_colors() || !can_change_color(),
         "O terminal atual não suporta cores.");
 
   raw();

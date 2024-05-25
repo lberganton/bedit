@@ -47,7 +47,7 @@ FileExtension file_get_extension(const char *name) {
 
 u32 file_get_size(const char *input) {
   FILE *f = fopen(input, "r");
-  ABORT(f == NULL, "Erro: Falha ao determinar tamanho de arquivo.\n");
+  ASSERT(f == NULL, "Erro: Falha ao determinar tamanho de arquivo.\n");
 
   fseek(f, 0, SEEK_END);
   return (u32)ftell(f);
@@ -56,7 +56,7 @@ u32 file_get_size(const char *input) {
 void file_read(const char *input, Buffer *b) {
   // Open the file.
   FILE *f = fopen(input, "r");
-  ABORT(f == NULL, "Erro: Falha ao abrir o arquivo.");
+  ASSERT(f == NULL, "Erro: Falha ao abrir o arquivo.");
 
   // Return the function if the file is empty.
   if (fgetc(f) == EOF) {
@@ -74,7 +74,7 @@ void file_read(const char *input, Buffer *b) {
 
   // Loops until the file reaches the end.
   while ((ch = fgetc(f)) != EOF) {
-    ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
+    ASSERT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
 
     // If the character read isn't a new line, put it in the buffer and go to
     // the next iteration.
@@ -84,7 +84,7 @@ void file_read(const char *input, Buffer *b) {
       // If the characters is a tab, fill the next indexes with spaces.
       if (ch == '\t') {
         for (u32 i = 1; i < TAB_SIZE; i++) {
-          ABORT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
+          ASSERT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
           buffer[pos++] = ' ';
         }
       }
@@ -92,7 +92,7 @@ void file_read(const char *input, Buffer *b) {
       continue;
     }
 
-    ABORT(b->nodes >= BUFF_ROW,
+    ASSERT(b->nodes >= BUFF_ROW,
           "Erro: O arquivo tem um número de linhas maior que o permitido.")
 
     u32 i = 0;

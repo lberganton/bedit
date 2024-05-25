@@ -42,7 +42,7 @@ typedef uint64_t u64;
 
 typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
-#define ABORT(condition, description)                                          \
+#define ASSERT(condition, description)                                          \
   if (condition) {                                                             \
     if (stdscr)                                                                \
       endwin();                                                                \

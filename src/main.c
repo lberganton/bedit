@@ -126,7 +126,7 @@ void loop(void) {
 int main(int argc, char **argv) {
   setlocale(LC_CTYPE, "");
 
-  ABORT(argc > 2, ERROR_WRONG_ARGS_NUM);
+  ASSERT(argc > 2, ERROR_WRONG_ARGS_NUM);
 
   // If no argument was provided or the file dosen't exist, start a section
   // in a 'unamed' style.

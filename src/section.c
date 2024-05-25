@@ -12,7 +12,7 @@
 
 static Section *section_create(void) {
   Section *new = (Section *)malloc(sizeof(Section));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para seção.");
+  ASSERT(new == NULL, "Erro: Falha ao alocar memória para seção.");
 
   new->undo = undo_stack_create();
   new->buffer = buffer_init();
@@ -38,7 +38,7 @@ Section *section_unamed(void) {
 }
 
 Section *section_open(const char *file_name) {
-  ABORT(strlen(file_name) >= BUFF_STR,
+  ASSERT(strlen(file_name) >= BUFF_STR,
         "Erro: O caminho do arquivo é muito grande.");
 
   Section *new = section_create();

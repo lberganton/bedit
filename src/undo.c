@@ -4,7 +4,7 @@
 
 UndoStack *undo_stack_create(void) {
   UndoStack *new = (UndoStack *)malloc(sizeof(UndoStack));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para pilha de 'desfazer'.");
+  ASSERT(new == NULL, "Erro: Falha ao alocar memória para pilha de 'desfazer'.");
 
   new->top = NULL;
   new->bot = NULL;
@@ -28,7 +28,7 @@ void undo_stack_free(UndoStack *s) {
 
 UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
-  ABORT(new == NULL,
+  ASSERT(new == NULL,
         "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
     
   new->prev = NULL;

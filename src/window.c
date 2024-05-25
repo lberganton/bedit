@@ -6,12 +6,12 @@
 #include "defs.h"
 #include "ui.h"
 #include <inttypes.h>
-#include <stdlib.h>
+#include <stdlib.h>g
 #include <string.h>
 
 Windows *windows_init(void) {
   Windows *new = (Windows *)malloc(sizeof(Windows));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para janelas.");
+  ASSERT(new == NULL, "Erro: Falha ao alocar memória para janelas.");
 
   new->command = newwin(1, COLS, LINES - 1, 0);
   new->status = newwin(1, COLS, LINES - 2, 0);

@@ -10,7 +10,7 @@
 // Stack Overflow's user named Christoph.
 // https://stackoverflow.com/questions/1031645/how-to-detect-utf-8-in-plain-c
 u8 get_utf_len(const char *ch) {
-  ABORT(ch == NULL, "Erro: Falha em descobrir o encoding de um caractere.");
+  ASSERT(ch == NULL, "Erro: Falha em descobrir o encoding de um caractere.");
 
   unsigned char *bytes = (unsigned char *)ch;
 

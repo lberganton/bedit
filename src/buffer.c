@@ -10,7 +10,7 @@
 
 static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   BufferNode *new = (BufferNode *)malloc(sizeof(BufferNode));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
+  ASSERT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
   new->activated = true;
   new->prev = prev;
@@ -30,7 +30,7 @@ static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
 
 Buffer *buffer_init(void) {
   Buffer *new = (Buffer *)malloc(sizeof(Buffer));
-  ABORT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
+  ASSERT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
 
   new->begin = node_create(NULL, NULL);
   new->end = new->begin;
@@ -42,7 +42,7 @@ Buffer *buffer_init(void) {
 }
 
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
-  ABORT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
+  ASSERT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
   BufferNode *new = node_create(n, n->next);
 
   b->nodes++;
@@ -55,7 +55,7 @@ BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
 }
 
 void buffer_remove_node(Buffer *b, BufferNode *n) {
-  ABORT(n == NULL, "Erro: Tentativa de remover de um buffer vazio.");
+  ASSERT(n == NULL, "Erro: Tentativa de remover de um buffer vazio.");
 
   if (b->begin == n) {
     b->begin = b->begin->next;
