@@ -45,8 +45,8 @@ void free_windows(Section *s) {
 
 void refresh_windows(Section *s) {
   refresh();
-  wrefresh(s->window_text);
+  wrefresh(s->window_command);
   wrefresh(s->window_rows);
   wrefresh(s->window_status);
-  wrefresh(s->window_command);
+  wrefresh(s->window_text);
 }
