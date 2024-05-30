@@ -6,9 +6,15 @@
 #include "input.h"
 #include "ui.h"
 #include <ctype.h>
+#include <stddef.h>
 #include <string.h>
 
-static const char pairs[] = "\"\"\'\'()<>[]{}";
+static const char single_pairs[] = "\'\"";
+static const char double_pairs[] = "()<>[]{}";
+
+static bool is_pair(char ch) {
+  return (strchr(single_pairs, ch)) || (strchr(double_pairs, ch));
+}
 
 void insert_tab(Section *s) {
   for (u8 i = s->col % TAB_SIZE; i < TAB_SIZE; i++) {
@@ -22,7 +28,7 @@ void insert_char(Section *s, char ch) {
     return;
   }
 
-  if (AUTO_PAIRS && strchr(pairs, ch)) {
+  if (AUTO_PAIRS && is_pair(ch)) {
     insert_pairs(s, ch);
     cursor_right(s);
     return;
@@ -74,17 +80,18 @@ void backspace_char(Section *s) {
     cursor_left(s);
 
     if (AUTO_PAIRS && ch) {
-      char *ptr = strchr(pairs, ch);
-
-      if (ptr == NULL) {
-        return;
-      }
-
-      u64 pos = (u64)strchr(pairs, ch) - (u64)pairs;
-
-      ch = utfchar_to_int(s->buffer->current->buffer[s->col]);
-      if (pos % 2 == 0 && pairs[pos + 1] == ch) {
-        buffer_delete_char(s->col, s->buffer->current);
+      char *ptr;
+      
+      if ((ptr = strrchr(single_pairs, ch))) {
+        ptrdiff_t pos = ptr - single_pairs;
+        if (ch == single_pairs[pos]) {
+          buffer_delete_char(s->col, s->buffer->current);
+        }
+      } else if ((ptr = strrchr(double_pairs, ch))) {
+        ptrdiff_t pos = ptr - double_pairs;
+        if (!(pos & 1) && (ch == double_pairs[pos])) {
+          buffer_delete_char(s->col, s->buffer->current);
+        }
       }
     }
 
@@ -113,17 +120,26 @@ void backspace_char(Section *s) {
 }
 
 void insert_pairs(Section *s, char ch) {
-  u64 pos = (u64)strchr(pairs, ch) - (u64)pairs;
+  UTFChar first_pair, last_pair;
+  char *ptr;
 
-  if (pos % 2 == 0) {
-    buffer_insert_char(get_utfchar(&pairs[pos++]), s->col, s->buffer->current);
-    buffer_insert_char(get_utfchar(&pairs[pos]), s->col + 1,
-                       s->buffer->current);
-  } else {
-    if (utfchar_to_int(s->buffer->current->buffer[s->col]) != pairs[pos]) {
-      buffer_insert_char(get_utfchar(&ch), s->col, s->buffer->current);
+  if ((ptr = strchr(single_pairs, ch))) {
+    first_pair = get_utfchar(&ch);
+    last_pair = first_pair;
+    if (compare_utfchar(s->buffer->current->buffer[s->col], first_pair)) {
+      return;
     }
+  } else if ((ptr = strchr(double_pairs, ch))) {
+    ptrdiff_t pos = ptr - double_pairs;
+    if (pos & 1) {
+      return;
+    }
+    first_pair = get_utfchar(&double_pairs[pos]);
+    last_pair = get_utfchar(&double_pairs[pos + 1]);
   }
+
+  buffer_insert_char(first_pair, s->col, s->buffer->current);
+  buffer_insert_char(last_pair, s->col + 1, s->buffer->current);
 }
 
 void insert_new_line(Section *s) {

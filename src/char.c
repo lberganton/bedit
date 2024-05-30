@@ -71,6 +71,20 @@ int utfchar_to_int(UTFChar ch) {
   return ch.data[0];
 }
 
+bool compare_utfchar(UTFChar ch1, UTFChar ch2) {
+  if (ch1.size != ch2.size) {
+    return false;
+  }
+  
+  for (u32 i = 0; i < ch1.size; i++) {
+    if (ch1.data[i] != ch2.data[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, const char *ch) {
   u8 encoding = get_utf_len(ch);
 
