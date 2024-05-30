@@ -15,7 +15,9 @@ bool file_can_read(const char *name) { return !access(name, R_OK); }
 
 bool file_can_write(const char *name) { return !access(name, W_OK); }
 
-void file_get_input(const char *input, char *buff) { strcpy(buff, input); }
+void file_get_input(const char *input, char *buff) {
+  strncpy(buff, input, BUFF_STR);
+}
 
 void file_get_name(const char *input, char *buff) {
   const char *slash = strrchr(input, '/');
@@ -32,13 +34,13 @@ void file_get_directory(const char *name, char *buff) {
 FileExtension file_get_extension(const char *name) {
   const char *dot = strrchr(name, '.');
 
-  if (strcmp(dot, ".txt") == 0) {
+  if (strncmp(dot, ".txt", 5) == 0) {
     return EXTENSION_TXT;
   }
-  if (strcmp(dot, ".c") == 0) {
+  if (strncmp(dot, ".c", 3) == 0) {
     return EXTENSION_C;
   }
-  if (strcmp(dot, ".cpp") == 0) {
+  if (strncmp(dot, ".cpp", 5) == 0) {
     return EXTENSION_CPP;
   }
 
@@ -93,7 +95,7 @@ void file_read(const char *input, Buffer *b) {
     }
 
     ASSERT(b->nodes >= BUFF_ROW,
-          "Erro: O arquivo tem um número de linhas maior que o permitido.");
+           "Erro: O arquivo tem um número de linhas maior que o permitido.");
 
     u32 i = 0;
 

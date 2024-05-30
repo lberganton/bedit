@@ -52,7 +52,7 @@ void paint_command_bar(char *msg, attr_t attr, Section *s) {
 }
 
 void paint_status_bar(Mode mode, Section *s) {
-  char buffer[64];
+  char buffer[BUFF_STR];
   WINDOW *w = s->window_status;
   static const char *mode_string[] = {" NORMAL ", " INSERÇÃO ", " NORMAL "};
 
@@ -85,16 +85,16 @@ void paint_status_bar(Mode mode, Section *s) {
   // Select the string to represent the file format.
   switch (s->file_extension) {
   case EXTENSION_UNKNOWN:
-    strcpy(buffer, FILE_EXTENSION_UNKNOWN);
+    strncpy(buffer, FILE_EXTENSION_UNKNOWN, BUFF_STR);
     break;
   case EXTENSION_TXT:
-    strcpy(buffer, FILE_EXTENSION_TXT);
+    strncpy(buffer, FILE_EXTENSION_TXT, BUFF_STR);
     break;
   case EXTENSION_C:
-    strcpy(buffer, FILE_EXTENSION_C);
+    strncpy(buffer, FILE_EXTENSION_C, BUFF_STR);
     break;
   case EXTENSION_CPP:
-    strcpy(buffer, FILE_EXTENSION_CPP);
+    strncpy(buffer, FILE_EXTENSION_CPP, BUFF_STR);
     break;
   }
 

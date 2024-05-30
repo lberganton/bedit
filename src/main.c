@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
   char *program = *argv++;
   char *file_path = *argv++;
 
-  // Alloca memory for a section.
+  // Allocate memory for a section.
   section = (Section *)malloc(sizeof(Section));
   ASSERT(section == NULL, "Erro: Falha ao alocar memória para seção.");
 
