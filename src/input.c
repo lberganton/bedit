@@ -136,6 +136,8 @@ void insert_new_line(Section *s) {
   new->buffer_len = (current->buffer_len - s->col);
   current->buffer_len = s->col;
 
+  s->rows++;
+
   cursor_down(s);
   cursor_home(s);
 
@@ -144,8 +146,6 @@ void insert_new_line(Section *s) {
        i++) {
     insert_char(s, ' ');
   }
-
-  s->rows++;
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
