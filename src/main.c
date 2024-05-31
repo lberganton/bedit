@@ -112,8 +112,7 @@ int main(int argc, char **argv) {
   // Exit the program if more than one file was provided.
   ASSERT(argc > 2, ERROR_WRONG_ARGS_NUM);
 
-  char *program = *argv++;
-  char *file_path = *argv++;
+  char *file_path = argv[1];
 
   // Allocate memory for a section.
   section = (Section *)malloc(sizeof(Section));
