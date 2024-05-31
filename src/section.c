@@ -44,7 +44,7 @@ void pop_undo(Section *s) {
 
   switch (pop->type) {
   case UNDO_ROW:
-    memcpy(row->buffer, pop->state, sizeof(UTFChar) * pop->length);
+    memcpy(row->buffer, pop->state, sizeof(wchar_t) * pop->length);
     row->buffer_len = pop->length;
     break;
   case UNDO_NEW_ROW:

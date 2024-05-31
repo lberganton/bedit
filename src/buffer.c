@@ -16,7 +16,6 @@ static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   new->prev = prev;
   new->next = next;
   new->buffer_len = 0;
-  new->buffer->size = 0;
 
   if (prev) {
     prev->next = new;
@@ -75,7 +74,7 @@ void buffer_remove_node(Buffer *b, BufferNode *n) {
   free(n);
 }
 
-bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n) {
+bool buffer_insert_char(wchar_t ch, u32 index, BufferNode *n) {
   // Make sure the column buffer is at maximum and can insert a new character.
   if (n->buffer_len == BUFF_COL) {
     return false;
@@ -83,7 +82,7 @@ bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n) {
 
   // Move all characters from the index forward.
   memcpy(&n->buffer[index + 1], &n->buffer[index],
-         (n->buffer_len - index) * sizeof(UTFChar));
+         (n->buffer_len - index) * sizeof(wchar_t));
 
   // Insert the new character.
   n->buffer[index] = ch;
@@ -101,7 +100,7 @@ bool buffer_delete_char(u32 index, BufferNode *n) {
   // Move all characters in front to the position of the character to be
   // deleted.
   memcpy(&n->buffer[index], &n->buffer[index + 1],
-         (n->buffer_len - index) * sizeof(UTFChar));
+         (n->buffer_len - index) * sizeof(wchar_t));
 
   n->buffer_len--;
 

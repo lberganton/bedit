@@ -169,13 +169,13 @@ int main(int argc, char **argv) {
 
   // Set the RGB colors and color pairs.
   initialize_colors();
-  
+
   // Refresh to set the main window.
   refresh();
 
   // Initialize NCurses windows.
   initialize_windows(section);
-  int key;
+  wchar_t key;
 
   bool quit = false;
 

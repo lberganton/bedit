@@ -4,7 +4,8 @@
 
 UndoStack *undo_stack_create(void) {
   UndoStack *new = (UndoStack *)malloc(sizeof(UndoStack));
-  ASSERT(new == NULL, "Erro: Falha ao alocar memória para pilha de 'desfazer'.");
+  ASSERT(new == NULL,
+         "Erro: Falha ao alocar memória para pilha de 'desfazer'.");
 
   new->top = NULL;
   new->bot = NULL;
@@ -29,13 +30,13 @@ void undo_stack_free(UndoStack *s) {
 UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
   ASSERT(new == NULL,
-        "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
-    
+         "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
+
   new->prev = NULL;
   new->next = s->top;
   new->type = t;
   new->ptr = b;
-  
+
   s->top = new;
 
   if (s->bot == NULL) {
@@ -44,8 +45,8 @@ UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
 
   switch (t) {
   case UNDO_ROW:
-    new->state = (UTFChar *)malloc(sizeof(UTFChar) * b->buffer_len);
-    memcpy(new->state, b->buffer, sizeof(UTFChar) * b->buffer_len);
+    new->state = (wchar_t *)malloc(sizeof(wchar_t) * b->buffer_len);
+    memcpy(new->state, b->buffer, sizeof(wchar_t) * b->buffer_len);
     new->length = b->buffer_len;
     break;
   case UNDO_NEW_ROW:

@@ -121,7 +121,7 @@ void set_command(Section *s, Command c) {
   // Quit.
   if (strncmp(c.token[0], "q", BUFF_STR) == 0) {
     if (c.amount > 1) {
-      section_set_msg( s, "Erro: O comando sair não exige argumentos.");
+      section_set_msg(s, "Erro: O comando sair não exige argumentos.");
       return;
     }
 
@@ -137,7 +137,7 @@ void set_command(Section *s, Command c) {
   // Force quit.
   if (strncmp(c.token[0], "q!", BUFF_STR) == 0) {
     if (c.amount > 1) {
-      section_set_msg( s, "Erro: O comando sair não exige argumentos.");
+      section_set_msg(s, "Erro: O comando sair não exige argumentos.");
       return;
     }
 

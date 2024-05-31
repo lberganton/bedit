@@ -60,8 +60,10 @@ void file_read(const char *input, Buffer *b) {
   FILE *f = fopen(input, "r");
   ASSERT(f == NULL, "Erro: Falha ao abrir o arquivo.");
 
+  wchar_t ch;
+
   // Return the function if the file is empty.
-  if (fgetc(f) == EOF) {
+  if (fread(&ch, sizeof(wchar_t), 1, f) == 0) {
     fclose(f);
     return;
   }
@@ -70,12 +72,11 @@ void file_read(const char *input, Buffer *b) {
   fseek(f, 0, SEEK_SET);
 
   BufferNode *aux = b->begin;
-  char buffer[BUFF_COL];
+  wchar_t buffer[BUFF_COL];
   u32 pos = 0;
-  int ch;
 
   // Loops until the file reaches the end.
-  while ((ch = fgetc(f)) != EOF) {
+  while (fread(&ch, sizeof(wchar_t), 1, f)) {
     ASSERT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
 
     // If the character read isn't a new line, put it in the buffer and go to
@@ -102,8 +103,7 @@ void file_read(const char *input, Buffer *b) {
     // Iterates over the buffer converting the default char type in UTFChar to
     // put it in the node (row) buffer.
     while (i < pos) {
-      aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
-      i += get_utf_len(&buffer[i]);
+      aux->buffer[aux->buffer_len++] = buffer[i++];
     }
 
     // Inserts a new node at the end of the list.
@@ -117,8 +117,7 @@ void file_read(const char *input, Buffer *b) {
   // Fill the last node with the last file row buffer.
   u32 i = 0;
   while (i < pos) {
-    aux->buffer[aux->buffer_len++] = get_utfchar(&buffer[i]);
-    i += get_utf_len(&buffer[i]);
+    aux->buffer[aux->buffer_len++] = buffer[i++];
   }
 }
 
@@ -131,9 +130,7 @@ bool file_write(const char *input, Buffer *b) {
   BufferNode *node = b->begin;
 
   while (node) {
-    for (u32 i = 0; i < node->buffer_len; i++) {
-      fwrite(&node->buffer[i], sizeof(char), node->buffer[i].size, f);
-    }
+    fwrite(&node->buffer, sizeof(wchar_t), node->buffer_len, f);
 
     if (node->next) {
       fputc('\n', f);

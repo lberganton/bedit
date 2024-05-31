@@ -15,13 +15,13 @@ typedef enum UndoType { UNDO_ROW, UNDO_NEW_ROW, UNDO_REMOVE_ROW } UndoType;
 typedef struct UndoNode {
   UndoType type;
 
-  UTFChar *state;
+  wchar_t *state;
   u32 length;
 
   BufferNode *ptr;
   u32 row;
   u32 col;
-  
+
   struct UndoNode *next;
   struct UndoNode *prev;
 } UndoNode;

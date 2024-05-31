@@ -14,7 +14,7 @@
 
 typedef struct BufferNode {
   bool activated;
-  UTFChar buffer[BUFF_COL];
+  wchar_t buffer[BUFF_COL];
   u32 buffer_len;
   struct BufferNode *prev;
   struct BufferNode *next;
@@ -36,5 +36,5 @@ void buffer_free(Buffer *b);
 BufferNode *buffer_valid_prev(BufferNode *n);
 BufferNode *buffer_valid_next(BufferNode *n);
 
-bool buffer_insert_char(UTFChar ch, u32 index, BufferNode *n);
+bool buffer_insert_char(wchar_t ch, u32 index, BufferNode *n);
 bool buffer_delete_char(u32 index, BufferNode *n);

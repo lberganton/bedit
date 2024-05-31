@@ -48,7 +48,7 @@ void paint_command_bar(char *msg, attr_t attr, Section *s) {
     return;
   }
 
-  paint_utfstring(s->window_command, 0, 0, attr, COLS, msg);
+  paint_string(s->window_command, 0, 0, attr, COLS, msg);
 }
 
 void paint_status_bar(Mode mode, Section *s) {
@@ -68,7 +68,7 @@ void paint_status_bar(Mode mode, Section *s) {
   }
 
   // Print the actual mode.
-  paint_utfstring(w, 0, 0, color | A_REVERSE, 16, mode_string[mode]);
+  paint_string(w, 0, 0, color | A_REVERSE, 16, mode_string[mode]);
 
   // Print the actual file.
   snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN,
@@ -148,7 +148,7 @@ void paint_rows(Section *s) {
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
     while (pos < node->buffer_len && x < maxx) {
-      paint_utfchar(text, y, x, attr_text, node->buffer[pos]);
+      paint_char(text, y, x, attr_text, node->buffer[pos]);
       pos++;
       x++;
     }
@@ -156,7 +156,7 @@ void paint_rows(Section *s) {
     // Paints the remaining background of the row.
     while (x < maxx) {
       char ch = ' ';
-      paint_char(text, y, x, attr_text, &ch);
+      paint_char(text, y, x, attr_text, ch);
       x++;
     }
 
@@ -178,7 +178,7 @@ void paint_rows(Section *s) {
     // Paint the background.
     for (int x = 0; x < COLS; x++) {
       char ch = ' ';
-      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), &ch);
+      paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), ch);
     }
 
     y++;

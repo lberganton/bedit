@@ -12,7 +12,7 @@
 static const char single_pairs[] = "\'\"";
 static const char double_pairs[] = "()<>[]{}";
 
-static bool is_pair(char ch) {
+static bool is_pair(wchar_t ch) {
   return (strchr(single_pairs, ch)) || (strchr(double_pairs, ch));
 }
 
@@ -22,7 +22,7 @@ void insert_tab(Section *s) {
   }
 }
 
-void insert_char(Section *s, char ch) {
+void insert_char(Section *s, wchar_t ch) {
   if (s->col + 2 >= BUFF_COL) {
     section_set_msg(s, "Falha ao inserir, buffer de linha cheio");
     return;
@@ -39,7 +39,7 @@ void insert_char(Section *s, char ch) {
     push_undo(s, UNDO_ROW);
   }
 
-  buffer_insert_char(get_utfchar(&ch), s->col, s->buffer->current);
+  buffer_insert_char(ch, s->col, s->buffer->current);
   cursor_right(s);
 }
 
@@ -74,14 +74,14 @@ void backspace_char(Section *s) {
       push_undo(s, UNDO_ROW);
     }
 
-    char ch = utfchar_to_int(s->buffer->current->buffer[s->col - 1]);
+    wchar_t ch = s->buffer->current->buffer[s->col - 1];
 
     buffer_delete_char(s->col - 1, s->buffer->current);
     cursor_left(s);
 
     if (AUTO_PAIRS && ch) {
       char *ptr;
-      
+
       if ((ptr = strrchr(single_pairs, ch))) {
         ptrdiff_t pos = ptr - single_pairs;
         if (ch == single_pairs[pos]) {
@@ -119,14 +119,14 @@ void backspace_char(Section *s) {
   s->rows--;
 }
 
-void insert_pairs(Section *s, char ch) {
-  UTFChar first_pair, last_pair;
+void insert_pairs(Section *s, wchar_t ch) {
+  wchar_t first_pair, last_pair;
   char *ptr;
 
   if ((ptr = strchr(single_pairs, ch))) {
-    first_pair = get_utfchar(&ch);
+    first_pair = (char)ch;
     last_pair = first_pair;
-    if (compare_utfchar(s->buffer->current->buffer[s->col], first_pair)) {
+    if (s->buffer->current->buffer[s->col] == first_pair) {
       return;
     }
   } else if ((ptr = strchr(double_pairs, ch))) {
@@ -134,8 +134,8 @@ void insert_pairs(Section *s, char ch) {
     if (pos & 1) {
       return;
     }
-    first_pair = get_utfchar(&double_pairs[pos]);
-    last_pair = get_utfchar(&double_pairs[pos + 1]);
+    first_pair = double_pairs[pos];
+    last_pair = double_pairs[pos + 1];
   }
 
   buffer_insert_char(first_pair, s->col, s->buffer->current);
@@ -147,7 +147,7 @@ void insert_new_line(Section *s) {
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
   memcpy(&new->buffer[0], &current->buffer[s->col],
-         (current->buffer_len - s->col) * sizeof(UTFChar));
+         (current->buffer_len - s->col) * sizeof(wchar_t));
 
   new->buffer_len = (current->buffer_len - s->col);
   current->buffer_len = s->col;
@@ -157,9 +157,7 @@ void insert_new_line(Section *s) {
   cursor_down(s);
   cursor_home(s);
 
-  for (u32 i = 0; i < current->buffer_len && current->buffer[i].size == 1 &&
-                  current->buffer[i].data[0] == ' ';
-       i++) {
+  for (u32 i = 0; i < current->buffer_len && current->buffer[i] == ' '; i++) {
     insert_char(s, ' ');
   }
 }
@@ -176,7 +174,7 @@ bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
   }
 
   memcpy(&dest->buffer[dest->buffer_len], &src->buffer[0],
-         src->buffer_len * sizeof(UTFChar));
+         src->buffer_len * sizeof(wchar_t));
 
   dest->buffer_len += src->buffer_len;
 

@@ -94,7 +94,7 @@ void cursor_right(Section *s) {
     if (s->row == s->rows - 1) {
       return;
     }
-    
+
     s->undo->dirty = false;
 
     s->row++;
