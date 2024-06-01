@@ -34,20 +34,6 @@ void input_command(Section *s) {
   int key;
 
   while ((key = wgetch(s->window_command)) != '\n') {
-    if (pos == maxx - 1) {
-      continue;
-    }
-
-    if (key == KEY_RESIZE) {
-      // Code
-      continue;
-    }
-
-    if (key == KEY_ESC) {
-      section_set_msg(s, "");
-      return;
-    }
-
     if (key == KEY_BACKSPACE) {
       if (pos == 0) {
         continue;
@@ -56,6 +42,19 @@ void input_command(Section *s) {
       wmove(s->window_command, 0, pos);
       pos--;
       continue;
+    }
+
+    if (pos == maxx - 1) {
+      continue;
+    }
+
+    if (key == KEY_RESIZE) {
+      return;
+    }
+
+    if (key == KEY_ESC) {
+      section_set_msg(s, "");
+      return;
     }
 
     if (isgraph(key) || key == ' ') {
@@ -91,7 +90,7 @@ void set_command(Section *s, Command c) {
       if (c.token[0][1] == 'q') {
         exit(0);
       }
-      
+
       return;
     }
 
@@ -124,7 +123,7 @@ void set_command(Section *s, Command c) {
     if (c.token[0][1] == 'q') {
       exit(0);
     }
-    
+
     return;
   }
 

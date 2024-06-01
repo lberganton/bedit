@@ -42,8 +42,7 @@ void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, wchar_t ch) {
   wattrset(w, temp);
 }
 
-void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
-                  const char *str) {
+void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, const char *str) {
   attr_t temp;
   wattr_get(w, &temp, NULL, NULL);
   wattrset(w, attr);
@@ -68,7 +67,7 @@ void paint_command_bar(char *msg, attr_t attr, Section *s) {
     return;
   }
 
-  paint_string(s->window_command, 0, 0, attr, COLS, msg);
+  paint_string(s->window_command, 0, 0, attr, msg);
 }
 
 void paint_status_bar(Mode mode, Section *s) {
@@ -88,18 +87,17 @@ void paint_status_bar(Mode mode, Section *s) {
   }
 
   // Print the actual mode.
-  paint_string(w, 0, 0, color | A_REVERSE, 16, mode_string[mode]);
+  paint_string(w, 0, 0, color | A_REVERSE, mode_string[mode]);
 
   // Print the actual file.
   snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN,
            s->unamed ? NO_NAME_FILE : s->file_name,
            strlen(s->file_name) > STATUS_BAR_FILE_NAME_LEN ? "..." : "");
 
-  paint_string(w, 0, getcurx(w), color, STATUS_BAR_FILE_NAME_LEN, buffer);
+  paint_string(w, 0, getcurx(w), color, buffer);
 
   if (s->dirty) {
-    paint_string(w, 0, getcurx(w), COLOR_PAIR(PAIR_STATUS), 16,
-                 " [Modificado] ");
+    paint_string(w, 0, getcurx(w), COLOR_PAIR(PAIR_STATUS), " [Modificado] ");
   }
 
   // Select the string to represent the file format.
@@ -163,7 +161,7 @@ void paint_rows(Section *s) {
     }
 
     // Paint the row number.
-    paint_string(rows, y, 0, attr_row, 16, buffer);
+    paint_string(rows, y, 0, attr_row, buffer);
 
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
@@ -175,7 +173,7 @@ void paint_rows(Section *s) {
 
     // Paints the remaining background of the row.
     while (x < maxx) {
-      char ch = ' ';
+      wchar_t ch = ' ';
       paint_char(text, y, x, attr_text, ch);
       x++;
     }
@@ -193,11 +191,11 @@ void paint_rows(Section *s) {
   while (y < maxy) {
     // Put the '~' in a empty row.
     snprintf(buffer, 16, "%-*c ", len, '~');
-    paint_string(rows, y, 0, COLOR_PAIR(PAIR_ROW_NUMBER), 16, buffer);
+    paint_string(rows, y, 0, COLOR_PAIR(PAIR_ROW_NUMBER), buffer);
 
     // Paint the background.
     for (int x = 0; x < COLS; x++) {
-      char ch = ' ';
+      wchar_t ch = ' ';
       paint_char(text, y, x, COLOR_PAIR(PAIR_BACKGROUND), ch);
     }
 

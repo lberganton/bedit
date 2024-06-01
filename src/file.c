@@ -66,7 +66,7 @@ void file_read(const char *input, Buffer *b) {
   wchar_t ch;
 
   // Return the function if the file is empty.
-  if (fgetwc(f) == (wchar_t)EOF) {
+  if (fgetwc(f) == (wint_t)EOF) {
     fclose(f);
     return;
   }

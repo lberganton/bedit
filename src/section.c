@@ -40,7 +40,7 @@ void pop_undo(Section *s) {
   }
 
   UndoNode *pop = undo_node_pop(s->undo);
-  BufferNode *row = pop->row;
+  BufferNode *row = pop->ptr;
 
   switch (pop->type) {
   case UNDO_ROW:
