@@ -4,7 +4,6 @@
  * Created: 05/11/2024
  */
 #include "ui.h"
-#include "char.h"
 #include "defs.h"
 #include <ncurses.h>
 #include <string.h>
@@ -31,6 +30,27 @@ void initialize_colors(void) {
   init_pair(PAIR_STATUS, PALETTE_BLUE, PALETTE_SURFACE_1);
   init_pair(PAIR_BLUE, PALETTE_BLUE, PALETTE_BASE);
   init_pair(PAIR_TEAL, PALETTE_TEAL, PALETTE_BASE);
+}
+
+void paint_char(WINDOW *w, u32 y, u32 x, attr_t attr, wchar_t ch) {
+  attr_t temp;
+  wattr_get(w, &temp, NULL, NULL);
+  wattrset(w, attr);
+
+  mvwprintw(w, y, x, "%lc", ch);
+
+  wattrset(w, temp);
+}
+
+void paint_string(WINDOW *w, u32 y, u32 x, attr_t attr, size_t len,
+                  const char *str) {
+  attr_t temp;
+  wattr_get(w, &temp, NULL, NULL);
+  wattrset(w, attr);
+
+  mvwprintw(w, y, x, "%s", str);
+
+  wattrset(w, temp);
 }
 
 void paint_background(WINDOW *w, attr_t attr) {

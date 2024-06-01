@@ -7,7 +7,6 @@
  */
 #pragma once
 
-#include "char.h"
 #include "defs.h"
 #include <stdbool.h>
 #include <stdio.h>

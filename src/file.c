@@ -33,6 +33,9 @@ void file_get_directory(const char *name, char *buff) {
 
 FileExtension file_get_extension(const char *name) {
   const char *dot = strrchr(name, '.');
+  if (dot == NULL) {
+    return EXTENSION_UNKNOWN;
+  }
 
   if (strncmp(dot, ".txt", 5) == 0) {
     return EXTENSION_TXT;
@@ -63,7 +66,7 @@ void file_read(const char *input, Buffer *b) {
   wchar_t ch;
 
   // Return the function if the file is empty.
-  if (fread(&ch, sizeof(wchar_t), 1, f) == 0) {
+  if (fgetwc(f) == (wchar_t)EOF) {
     fclose(f);
     return;
   }
@@ -76,7 +79,7 @@ void file_read(const char *input, Buffer *b) {
   u32 pos = 0;
 
   // Loops until the file reaches the end.
-  while (fread(&ch, sizeof(wchar_t), 1, f)) {
+  while ((ch = fgetwc(f)) != (wchar_t)EOF) {
     ASSERT(pos >= BUFF_COL, "Erro: Estouro no buffer de coluna.");
 
     // If the character read isn't a new line, put it in the buffer and go to
@@ -130,10 +133,12 @@ bool file_write(const char *input, Buffer *b) {
   BufferNode *node = b->begin;
 
   while (node) {
-    fwrite(&node->buffer, sizeof(wchar_t), node->buffer_len, f);
+    for (u32 i = 0; i < node->buffer_len; i++) {
+      fputwc(node->buffer[i], f);
+    }
 
     if (node->next) {
-      fputc('\n', f);
+      fputwc('\n', f);
     }
 
     node = node->next;

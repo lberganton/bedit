@@ -1,5 +1,4 @@
 #include "command.h"
-#include "char.h"
 #include "ui.h"
 #include <ctype.h>
 #include <string.h>
@@ -79,14 +78,20 @@ void input_command(Section *s) {
 }
 
 void set_command(Section *s, Command c) {
-  // Write.
-  if (strncmp(c.token[0], "w", BUFF_STR) == 0) {
+  // Write and Write and Quite.
+  if (strncmp(c.token[0], "w", BUFF_STR) == 0 ||
+      strncmp(c.token[0], "wq", BUFF_STR) == 0) {
     if (c.amount == 1) {
       if (s->unamed) {
         section_set_msg(s, "Erro: Nenhum nome de arquivo.");
         return;
       }
       command_write(s);
+
+      if (c.token[0][1] == 'q') {
+        exit(0);
+      }
+      
       return;
     }
 
@@ -97,16 +102,16 @@ void set_command(Section *s, Command c) {
 
     char *ptr = c.token[1];
 
-    if (ptr[0] == '\"') {
+    if (strchr(ptr, '\"')) {
       u32 i = strlen(ptr) - 1;
 
-      if (ptr[i] != '\"') {
+      if (ptr[0] == '\"' && ptr[i] == '\"') {
+        ptr[i] = '\0';
+        ptr++;
+      } else {
         section_set_msg(s, "Erro: Feche as aspas para dar o caminho completo.");
         return;
       }
-
-      ptr[i] = '\0';
-      ptr++;
     }
 
     file_get_input(ptr, s->file_input);
@@ -115,6 +120,11 @@ void set_command(Section *s, Command c) {
     s->file_extension = file_get_extension(s->file_input);
 
     command_write(s);
+
+    if (c.token[0][1] == 'q') {
+      exit(0);
+    }
+    
     return;
   }
 
