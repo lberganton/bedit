@@ -77,25 +77,16 @@ void pop_undo(Section *s) {
 
     u32 maxy = getmaxy(s->window_text);
 
-    if (pop->row >= s->beg_row && pop->row <= maxy) {
-      s->cy = pop->row - s->beg_row;
-      s->row = pop->row;
-    } else {
-      if (s->row < pop->row) {
-        for (u32 i = s->row; i < pop->row; i++) {
-          cursor_down(s);
-        }
-      } else {
-        for (u32 i = s->row; i > pop->row; i--) {
-          cursor_up(s);
-        }
-      }
+    if (!(pop->row >= s->beg_row && pop->row <= maxy)) {
+      s->buffer->top = pop->ptr;
+      s->beg_row = pop->row;
     }
 
+    s->buffer->current = pop->ptr;
+    s->cy = pop->row - s->beg_row;
+    s->row = pop->row;
     s->cx = 0;
     s->col = 0;
-
-    s->buffer->current = pop->ptr;
 
     while (s->col < pop->col) {
       cursor_right(s);
