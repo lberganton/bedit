@@ -7,6 +7,7 @@
 
 #include "buffer.h"
 #include "defs.h"
+#include <time.h>
 
 #define UNDO_MAX_STACK 100
 
@@ -21,6 +22,8 @@ typedef struct UndoNode {
   BufferNode *ptr;
   u32 row;
   u32 col;
+
+  struct tm time;
 
   struct UndoNode *next;
   struct UndoNode *prev;
@@ -37,5 +40,6 @@ UndoStack *undo_stack_create(void);
 void undo_stack_free(UndoStack *s);
 void undo_bottom_free(UndoStack *s);
 
-UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b);
+UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b, u32 row,
+                         u32 col);
 UndoNode *undo_node_pop(UndoStack *s);

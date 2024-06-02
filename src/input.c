@@ -146,10 +146,12 @@ void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
+  push_undo(s, UNDO_ROW);
+
   memcpy(&new->buffer[0], &current->buffer[s->col],
          (current->buffer_len - s->col) * sizeof(wchar_t));
 
-  new->buffer_len = (current->buffer_len - s->col);
+  new->buffer_len = current->buffer_len - s->col;
   current->buffer_len = s->col;
 
   s->rows++;
@@ -160,6 +162,8 @@ void insert_new_line(Section *s) {
   for (u32 i = 0; i < current->buffer_len && current->buffer[i] == ' '; i++) {
     insert_char(s, ' ');
   }
+
+  push_undo(s, UNDO_NEW_ROW);
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {

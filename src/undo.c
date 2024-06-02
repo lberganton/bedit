@@ -27,15 +27,21 @@ void undo_stack_free(UndoStack *s) {
   free(s);
 }
 
-UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
+UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b, u32 row,
+                         u32 col) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
   ASSERT(new == NULL,
          "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
+  
+  time_t seed = time(NULL);
+  new->time = *localtime(&seed);
 
   new->prev = NULL;
   new->next = s->top;
   new->type = t;
   new->ptr = b;
+  new->row = row;
+  new->col = col;
 
   s->top = new;
 
@@ -49,11 +55,7 @@ UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b) {
     memcpy(new->state, b->buffer, sizeof(wchar_t) * b->buffer_len);
     new->length = b->buffer_len;
     break;
-  case UNDO_NEW_ROW:
-    new->state = NULL;
-    break;
   case UNDO_REMOVE_ROW:
-    new->state = NULL;
     b->activated = false;
     break;
   }
