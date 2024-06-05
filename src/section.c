@@ -92,6 +92,8 @@ void pop_undo(Section *s) {
       cursor_right(s);
     }
 
+    s->undo->dirty = false;
+
     free(pop->state);
     free(pop);
   } break;
