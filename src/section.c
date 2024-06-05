@@ -83,9 +83,9 @@ void pop_undo(Section *s) {
     }
 
     s->buffer->current = pop->ptr;
-    s->cy = pop->row - s->beg_row;
+    s->cursor_y = pop->row - s->beg_row;
     s->row = pop->row;
-    s->cx = 0;
+    s->cursor_x = 0;
     s->col = 0;
 
     while (s->col < pop->col) {

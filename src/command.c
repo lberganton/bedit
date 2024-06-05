@@ -113,10 +113,10 @@ void set_command(Section *s, Command c) {
       }
     }
 
-    file_get_input(ptr, s->file_input);
-    file_get_name(s->file_input, s->file_name);
-    file_get_directory(s->file_input, s->file_directory);
-    s->file_extension = file_get_extension(s->file_input);
+    file_get_input(ptr, s->file_full);
+    file_get_name(s->file_full, s->file_name);
+    file_get_directory(s->file_full, s->file_path);
+    s->file_extension = file_get_extension(s->file_full);
 
     command_write(s);
 
@@ -157,13 +157,13 @@ void set_command(Section *s, Command c) {
 }
 
 void command_write(Section *s) {
-  if (!file_write(s->file_input, s->buffer)) {
+  if (!file_write(s->file_full, s->buffer)) {
     section_set_msg(s, "Erro: Falha ao escrever no arquivo.\n");
     return;
   }
 
   snprintf(s->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B (Gravados)",
-           s->file_name, s->rows, file_get_size(s->file_input));
+           s->file_name, s->rows, file_get_size(s->file_full));
 
   s->dirty = false;
 }

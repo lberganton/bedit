@@ -14,7 +14,7 @@ typedef struct Section {
   // This is the argument that the user passed in the command line or in the
   // program itself to save the file. It can be either only file name or the
   // full path.
-  char file_input[BUFF_STR];
+  char file_full[BUFF_STR];
 
   // If the user do not provide a file name as a argument in the command line,
   // this will be set as 'true', and he will not be able to write in a file
@@ -24,7 +24,7 @@ typedef struct Section {
   // File name, directory and extension, if the section starts 'unamed', the
   // first two will not be initialized, and the last will be set as 'unknow'.
   char file_name[BUFF_STR];
-  char file_directory[BUFF_STR];
+  char file_path[BUFF_STR];
   FileExtension file_extension;
 
   // This is the buffer that stores the current message to be displayed on the
@@ -51,8 +51,8 @@ typedef struct Section {
   u32 beg_col;
 
   // The cursor coordinates.
-  u32 cy;
-  u32 cx;
+  u32 cursor_y;
+  u32 cursor_x;
 
   // In NCurses a delimited part of a screen is called 'window'. This is a
   // pointer to all the windows needed by the editor.

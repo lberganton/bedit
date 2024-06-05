@@ -126,8 +126,8 @@ int main(int argc, char **argv) {
   section->col = 0;
   section->beg_row = 0;
   section->beg_col = 0;
-  section->cy = 0;
-  section->cx = 0;
+  section->cursor_y = 0;
+  section->cursor_x = 0;
 
   if (file_path == NULL) {
     // If no file was provides as a argument.
@@ -140,9 +140,9 @@ int main(int argc, char **argv) {
     ASSERT(strlen(file_path) >= BUFF_STR,
            "Erro: O caminho do arquivo é muito grande.");
 
-    file_get_input(file_path, section->file_input);
+    file_get_input(file_path, section->file_full);
     file_get_name(file_path, section->file_name);
-    file_get_directory(file_path, section->file_directory);
+    file_get_directory(file_path, section->file_path);
 
     // Read the file to the buffer.
     file_read(file_path, section->buffer);
@@ -188,7 +188,7 @@ int main(int argc, char **argv) {
     paint_rows(section);
 
     // Set the cursor to the current user position.
-    wmove(section->window_text, section->cy, section->cx);
+    wmove(section->window_text, section->cursor_y, section->cursor_x);
     refresh_windows(section);
     curs_set(true);
 

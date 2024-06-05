@@ -19,10 +19,10 @@ void cursor_up(Section *s) {
 
   // If the cursor is at the top of the screen, move the text up. In the other
   // hand, just decreases your height.
-  if (s->cy == begy) {
+  if (s->cursor_y == begy) {
     text_up(s);
   } else {
-    s->cy--;
+    s->cursor_y--;
   }
 
   // Set the current row as the previous row.
@@ -40,11 +40,11 @@ void cursor_up(Section *s) {
       s->beg_col = s->col % maxx;
     }
 
-    s->cx = s->col - s->beg_col;
+    s->cursor_x = s->col - s->beg_col;
   }
 
   s->undo->dirty = false;
-  wmove(s->window_text, s->cy, s->cx);
+  wmove(s->window_text, s->cursor_y, s->cursor_x);
 }
 
 void cursor_down(Section *s) {
@@ -59,10 +59,10 @@ void cursor_down(Section *s) {
 
   // If the cursor is at the bottom of the screen, move the text down. In the
   // other hand, just increase your height.
-  if (s->cy == maxy) {
+  if (s->cursor_y == maxy) {
     text_down(s);
   } else {
-    s->cy++;
+    s->cursor_y++;
   }
 
   s->buffer->current = buffer_valid_next(s->buffer->current);
@@ -79,11 +79,11 @@ void cursor_down(Section *s) {
       s->beg_col = s->col % maxx;
     }
 
-    s->cx = s->col - s->beg_col;
+    s->cursor_x = s->col - s->beg_col;
   }
 
   s->undo->dirty = false;
-  wmove(s->window_text, s->cy, s->cx);
+  wmove(s->window_text, s->cursor_y, s->cursor_x);
 }
 
 void cursor_right(Section *s) {
@@ -98,27 +98,27 @@ void cursor_right(Section *s) {
     s->undo->dirty = false;
 
     s->row++;
-    s->cx = 0;
+    s->cursor_x = 0;
     s->col = 0;
     s->beg_col = 0;
 
-    if (s->cy == maxy) {
+    if (s->cursor_y == maxy) {
       text_down(s);
     } else {
-      s->cy++;
+      s->cursor_y++;
     }
 
     s->buffer->current = buffer_valid_next(s->buffer->current);
   } else {
-    if (s->cx == maxx) {
+    if (s->cursor_x == maxx) {
       s->beg_col++;
     } else {
-      s->cx++;
+      s->cursor_x++;
     }
     s->col++;
   }
 
-  wmove(s->window_text, s->cy, s->cx);
+  wmove(s->window_text, s->cursor_y, s->cursor_x);
 }
 
 void cursor_left(Section *s) {
@@ -139,28 +139,28 @@ void cursor_left(Section *s) {
       s->beg_col = s->col - maxx;
     }
 
-    s->cx = s->col - s->beg_col;
+    s->cursor_x = s->col - s->beg_col;
 
-    if (s->cy == 0) {
+    if (s->cursor_y == 0) {
       text_up(s);
     } else {
-      s->cy--;
+      s->cursor_y--;
     }
   } else {
-    if (s->cx == 0) {
+    if (s->cursor_x == 0) {
       s->beg_col--;
     } else {
-      s->cx--;
+      s->cursor_x--;
     }
     s->col--;
   }
 
-  wmove(s->window_text, s->cy, s->cx);
+  wmove(s->window_text, s->cursor_y, s->cursor_x);
 }
 
 void cursor_home(Section *s) {
   s->beg_col = 0;
-  s->cx = 0;
+  s->cursor_x = 0;
   s->col = 0;
 
   s->undo->dirty = false;
@@ -175,7 +175,7 @@ void cursor_end(Section *s) {
     s->beg_col = s->col - maxx;
   }
 
-  s->cx = s->col - s->beg_col;
+  s->cursor_x = s->col - s->beg_col;
 
   s->undo->dirty = false;
 }
@@ -192,8 +192,8 @@ void cursor_pgup(Section *s) {
   s->row = s->beg_row;
   s->buffer->current = s->buffer->top;
 
-  s->cy = 0;
-  s->cx = 0;
+  s->cursor_y = 0;
+  s->cursor_x = 0;
   s->beg_col = 0;
 
   s->undo->dirty = false;
@@ -211,8 +211,8 @@ void cursor_pgdown(Section *s) {
   s->row = s->beg_row;
   s->buffer->current = s->buffer->top;
 
-  s->cy = 0;
-  s->cx = 0;
+  s->cursor_y = 0;
+  s->cursor_x = 0;
   s->beg_col = 0;
 
   s->undo->dirty = false;
