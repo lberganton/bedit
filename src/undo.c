@@ -58,6 +58,8 @@ UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b, u32 row,
   case UNDO_REMOVE_ROW:
     b->activated = false;
     break;
+  case UNDO_NEW_ROW:
+    break;
   }
 
   s->nodes++;

@@ -44,7 +44,7 @@ typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
 #define WRITE_LOG(message, ...)                                                \
   do {                                                                         \
-    FILE *file = fopen("log", "a");                                            \
+    FILE *file = fopen("log/log", "a");                                            \
     if (file) {                                                                \
       fprintf(file, "<%s>: %d: " message "\n", __FILE__, __LINE__,             \
               ##__VA_ARGS__);                                                  \
