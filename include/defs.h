@@ -23,7 +23,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define BUFF_ROW 10000
-#define BUFF_COL 1024
+#define BUFF_COL 30
 #define BUFF_STR 128
 #define BUFF_TOK 16
 
@@ -44,7 +44,7 @@ typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 
 #define WRITE_LOG(message, ...)                                                \
   do {                                                                         \
-    FILE *file = fopen("log/log", "a");                                            \
+    FILE *file = fopen("log/log", "a");                                        \
     if (file) {                                                                \
       fprintf(file, "<%s>: %d: " message "\n", __FILE__, __LINE__,             \
               ##__VA_ARGS__);                                                  \
@@ -55,8 +55,9 @@ typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
 #define ASSERT(condition, description)                                         \
   do {                                                                         \
     if (condition) {                                                           \
-      if (stdscr)                                                              \
+      if (stdscr) {                                                            \
         endwin();                                                              \
+      }                                                                        \
       fprintf(stderr, "bedit: %s\n", description);                             \
       exit(EXIT_FAILURE);                                                      \
     }                                                                          \

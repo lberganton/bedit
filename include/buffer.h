@@ -13,8 +13,9 @@
 
 typedef struct BufferNode {
   bool activated;
-  wchar_t buffer[BUFF_COL];
-  u32 buffer_len;
+  wchar_t *vector;
+  u32 string_length;
+  u32 vector_length;
   struct BufferNode *prev;
   struct BufferNode *next;
 } BufferNode;

@@ -23,14 +23,18 @@ void insert_tab(Section *s) {
 }
 
 void insert_char(Section *s, wchar_t ch) {
-  if (s->col + 2 >= BUFF_COL) {
-    section_set_msg(s, "Falha ao inserir, buffer de linha cheio");
+  if (AUTO_PAIRS && is_pair(ch)) {
+    if (s->col + 1 >= BUFF_COL) {
+      section_set_msg(s, "Falha ao inserir, buffer de linha cheio");
+      return;
+    }
+    insert_pairs(s, ch);
+    cursor_right(s);
     return;
   }
 
-  if (AUTO_PAIRS && is_pair(ch)) {
-    insert_pairs(s, ch);
-    cursor_right(s);
+  if (s->col >= BUFF_COL) {
+    section_set_msg(s, "Falha ao inserir, buffer de linha cheio");
     return;
   }
 
