@@ -104,6 +104,8 @@ void backspace_char(Section *s) {
 
   BufferNode *prev = buffer_valid_prev(s->buffer->current);
 
+  push_undo(s, UNDO_REMOVE_ROW, s->buffer->current, prev);
+
   u32 len = prev->buffer_len;
 
   if (!merge_line(s, prev, s->buffer->current)) {
@@ -146,7 +148,7 @@ void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
-  // push_undo(s, UNDO_ROW);
+  push_undo(s, UNDO_NEW_ROW, new, current);
 
   memcpy(&new->buffer[0], &current->buffer[s->col],
          (current->buffer_len - s->col) * sizeof(wchar_t));
@@ -162,8 +164,6 @@ void insert_new_line(Section *s) {
   for (u32 i = 0; i < current->buffer_len && current->buffer[i] == ' '; i++) {
     insert_char(s, ' ');
   }
-
-  // push_undo(s, UNDO_NEW_ROW);
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
