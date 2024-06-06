@@ -117,6 +117,7 @@ void set_command(Section *s, Command c) {
     file_get_name(s->file_full, s->file_name);
     file_get_directory(s->file_full, s->file_path);
     s->file_extension = file_get_extension(s->file_full);
+    s->unamed = false;
 
     command_write(s);
 
