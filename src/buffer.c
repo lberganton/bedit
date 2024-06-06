@@ -5,6 +5,7 @@
  */
 #include "buffer.h"
 #include "defs.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -29,17 +30,21 @@ static BufferNode *node_create(BufferNode *prev, BufferNode *next) {
   return new;
 }
 
-static void buffer_increase_vector(BufferNode *node) {
+void buffer_increase_vector(BufferNode *node, size_t length) {
   ASSERT(node->vector_length >= BUFF_COL, "Erro: O vetor já está no limite.");
 
-  node->vector_length +=
-      node->string_length + 50 < BUFF_COL ? 50 : BUFF_COL - node->string_length;
-  
-  wchar_t *new_mem = realloc(node->vector, node->vector_length * sizeof(wchar_t));
+  if (node->vector_length + 50 >= BUFF_COL) {
+    node->vector_length += BUFF_COL - node->string_length;
+  } else {
+    node->vector_length =
+        ceil(((double)node->string_length + length) / 50) * 50;
+  }
 
-  ASSERT(new_mem == NULL,
-         "Erro: Falha ao relocar vetor.");
-  
+  wchar_t *new_mem =
+      realloc(node->vector, node->vector_length * sizeof(wchar_t));
+
+  ASSERT(new_mem == NULL, "Erro: Falha ao relocar vetor.");
+
   node->vector = new_mem;
 }
 
@@ -102,7 +107,7 @@ bool buffer_insert_char(wchar_t ch, u32 index, BufferNode *n) {
   }
 
   if (n->string_length >= n->vector_length) {
-    buffer_increase_vector(n);
+    buffer_increase_vector(n, 1);
   }
 
   // Move all characters from the index forward.

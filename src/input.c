@@ -154,6 +154,8 @@ void insert_new_line(Section *s) {
 
   push_undo(s, UNDO_NEW_ROW, new, current);
 
+  buffer_increase_vector(new, current->string_length - s->col);
+
   memcpy(&new->vector[0], &current->vector[s->col],
          (current->string_length - s->col) * sizeof(wchar_t));
 
@@ -180,6 +182,10 @@ bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
   if (dest->string_length + src->string_length >= BUFF_COL) {
     section_set_msg(s, "Mesclar as linhas estouraria o buffer");
     return false;
+  }
+
+  if (dest->string_length + src->string_length >= dest->vector_length) {
+    buffer_increase_vector(dest, src->string_length);
   }
 
   memcpy(&dest->vector[dest->string_length], &src->vector[0],

@@ -30,6 +30,7 @@ typedef struct Buffer {
 
 Buffer *buffer_init(void);
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n);
+void buffer_increase_vector(BufferNode *node, size_t length);
 void buffer_remove_node(Buffer *b, BufferNode *n);
 void buffer_free(Buffer *b);
 

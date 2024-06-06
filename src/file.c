@@ -143,7 +143,7 @@ bool file_write(const char *input, Buffer *b) {
       fputwc('\n', f);
     }
 
-    node = buffer_valid_next(node->next);
+    node = buffer_valid_next(node);
   }
 
   fclose(f);

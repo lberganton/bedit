@@ -7,14 +7,14 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE := $(TEST)/utf.txt
+TESTFILE := $(TEST)/lines.txt
 TERM := gnome-terminal
 
 # C Compiler
 CC := gcc
 CFLAGS := -Wall -Wextra -Wpedantic
 CINCLUDE := -I $(INCLUDE)
-CLIB := -l ncursesw
+CLIB := -l ncursesw -l m
 
 # Sources
 CSRC := $(shell find $(SRC) -name '*.c')
