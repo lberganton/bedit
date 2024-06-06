@@ -37,22 +37,23 @@ static void get_time_difference(struct tm *node_time, char *buff, u32 node) {
 
   if (current_time.tm_year != node_time->tm_year) {
     diff = current_time.tm_year - node_time->tm_year;
-    strncpy(buff, diff > 1 ? "anos" : "ano", 16);
+    strncpy(diff_buff, diff > 1 ? "anos" : "ano", 16);
   } else if (current_time.tm_mon != node_time->tm_mon) {
     diff = current_time.tm_mon - node_time->tm_mon;
-    strncpy(buff, diff > 1 ? "meses" : "mês", 16);
+    strncpy(diff_buff, diff > 1 ? "meses" : "mês", 16);
   } else if (current_time.tm_yday != node_time->tm_yday) {
     diff = current_time.tm_yday - node_time->tm_yday;
-    strncpy(buff, diff > 1 ? "dias" : "dia", 16);
+    strncpy(diff_buff, diff > 1 ? "dias" : "dia", 16);
   } else if (current_time.tm_min != node_time->tm_min) {
     diff = current_time.tm_min - node_time->tm_min;
-    strncpy(buff, diff > 1 ? "minutos" : "minuto", 16);
+    strncpy(diff_buff, diff > 1 ? "minutos" : "minuto", 16);
   } else {
     diff = current_time.tm_sec - node_time->tm_sec;
-    strncpy(buff, diff > 1 ? "segundos" : "segundo", 16);
+    strncpy(diff_buff, diff > 1 ? "segundos" : "segundo", 16);
   }
 
-  snprintf(buff, BUFF_STR, "Retornado a alteração #%d. %s", node, diff_buff);
+  snprintf(buff, BUFF_STR, "Retornado a alteração #%d. Há %d %s", node, diff,
+           diff_buff);
 }
 
 void pop_undo(Section *s) {
