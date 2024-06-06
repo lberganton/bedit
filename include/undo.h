@@ -15,18 +15,19 @@ typedef enum UndoType { UNDO_ROW, UNDO_NEW_ROW, UNDO_REMOVE_ROW } UndoType;
 
 typedef struct UndoNode {
   UndoType type;
+  struct tm time;
 
   wchar_t *state;
   u32 length;
 
-  BufferNode *ptr;
+  BufferNode *ptr_target;
+  BufferNode *ptr_aux;
+
   u32 row;
   u32 col;
 
-  struct tm time;
-
-  struct UndoNode *next;
   struct UndoNode *prev;
+  struct UndoNode *next;
 } UndoNode;
 
 typedef struct UndoStack {
@@ -37,9 +38,8 @@ typedef struct UndoStack {
 } UndoStack;
 
 UndoStack *undo_stack_create(void);
-void undo_stack_free(UndoStack *s);
-void undo_bottom_free(UndoStack *s);
+void undo_stack_free(UndoStack *stack);
 
-UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b, u32 row,
-                         u32 col);
-UndoNode *undo_node_pop(UndoStack *s);
+void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
+                         BufferNode *aux, u32 row, u32 col);
+UndoNode undo_node_pop(UndoStack *stack);

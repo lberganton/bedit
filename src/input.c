@@ -36,7 +36,7 @@ void insert_char(Section *s, wchar_t ch) {
 
   if (!s->undo->dirty) {
     s->undo->dirty = true;
-    push_undo(s, UNDO_ROW);
+    push_undo(s, UNDO_ROW, s->buffer->current, NULL);
   }
 
   buffer_insert_char(ch, s->col, s->buffer->current);
@@ -47,7 +47,7 @@ void delete_char(Section *s) {
   if (s->col < s->buffer->current->buffer_len) {
     if (!s->undo->dirty) {
       s->undo->dirty = true;
-      push_undo(s, UNDO_ROW);
+      push_undo(s, UNDO_ROW, s->buffer->current, NULL);
     }
     buffer_delete_char(s->col, s->buffer->current);
     return;
@@ -71,7 +71,7 @@ void backspace_char(Section *s) {
   if (s->col > 0) {
     if (!s->undo->dirty) {
       s->undo->dirty = true;
-      push_undo(s, UNDO_ROW);
+      push_undo(s, UNDO_ROW, s->buffer->current, NULL);
     }
 
     wchar_t ch = s->buffer->current->buffer[s->col - 1];
@@ -146,7 +146,7 @@ void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
-  push_undo(s, UNDO_ROW);
+  // push_undo(s, UNDO_ROW);
 
   memcpy(&new->buffer[0], &current->buffer[s->col],
          (current->buffer_len - s->col) * sizeof(wchar_t));
@@ -163,7 +163,7 @@ void insert_new_line(Section *s) {
     insert_char(s, ' ');
   }
 
-  push_undo(s, UNDO_NEW_ROW);
+  // push_undo(s, UNDO_NEW_ROW);
 }
 
 bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {

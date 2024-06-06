@@ -71,5 +71,5 @@ void text_up(Section *s);
 void text_down(Section *s);
 
 void file_save(Section *s);
-void push_undo(Section *s, UndoType type);
+void push_undo(Section *s, UndoType type, BufferNode *target, BufferNode *aux);
 void pop_undo(Section *s);

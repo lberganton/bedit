@@ -15,77 +15,83 @@ UndoStack *undo_stack_create(void) {
   return new;
 }
 
-void undo_stack_free(UndoStack *s) {
-  UndoNode *node = s->top;
-
-  while (node) {
-    UndoNode *temp = node->next;
-    free(node);
-    node = temp;
+static void undo_node_free(UndoStack *stack, UndoNode *node) {
+  if (node->next) {
+    node->next = node->prev;
+  }
+  if (node->prev) {
+    node->prev = node->next;
   }
 
-  free(s);
+  if (stack->top == node) {
+    stack->top = stack->top->prev;
+  }
+  if (stack->bot == node) {
+    stack->bot = stack->top->prev;
+  }
+
+  free(node->type == UNDO_ROW ? node->ptr_target : node->ptr_aux);
+
+  free(node);
 }
 
-UndoNode *undo_node_push(UndoStack *s, UndoType t, BufferNode *b, u32 row,
-                         u32 col) {
+void undo_stack_free(UndoStack *stack) {
+  while (stack->top) {
+    undo_node_free(stack, stack->top);
+  }
+
+  free(stack);
+}
+
+void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
+                         BufferNode *aux, u32 row, u32 col) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
   ASSERT(new == NULL,
-         "Erro: Falha ao alocar memória para nó da pilha de 'desfazer'.");
-  
-  time_t seed = time(NULL);
-  new->time = *localtime(&seed);
+         "Erro: Falha ao alocar memória para nó na pilha de 'desfazer'.");
 
-  new->prev = NULL;
-  new->next = s->top;
-  new->type = t;
-  new->ptr = b;
+  if (stack->nodes == 0) {
+    stack->bot = new;
+  }
+  stack->top = new;
+
+  new->type = type;
+
+  new->ptr_target = target;
+  new->ptr_aux = aux;
+
   new->row = row;
   new->col = col;
 
-  s->top = new;
+  new->next = NULL;
+  new->prev = stack->top;
 
-  if (s->bot == NULL) {
-    s->bot = new;
+  BufferNode *node = type == UNDO_ROW ? target : aux; 
+  new->state = (wchar_t *)malloc(sizeof(wchar_t) * node->buffer_len);
+  memcpy(new->state, node->buffer, node->buffer_len * sizeof(wchar_t));
+
+  new->length = node->buffer_len;
+
+  time_t time_seed = time(NULL);
+  new->time = *localtime(&time_seed);
+
+  if (stack->nodes >= UNDO_MAX_STACK) {
+    undo_node_free(stack, stack->bot);
+  } else {
+    stack->nodes++;
   }
-
-  switch (t) {
-  case UNDO_ROW:
-    new->state = (wchar_t *)malloc(sizeof(wchar_t) * b->buffer_len);
-    memcpy(new->state, b->buffer, sizeof(wchar_t) * b->buffer_len);
-    new->length = b->buffer_len;
-    break;
-  case UNDO_REMOVE_ROW:
-    b->activated = false;
-    break;
-  case UNDO_NEW_ROW:
-    break;
-  }
-
-  s->nodes++;
-  return new;
 }
 
-void undo_bottom_free(UndoStack *s) {
-  if (s->nodes == 0) {
-    s->bot->prev = NULL;
-  }
+UndoNode undo_node_pop(UndoStack *stack) {
+  UndoNode *top = stack->top;
 
-  UndoNode *temp = s->bot->prev;
-  free(s->bot);
+  BufferNode *node = top->type == UNDO_ROW ? top->ptr_target : top->ptr_aux; 
+  memcpy(node->buffer, top->state, top->length * sizeof(wchar_t));
+  node->buffer_len = top->length;
 
-  s->bot = temp;
-}
+  UndoNode ret = *top;
+  undo_node_free(stack, top);
 
-UndoNode *undo_node_pop(UndoStack *s) {
-  UndoNode *node = s->top;
+  stack->nodes--;
 
-  if (s->nodes == 1) {
-    s->bot = NULL;
-  }
-
-  s->top = s->top->next;
-  s->nodes--;
-
-  return node;
+  return ret;
 }
