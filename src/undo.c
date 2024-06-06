@@ -67,10 +67,10 @@ void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
   new->col = col;
 
   BufferNode *node = type == UNDO_ROW ? target : aux; 
-  new->state = (wchar_t *)malloc(sizeof(wchar_t) * node->buffer_len);
-  memcpy(new->state, node->buffer, node->buffer_len * sizeof(wchar_t));
+  new->state = (wchar_t *)malloc(sizeof(wchar_t) * node->string_length);
+  memcpy(new->state, node->vector, node->string_length * sizeof(wchar_t));
 
-  new->length = node->buffer_len;
+  new->length = node->string_length;
 
   time_t time_seed = time(NULL);
   new->time = *localtime(&time_seed);
@@ -86,8 +86,8 @@ UndoNode undo_node_pop(UndoStack *stack) {
   UndoNode *top = stack->top;
 
   BufferNode *node = top->type == UNDO_ROW ? top->ptr_target : top->ptr_aux; 
-  memcpy(node->buffer, top->state, top->length * sizeof(wchar_t));
-  node->buffer_len = top->length;
+  memcpy(node->vector, top->state, top->length * sizeof(wchar_t));
+  node->string_length = top->length;
 
   UndoNode ret = *top;
   undo_node_free(stack, top);

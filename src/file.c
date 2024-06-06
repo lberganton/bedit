@@ -106,7 +106,8 @@ void file_read(const char *input, Buffer *b) {
     // Iterates over the buffer converting the default char type in UTFChar to
     // put it in the node (row) buffer.
     while (i < pos) {
-      aux->buffer[aux->buffer_len++] = buffer[i++];
+      buffer_insert_char(buffer[i], i, aux);
+      i++;
     }
 
     // Inserts a new node at the end of the list.
@@ -120,7 +121,8 @@ void file_read(const char *input, Buffer *b) {
   // Fill the last node with the last file row buffer.
   u32 i = 0;
   while (i < pos) {
-    aux->buffer[aux->buffer_len++] = buffer[i++];
+    buffer_insert_char(buffer[i], i, aux);
+    i++;
   }
 }
 
@@ -133,8 +135,8 @@ bool file_write(const char *input, Buffer *b) {
   BufferNode *node = b->begin;
 
   while (node) {
-    for (u32 i = 0; i < node->buffer_len; i++) {
-      fputwc(node->buffer[i], f);
+    for (u32 i = 0; i < node->string_length; i++) {
+      fputwc(node->vector[i], f);
     }
 
     if (node->next) {

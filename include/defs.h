@@ -23,7 +23,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define BUFF_ROW 10000
-#define BUFF_COL 30
+#define BUFF_COL 1000
 #define BUFF_STR 128
 #define BUFF_TOK 16
 

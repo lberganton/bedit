@@ -48,7 +48,7 @@ void insert_char(Section *s, wchar_t ch) {
 }
 
 void delete_char(Section *s) {
-  if (s->col < s->buffer->current->buffer_len) {
+  if (s->col < s->buffer->current->string_length) {
     if (!s->undo->dirty) {
       s->undo->dirty = true;
       push_undo(s, UNDO_ROW, s->buffer->current, NULL);
@@ -78,7 +78,7 @@ void backspace_char(Section *s) {
       push_undo(s, UNDO_ROW, s->buffer->current, NULL);
     }
 
-    wchar_t ch = s->buffer->current->buffer[s->col - 1];
+    wchar_t ch = s->buffer->current->vector[s->col - 1];
 
     buffer_delete_char(s->col - 1, s->buffer->current);
     cursor_left(s);
@@ -110,7 +110,7 @@ void backspace_char(Section *s) {
 
   push_undo(s, UNDO_REMOVE_ROW, s->buffer->current, prev);
 
-  u32 len = prev->buffer_len;
+  u32 len = prev->string_length;
 
   if (!merge_line(s, prev, s->buffer->current)) {
     return;
@@ -132,7 +132,7 @@ void insert_pairs(Section *s, wchar_t ch) {
   if ((ptr = strchr(single_pairs, ch))) {
     first_pair = (char)ch;
     last_pair = first_pair;
-    if (s->buffer->current->buffer[s->col] == first_pair) {
+    if (s->buffer->current->vector[s->col] == first_pair) {
       return;
     }
   } else if ((ptr = strchr(double_pairs, ch))) {
@@ -154,18 +154,19 @@ void insert_new_line(Section *s) {
 
   push_undo(s, UNDO_NEW_ROW, new, current);
 
-  memcpy(&new->buffer[0], &current->buffer[s->col],
-         (current->buffer_len - s->col) * sizeof(wchar_t));
+  memcpy(&new->vector[0], &current->vector[s->col],
+         (current->string_length - s->col) * sizeof(wchar_t));
 
-  new->buffer_len = current->buffer_len - s->col;
-  current->buffer_len = s->col;
+  new->string_length = current->string_length - s->col;
+  current->string_length = s->col;
 
   s->rows++;
 
   cursor_down(s);
   cursor_home(s);
 
-  for (u32 i = 0; i < current->buffer_len && current->buffer[i] == ' '; i++) {
+  for (u32 i = 0; i < current->string_length && current->vector[i] == ' ';
+       i++) {
     insert_char(s, ' ');
   }
 }
@@ -176,15 +177,15 @@ bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
     return false;
   }
 
-  if (dest->buffer_len + src->buffer_len >= BUFF_COL) {
+  if (dest->string_length + src->string_length >= BUFF_COL) {
     section_set_msg(s, "Mesclar as linhas estouraria o buffer");
     return false;
   }
 
-  memcpy(&dest->buffer[dest->buffer_len], &src->buffer[0],
-         src->buffer_len * sizeof(wchar_t));
+  memcpy(&dest->vector[dest->string_length], &src->vector[0],
+         src->string_length * sizeof(wchar_t));
 
-  dest->buffer_len += src->buffer_len;
+  dest->string_length += src->string_length;
 
   return true;
 }

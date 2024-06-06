@@ -29,10 +29,10 @@ void cursor_up(Section *s) {
   s->buffer->current = buffer_valid_prev(s->buffer->current);
   s->row--;
 
-  if (s->col > s->buffer->current->buffer_len) {
+  if (s->col > s->buffer->current->string_length) {
     // If the row we're going to is shorter than the one we were on, set the
     // column to the end of the row.
-    s->col = s->buffer->current->buffer_len;
+    s->col = s->buffer->current->string_length;
 
     if (s->col <= s->beg_col) {
       // If the end of the row is behind of the current begining column, set the
@@ -68,10 +68,10 @@ void cursor_down(Section *s) {
   s->buffer->current = buffer_valid_next(s->buffer->current);
   s->row++;
 
-  if (s->col > s->buffer->current->buffer_len) {
+  if (s->col > s->buffer->current->string_length) {
     // If the row we're going to is shorter than the one we were on, set the
     // column to the end of the row.
-    s->col = s->buffer->current->buffer_len;
+    s->col = s->buffer->current->string_length;
 
     if (s->col <= s->beg_col) {
       // If the end of the row is behind of the current begining column, set the
@@ -90,7 +90,7 @@ void cursor_right(Section *s) {
   u32 maxx = getmaxx(s->window_text) - 1;
   u32 maxy = getmaxy(s->window_text) - 1;
 
-  if (s->col + 1 > s->buffer->current->buffer_len) {
+  if (s->col + 1 > s->buffer->current->string_length) {
     if (s->row == s->rows - 1) {
       return;
     }
@@ -133,7 +133,7 @@ void cursor_left(Section *s) {
     s->buffer->current = buffer_valid_prev(s->buffer->current);
 
     s->row--;
-    s->col = s->buffer->current->buffer_len;
+    s->col = s->buffer->current->string_length;
 
     if (s->col > maxx) {
       s->beg_col = s->col - maxx;
@@ -169,7 +169,7 @@ void cursor_home(Section *s) {
 void cursor_end(Section *s) {
   u32 maxx = getmaxx(s->window_text) - 1;
 
-  s->col = s->buffer->current->buffer_len;
+  s->col = s->buffer->current->string_length;
 
   if (s->col > maxx && s->col - s->beg_col > maxx) {
     s->beg_col = s->col - maxx;

@@ -165,8 +165,8 @@ void paint_rows(Section *s) {
 
     // Print the characters of the row until the row ends or the x maximum is
     // reached.
-    while (pos < node->buffer_len && x < maxx) {
-      paint_char(text, y, x, attr_text, node->buffer[pos]);
+    while (pos < node->string_length && x < maxx) {
+      paint_char(text, y, x, attr_text, node->vector[pos]);
       pos++;
       x++;
     }
