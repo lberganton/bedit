@@ -73,6 +73,7 @@ void pop_undo(Section *s) {
     s->rows--;
   } else if (pop.type == UNDO_REMOVE_ROW) {
     pop.ptr_target->activated = true;
+    s->rows++;
   }
 
   char buff[BUFF_STR];

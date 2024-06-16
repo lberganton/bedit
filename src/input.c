@@ -107,12 +107,13 @@ void backspace_char(Section *s) {
   }
 
   BufferNode *prev = buffer_valid_prev(s->buffer->current);
+  BufferNode *current = s->buffer->current;
 
-  push_undo(s, UNDO_REMOVE_ROW, s->buffer->current, prev);
+  push_undo(s, UNDO_REMOVE_ROW, current, prev);
 
   u32 len = prev->string_length;
 
-  if (!merge_line(s, prev, s->buffer->current)) {
+  if (!merge_line(s, prev, current)) {
     return;
   }
 
@@ -121,7 +122,7 @@ void backspace_char(Section *s) {
     cursor_right(s);
   }
 
-  buffer_valid_next(s->buffer->current)->activated = false;
+  current->activated = false;
   s->rows--;
 }
 
