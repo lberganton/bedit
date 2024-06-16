@@ -145,15 +145,17 @@ int main(int argc, char **argv) {
     file_get_directory(file_path, section->file_path);
 
     // Read the file to the buffer.
-    file_read(file_path, section->buffer);
+    if (file_exist(section->file_full)) {
+      file_read(file_path, section->buffer);
 
-    // Get the file extension.
-    section->file_extension = file_get_extension(file_path);
+      // Get the file extension.
+      section->file_extension = file_get_extension(file_path);
 
-    // Set the section message to show the file path, rows and the file size.
-    snprintf(section->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B",
-             file_path, section->buffer->nodes, file_get_size(file_path));
-
+      // Set the section message to show the file path, rows and the file size.
+      snprintf(section->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B",
+              file_path, section->buffer->nodes, file_get_size(file_path));
+    }
+    
     section->rows = section->buffer->nodes;
   }
 
@@ -177,9 +179,7 @@ int main(int argc, char **argv) {
   initialize_windows(section);
   wchar_t key;
 
-  bool quit = false;
-
-  while (!quit) {
+  while (true) {
     curs_set(false);
 
     // Paint all the NCurses windows.
