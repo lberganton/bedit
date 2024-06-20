@@ -40,7 +40,7 @@ typedef uint64_t u64;
 #define FILE_EXTENSION_C "C"
 #define FILE_EXTENSION_CPP "C++"
 
-typedef enum Mode { MODE_NORMAL, MODE_INSERT, MODE_COMMAND } Mode;
+typedef enum Mode { MODE_NORMAL, MODE_INSERT } Mode;
 
 #define WRITE_LOG(message, ...)                                                \
   do {                                                                         \

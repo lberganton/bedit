@@ -7,7 +7,7 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE := $(TEST)/new.txt
+TESTFILE :=
 TERM := alacritty
 
 # C Compiler

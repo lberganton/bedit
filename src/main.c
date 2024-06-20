@@ -18,6 +18,8 @@ static Mode mode = MODE_NORMAL;
 void exit_bedit(void) {
   free_windows(section);
   buffer_free(section->buffer);
+  undo_stack_free(section->undo);
+  free(section);
 
   if (stdscr) {
     endwin();
@@ -152,8 +154,8 @@ int main(int argc, char **argv) {
       section->file_extension = file_get_extension(file_path);
 
       // Set the section message to show the file path, rows and the file size.
-      snprintf(section->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B",
-               file_path, section->buffer->nodes, file_get_size(file_path));
+      section_set_msg(section, "\"%s\" %" PRIu32 "L %" PRIu32 "B", file_path,
+                      section->buffer->nodes, file_get_size(file_path));
     }
 
     section->rows = section->buffer->nodes;

@@ -165,8 +165,8 @@ void command_write(Section *s) {
     return;
   }
 
-  snprintf(s->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B (Gravados)",
-           s->file_name, s->rows, file_get_size(s->file_full));
+  section_set_msg(s, "\"%s\" %" PRIu32 "L %" PRIu32 "B (Gravados)",
+                  s->file_name, s->rows, file_get_size(s->file_full));
 
   s->dirty = false;
 }

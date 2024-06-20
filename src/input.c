@@ -160,6 +160,10 @@ void insert_new_line(Section *s) {
   memcpy(&new->vector[0], &current->vector[s->col],
          (current->string_length - s->col) * sizeof(wchar_t));
 
+  if (current->vector_length && s->col <= current->vector_length - 50) {
+    buffer_decrease_vector(current, current->string_length - s->col);
+  }
+
   new->string_length = current->string_length - s->col;
   current->string_length = s->col;
 

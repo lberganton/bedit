@@ -61,6 +61,13 @@ void buffer_decrease_vector(BufferNode *node, size_t length) {
         ceil(((double)node->string_length - length) / 50) * 50;
   }
 
+  if (node->vector_length == 0) {
+    node->vector_length = 0;
+    free(node->vector);
+    node->vector = NULL;
+    return;
+  }
+
   wchar_t *new_mem =
       realloc(node->vector, node->vector_length * sizeof(wchar_t));
 
