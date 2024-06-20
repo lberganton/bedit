@@ -9,9 +9,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
-void section_set_msg(Section *s, const char *msg) {
-  strncpy(s->msg, msg, BUFF_STR);
+void section_set_msg(Section *s, const char *msg, ...) {
+  va_list args;
+  va_start(args, msg);
+
+  vsnprintf(s->msg, BUFF_STR, msg, args);
+
+  va_end(args);
 }
 
 void text_up(Section *s) {

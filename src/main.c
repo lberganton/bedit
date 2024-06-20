@@ -121,6 +121,7 @@ int main(int argc, char **argv) {
   section->undo = undo_stack_create();
   section->buffer = buffer_init();
   section->dirty = false;
+  section->debug = false;
 
   section->row = 0;
   section->col = 0;
@@ -153,9 +154,9 @@ int main(int argc, char **argv) {
 
       // Set the section message to show the file path, rows and the file size.
       snprintf(section->msg, BUFF_STR, "\"%s\" %" PRIu32 "L %" PRIu32 "B",
-              file_path, section->buffer->nodes, file_get_size(file_path));
+               file_path, section->buffer->nodes, file_get_size(file_path));
     }
-    
+
     section->rows = section->buffer->nodes;
   }
 
@@ -181,6 +182,12 @@ int main(int argc, char **argv) {
 
   while (true) {
     curs_set(false);
+
+    if (section->debug) {
+      section_set_msg(section, "N:%" PRIu32 " SL:%" PRIu32 " VL:%" PRIu32,
+               section->buffer->nodes, section->buffer->current->string_length,
+               section->buffer->current->vector_length);
+    }
 
     // Paint all the NCurses windows.
     paint_command_bar(section->msg, COLOR_PAIR(PAIR_TEXT), section);

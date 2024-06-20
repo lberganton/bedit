@@ -154,6 +154,12 @@ void set_command(Section *s, Command c) {
     exit(0);
   }
 
+  // Debug mode.
+  if (strncmp(c.token[0], "debug", BUFF_STR) == 0) {
+    s->debug = !s->debug;
+    return;
+  }
+
   section_set_msg(s, "Erro: Comando inválido.");
 }
 

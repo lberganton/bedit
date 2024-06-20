@@ -63,9 +63,11 @@ typedef struct Section {
 
   // The stack that stores the user's changes.
   UndoStack *undo;
+
+  bool debug;
 } Section;
 
-void section_set_msg(Section *s, const char *msg);
+void section_set_msg(Section *s, const char *msg, ...);
 
 void text_up(Section *s);
 void text_down(Section *s);
