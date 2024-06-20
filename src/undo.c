@@ -22,7 +22,7 @@ static void undo_node_free(UndoStack *stack, UndoNode *node) {
   if (stack->nodes == 1) {
     stack->bot = NULL;
   }
-  
+
   if (node->next) {
     node->next = node->prev;
   }
@@ -43,7 +43,7 @@ void undo_stack_free(UndoStack *stack) {
 }
 
 void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
-                         BufferNode *aux, u32 row, u32 col) {
+                    BufferNode *aux, u32 row, u32 col) {
   UndoNode *new = (UndoNode *)malloc(sizeof(UndoNode));
   ASSERT(new == NULL,
          "Erro: Falha ao alocar memória para nó na pilha de 'desfazer'.");
@@ -66,7 +66,7 @@ void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
   new->row = row;
   new->col = col;
 
-  BufferNode *node = type == UNDO_ROW ? target : aux; 
+  BufferNode *node = type == UNDO_ROW ? target : aux;
   new->state = (wchar_t *)malloc(sizeof(wchar_t) * node->string_length);
   memcpy(new->state, node->vector, node->string_length * sizeof(wchar_t));
 
@@ -85,7 +85,7 @@ void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
 UndoNode undo_node_pop(UndoStack *stack) {
   UndoNode *top = stack->top;
 
-  BufferNode *node = top->type == UNDO_ROW ? top->ptr_target : top->ptr_aux; 
+  BufferNode *node = top->type == UNDO_ROW ? top->ptr_target : top->ptr_aux;
   memcpy(node->vector, top->state, top->length * sizeof(wchar_t));
   node->string_length = top->length;
 

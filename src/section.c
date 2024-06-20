@@ -6,10 +6,10 @@
 #include "section.h"
 #include "command.h"
 #include "ui.h"
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 
 void section_set_msg(Section *s, const char *msg, ...) {
   va_list args;

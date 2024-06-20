@@ -8,7 +8,7 @@ TEST := test
 
 # Test Config
 TESTFILE := $(TEST)/new.txt
-TERM := gnome-terminal
+TERM := alacritty
 
 # C Compiler
 CC := gcc
@@ -27,7 +27,7 @@ COBJ := $(CSRC:.c=.o)
 	@echo "File $@ Generated."
 
 # Targets
-all: build test clean
+all: build clean test
 
 build: compile link
 
@@ -40,7 +40,7 @@ link:
 
 .PHONY: test
 test:
-	@$(TERM) -- ./$(TARGET) $(TESTFILE)
+	@$(TERM) -e ./$(TARGET) $(TESTFILE)
 	@echo "Running Beditor application with $(TESTFILE) file."
 
 .PHONY: clean

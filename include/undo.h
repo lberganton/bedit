@@ -41,5 +41,5 @@ UndoStack *undo_stack_create(void);
 void undo_stack_free(UndoStack *stack);
 
 void undo_node_push(UndoStack *stack, UndoType type, BufferNode *target,
-                         BufferNode *aux, u32 row, u32 col);
+                    BufferNode *aux, u32 row, u32 col);
 UndoNode undo_node_pop(UndoStack *stack);

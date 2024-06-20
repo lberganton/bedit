@@ -48,10 +48,6 @@ void input_command(Section *s) {
       continue;
     }
 
-    if (key == KEY_RESIZE) {
-      return;
-    }
-
     if (key == KEY_ESC) {
       section_set_msg(s, "");
       return;
