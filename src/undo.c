@@ -86,6 +86,11 @@ UndoNode undo_node_pop(UndoStack *stack) {
   UndoNode *top = stack->top;
 
   BufferNode *node = top->type == UNDO_ROW ? top->ptr_target : top->ptr_aux;
+
+  if (node->vector_length < top->length) {
+    buffer_increase_vector(node, top->length);
+  }
+
   memcpy(node->vector, top->state, top->length * sizeof(wchar_t));
   node->string_length = top->length;
 
