@@ -39,6 +39,7 @@ void initialize_colors(void);
 void initialize_windows(Section *s);
 void free_windows(Section *s);
 void refresh_windows(Section *s);
+void resize_windows(Section *s);
 
 int get_key(void);
 

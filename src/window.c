@@ -50,3 +50,18 @@ void refresh_windows(Section *s) {
   wrefresh(s->window_status);
   wrefresh(s->window_text);
 }
+
+void resize_windows(Section *s) {
+  u32 maxy, maxx;
+
+  getmaxyx(stdscr, maxy, maxx);
+  wresize(s->window_command, 1, maxx);
+  wresize(s->window_status, 1, maxx);
+  wresize(s->window_rows, maxy - 2, 4);
+  wresize(s->window_text, maxy - 2, maxx - 4);
+  
+  s->window_command = newwin(1, COLS, LINES - 1, 0);
+  s->window_status = newwin(1, COLS, LINES - 2, 0);
+  s->window_rows = newwin(LINES - 2, 4, 0, 0);
+  s->window_text = newwin(LINES - 2, COLS - 4, 0, 4);
+}

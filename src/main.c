@@ -57,8 +57,7 @@ void handle_with_input(int key) {
     mode = MODE_NORMAL;
     return;
   case KEY_RESIZE:
-    free_windows(section);
-    initialize_windows(section);
+    resize_windows(section);
     return;
   }
 
@@ -172,9 +171,6 @@ int main(int argc, char **argv) {
 
   // Set the RGB colors and color pairs.
   initialize_colors();
-
-  // Refresh to set the main window.
-  refresh();
 
   // Initialize NCurses windows.
   initialize_windows(section);
