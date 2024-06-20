@@ -48,6 +48,27 @@ void buffer_increase_vector(BufferNode *node, size_t length) {
   node->vector = new_mem;
 }
 
+void buffer_decrease_vector(BufferNode *node, size_t length) {
+  ASSERT(node->vector_length == 0, "Erro: O vetor já está vazio.");
+
+  if (node->vector_length <= 50) {
+    node->vector_length = 0;
+    free(node->vector);
+    node->vector = NULL;
+    return;
+  } else {
+    node->vector_length =
+        ceil(((double)node->string_length - length) / 50) * 50;
+  }
+
+  wchar_t *new_mem =
+      realloc(node->vector, node->vector_length * sizeof(wchar_t));
+
+  ASSERT(new_mem == NULL, "Erro: Falha ao relocar vetor.");
+
+  node->vector = new_mem;
+}
+
 Buffer *buffer_init(void) {
   Buffer *new = (Buffer *)malloc(sizeof(Buffer));
   ASSERT(new == NULL, "Erro: Falha ao alocar memória para buffer.");
@@ -133,6 +154,10 @@ bool buffer_delete_char(u32 index, BufferNode *n) {
          (n->string_length - index) * sizeof(wchar_t));
 
   n->string_length--;
+
+  if (n->string_length <= n->vector_length - 50) {
+    buffer_decrease_vector(n, 1);
+  }
 
   return true;
 }
