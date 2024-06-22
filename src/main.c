@@ -198,7 +198,7 @@ int main(int argc, char **argv) {
     refresh_windows(section);
     curs_set(true);
 
-    get_wch(&key);
+    key = wgetch(section->window_text);
 
     handle_with_input(key);
   }
