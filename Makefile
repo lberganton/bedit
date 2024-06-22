@@ -40,7 +40,7 @@ link:
 
 .PHONY: test
 test:
-	@$(TERM) -e ./$(TARGET) $(TESTFILE)
+	@$(TERM) -e bash -c "./$(TARGET); $(TESTFILE)"
 	@echo "Running Beditor application with $(TESTFILE) file."
 
 .PHONY: clean
