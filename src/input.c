@@ -40,7 +40,8 @@ void insert_char(Section *s, wchar_t ch) {
 
   if (!s->undo->dirty) {
     s->undo->dirty = true;
-    push_undo(s, UNDO_ROW, s->buffer->current, NULL);
+    undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+    undo_node_insert(s->undo, UNDO_ROW, s->buffer->current);
   }
 
   buffer_insert_char(ch, s->col, s->buffer->current);
@@ -51,7 +52,8 @@ void delete_char(Section *s) {
   if (s->col < s->buffer->current->string_length) {
     if (!s->undo->dirty) {
       s->undo->dirty = true;
-      push_undo(s, UNDO_ROW, s->buffer->current, NULL);
+      undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+      undo_node_insert(s->undo, UNDO_ROW, s->buffer->current);
     }
     buffer_delete_char(s->col, s->buffer->current);
     return;
@@ -75,7 +77,8 @@ void backspace_char(Section *s) {
   if (s->col > 0) {
     if (!s->undo->dirty) {
       s->undo->dirty = true;
-      push_undo(s, UNDO_ROW, s->buffer->current, NULL);
+      undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+      undo_node_insert(s->undo, UNDO_ROW, s->buffer->current);
     }
 
     wchar_t ch = s->buffer->current->vector[s->col - 1];
@@ -109,7 +112,9 @@ void backspace_char(Section *s) {
   BufferNode *prev = buffer_valid_prev(s->buffer->current);
   BufferNode *current = s->buffer->current;
 
-  push_undo(s, UNDO_REMOVE_ROW, current, prev);
+  undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+  undo_node_insert(s->undo, UNDO_REMOVE_ROW, current);
+  undo_node_insert(s->undo, UNDO_ROW, prev);
 
   u32 len = prev->string_length;
 
@@ -153,7 +158,9 @@ void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
-  push_undo(s, UNDO_NEW_ROW, new, current);
+  undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+  undo_node_insert(s->undo, UNDO_NEW_ROW, new);
+  undo_node_insert(s->undo, UNDO_ROW, current);
 
   buffer_increase_vector(new, current->string_length - s->col);
 

@@ -30,10 +30,6 @@ void text_down(Section *s) {
   s->buffer->top = s->buffer->top->next;
 }
 
-void push_undo(Section *s, UndoType type, BufferNode *target, BufferNode *aux) {
-  undo_node_push(s->undo, type, target, aux, s->row, s->col);
-}
-
 static void get_time_difference(struct tm *node_time, char *buff, u32 node) {
   time_t time_seed = time(NULL);
   struct tm current_time = *localtime(&time_seed);
@@ -72,15 +68,7 @@ void pop_undo(Section *s) {
 
   stack->dirty = false;
 
-  UndoNode pop = undo_node_pop(s->undo);
-
-  if (pop.type == UNDO_NEW_ROW) {
-    buffer_remove_node(s->buffer, pop.ptr_target);
-    s->rows--;
-  } else if (pop.type == UNDO_REMOVE_ROW) {
-    pop.ptr_target->activated = true;
-    s->rows++;
-  }
+  UndoNode pop = undo_node_pop(s->undo, s->buffer, &s->rows);
 
   char buff[BUFF_STR];
   get_time_difference(&pop.time, buff, s->undo->nodes + 1);
@@ -89,15 +77,12 @@ void pop_undo(Section *s) {
 
   u32 maxy = getmaxy(s->window_text);
 
-  BufferNode *destiny_node =
-      pop.type != UNDO_NEW_ROW ? pop.ptr_target : pop.ptr_aux;
-
   if (!(pop.row >= s->beg_row && pop.row <= maxy)) {
-    s->buffer->top = destiny_node;
+    s->buffer->top = pop.current;
     s->beg_row = pop.row;
   }
 
-  s->buffer->current = destiny_node;
+  s->buffer->current = pop.current;
   s->cursor_y = pop.row - s->beg_row;
   s->row = pop.row;
 
