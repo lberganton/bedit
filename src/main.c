@@ -194,11 +194,10 @@ int main(int argc, char **argv) {
     curs_set(false);
 
     if (section->debug) {
-      section_set_msg(section, "N:%" PRIu32 " SL:%" PRIu32 " VL:%" PRIu32 " UN: %" PRIu32,
-                      section->buffer->nodes,
-                      section->buffer->current->string_length,
-                      section->buffer->current->vector_length,
-                      section->undo->nodes);
+      section_set_msg(
+          section, "N:%" PRIu32 " SL:%" PRIu32 " VL:%" PRIu32 " UN: %" PRIu32,
+          section->buffer->nodes, section->buffer->current->string_length,
+          section->buffer->current->vector_length, section->undo->nodes);
     }
 
     // Paint all the NCurses windows.

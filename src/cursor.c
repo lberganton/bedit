@@ -224,7 +224,8 @@ void cursor_nextword(Section *s) {
     return;
   }
 
-  while (s->buffer->current->vector_length == 0 || !isblank(s->buffer->current->vector[s->col])) {
+  while (s->buffer->current->vector_length == 0 ||
+         !isblank(s->buffer->current->vector[s->col])) {
     if (s->col >= s->buffer->current->string_length) {
       cursor_right(s);
       return;
@@ -246,7 +247,8 @@ void cursor_prevword(Section *s) {
     return;
   }
 
-  while (s->buffer->current->vector_length == 0 || !isblank(s->buffer->current->vector[s->col])) {
+  while (s->buffer->current->vector_length == 0 ||
+         !isblank(s->buffer->current->vector[s->col])) {
     if (s->col == 0) {
       cursor_left(s);
       return;

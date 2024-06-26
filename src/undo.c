@@ -130,9 +130,11 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
         increase = true;
       }
 
-      memcpy(change->target->vector, change->state, change->length * sizeof(wchar_t));
+      memcpy(change->target->vector, change->state,
+             change->length * sizeof(wchar_t));
 
-      if (!increase && change->target->vector_length && change->length <= change->target->vector_length - 50) {
+      if (!increase && change->target->vector_length &&
+          change->length <= change->target->vector_length - 50) {
         buffer_decrease_vector(change->target,
                                change->target->string_length - change->length);
       }
@@ -148,7 +150,7 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
 
   UndoNode node_to_return = *stack->top;
   undo_node_free(stack, stack->top);
-
   stack->nodes--;
+
   return node_to_return;
 }
