@@ -116,25 +116,25 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
   while (change) {
     if (change->type == UNDO_NEW_ROW) {
       buffer_remove_node(buffer, change->target);
-      *rows--;
+      (*rows)--;
     } else if (change->type == UNDO_REMOVE_ROW) {
       change->target->activated = true;
-      *rows++;
+      (*rows)++;
     } else {
       bool increase = false;
 
       if (change->target->vector_length < change->length) {
         buffer_increase_vector(change->target,
-                               change->length - change->target->vector_length);
+                               change->length - change->target->string_length);
 
         increase = true;
       }
 
       memcpy(change->target->vector, change->state, change->length * sizeof(wchar_t));
 
-      if (!increase && change->target->vector_length > change->length) {
+      if (!increase && change->target->vector_length && change->length <= change->target->vector_length - 50) {
         buffer_decrease_vector(change->target,
-                               change->length - change->target->vector_length);
+                               change->target->string_length - change->length);
       }
 
       change->target->string_length = change->length;
@@ -149,5 +149,6 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
   UndoNode node_to_return = *stack->top;
   undo_node_free(stack, stack->top);
 
+  stack->nodes--;
   return node_to_return;
 }
