@@ -1,5 +1,7 @@
-# VS Code
+# IDE's
 .vscode
+compile_commands.json
+.cache
 
 # Related-program files
 bedit
