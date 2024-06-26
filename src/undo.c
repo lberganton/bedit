@@ -1,3 +1,39 @@
+/*
+ * File: undo.c
+ * Author: Lucas Berganton
+ * Created: 05/23/2024
+ *
+ * The undo feature is implemented with a stack of linked lists.
+ *
+ * A stack node can have a change group. Each change in a group is stored by
+ * row.
+ *
+ * (Last change)
+ *     \|/
+ * [ Node 3 ] ------> [   ]
+ *     |             /  |  \
+ *     |           [ ] [ ] [ ]
+ *     V
+ * [ Node 2 ] ------> [   ]
+ *     |                |
+ *     |               [ ]
+ *     V
+ * [ Node 1 ] ------> [   ]
+ *    /|\            /  |
+ * (First change)  [ ] [ ]
+ *
+ * Each change has a pointer to the changed row and a pointer to an array, which
+ * stores a copy of the state of the row before the change. The last one it's
+ * used only in case of a 'row change'.
+ *
+ * Each change can be one of three types: row change, new row change and remove
+ * row change.
+ *
+ * If it is a new row change, than the added row is freeded.
+ * If it is a remove row change, than the removed row is reactivated.
+ * If it is a row change, than the state of the row before the change will be
+ * restored.
+ */
 #include "undo.h"
 #include <stdlib.h>
 #include <string.h>

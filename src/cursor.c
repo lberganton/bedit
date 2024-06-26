@@ -2,6 +2,9 @@
  * File: cursor.h
  * Author: Lucas Berganton
  * Created: 05/11/2024
+ *
+ * This functions moves the cursor, and if necessary, sets the top row and the
+ * begining column.
  */
 #include "section.h"
 #include "ui.h"
@@ -220,46 +223,64 @@ void cursor_pgdown(Section *s) {
 }
 
 void cursor_nextword(Section *s) {
-  if (s->row == s->rows - 1 && s->col + 1 > s->buffer->current->string_length) {
-    return;
-  }
-
-  while (s->buffer->current->vector_length == 0 ||
-         !isblank(s->buffer->current->vector[s->col])) {
-    if (s->col >= s->buffer->current->string_length) {
-      cursor_right(s);
-      return;
+  while (true) { 
+    if (s->col + 1 > s->buffer->current->string_length) {
+      if (s->row == s->rows - 1) {
+        return;
+      }
+      cursor_down(s);
+      cursor_home(s);
+      break;
+    }
+    if (isblank(s->buffer->current->vector[s->col])) {
+      break;
     }
     cursor_right(s);
   }
 
-  while (isblank(s->buffer->current->vector[s->col])) {
-    if (s->col >= s->buffer->current->string_length) {
-      cursor_right(s);
-      return;
+  while (true) {
+    if (s->col + 1 > s->buffer->current->string_length) {
+      if (s->row == s->rows - 1) {
+        return;
+      }
+      cursor_down(s);
+      cursor_home(s);
+      continue;
+    }
+    if (!isblank(s->buffer->current->vector[s->col])) {
+      break;
     }
     cursor_right(s);
   }
 }
 
 void cursor_prevword(Section *s) {
-  if (s->row == 0 && s->col == 0) {
-    return;
-  }
-
-  while (s->buffer->current->vector_length == 0 ||
-         !isblank(s->buffer->current->vector[s->col])) {
+  while (true) { 
     if (s->col == 0) {
-      cursor_left(s);
-      return;
+      if (s->row == 0) {
+        return;
+      }
+      cursor_up(s);
+      cursor_end(s);
+      break;
+    }
+    if (isblank(s->buffer->current->vector[s->col - 1])) {
+      break;
     }
     cursor_left(s);
   }
 
-  while (isblank(s->buffer->current->vector[s->col])) {
+  while (true) {
     if (s->col == 0) {
-      cursor_left(s);
-      return;
+      if (s->row == 0) {
+        return;
+      }
+      cursor_up(s);
+      cursor_end(s);
+      continue;
+    }
+    if (!isblank(s->buffer->current->vector[s->col - 1])) {
+      break;
     }
     cursor_left(s);
   }
