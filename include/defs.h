@@ -42,16 +42,6 @@ typedef uint64_t u64;
 
 typedef enum Mode { MODE_NORMAL, MODE_INSERT } Mode;
 
-#define WRITE_LOG(message, ...)                                                \
-  do {                                                                         \
-    FILE *file = fopen("log/log", "a");                                        \
-    if (file) {                                                                \
-      fprintf(file, "<%s>: %d: " message "\n", __FILE__, __LINE__,             \
-              ##__VA_ARGS__);                                                  \
-      fclose(file);                                                            \
-    }                                                                          \
-  } while (false)
-
 #define ASSERT(condition, description)                                         \
   do {                                                                         \
     if (condition) {                                                           \
