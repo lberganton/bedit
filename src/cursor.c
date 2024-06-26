@@ -5,6 +5,7 @@
  */
 #include "section.h"
 #include "ui.h"
+#include <ctype.h>
 #include <ncurses.h>
 
 void cursor_up(Section *s) {
@@ -216,4 +217,48 @@ void cursor_pgdown(Section *s) {
   s->beg_col = 0;
 
   s->undo->dirty = false;
+}
+
+void cursor_nextword(Section *s) {
+  if (s->row == s->rows - 1 && s->col + 1 > s->buffer->current->string_length) {
+    return;
+  }
+
+  while (s->buffer->current->vector_length == 0 || !isblank(s->buffer->current->vector[s->col])) {
+    if (s->col >= s->buffer->current->string_length) {
+      cursor_right(s);
+      return;
+    }
+    cursor_right(s);
+  }
+
+  while (isblank(s->buffer->current->vector[s->col])) {
+    if (s->col >= s->buffer->current->string_length) {
+      cursor_right(s);
+      return;
+    }
+    cursor_right(s);
+  }
+}
+
+void cursor_prevword(Section *s) {
+  if (s->row == 0 && s->col == 0) {
+    return;
+  }
+
+  while (s->buffer->current->vector_length == 0 || !isblank(s->buffer->current->vector[s->col])) {
+    if (s->col == 0) {
+      cursor_left(s);
+      return;
+    }
+    cursor_left(s);
+  }
+
+  while (isblank(s->buffer->current->vector[s->col])) {
+    if (s->col == 0) {
+      cursor_left(s);
+      return;
+    }
+    cursor_left(s);
+  }
 }

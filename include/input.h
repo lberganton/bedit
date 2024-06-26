@@ -11,6 +11,8 @@
 #define TAB_SIZE 4
 #define AUTO_PAIRS true
 
+#define ctrl(ch) (ch & 0x1F)
+
 void insert_tab(Section *s);
 void insert_char(Section *s, wchar_t ch);
 void delete_char(Section *s);

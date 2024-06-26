@@ -26,8 +26,14 @@ void exit_bedit(void) {
   }
 }
 
-void handle_with_input(int key) {
+void handle_with_input(wchar_t key) {
   switch (key) {
+  case ctrl('s'):
+    set_command(section, tokenize_command("w"));
+    return;
+  case ctrl('q'):
+    set_command(section, tokenize_command("q"));
+    return;
   case KEY_UP:
     cursor_up(section);
     return;
@@ -57,6 +63,7 @@ void handle_with_input(int key) {
     return;
   case KEY_ESC:
     mode = MODE_NORMAL;
+    section->undo->dirty = false;
     return;
   case KEY_RESIZE:
     resize_windows(section);
@@ -97,6 +104,12 @@ void handle_with_input(int key) {
     return;
   case 'i':
     mode = MODE_INSERT;
+    return;
+  case 'w':
+    cursor_nextword(section);
+    return;
+  case 'b':
+    cursor_prevword(section);
     return;
   case ':':
     input_command(section);
@@ -176,16 +189,16 @@ int main(int argc, char **argv) {
 
   // Initialize NCurses windows.
   initialize_windows(section);
-  wchar_t key;
 
   while (true) {
     curs_set(false);
 
     if (section->debug) {
-      section_set_msg(section, "N:%" PRIu32 " SL:%" PRIu32 " VL:%" PRIu32,
+      section_set_msg(section, "N:%" PRIu32 " SL:%" PRIu32 " VL:%" PRIu32 " UN: %" PRIu32,
                       section->buffer->nodes,
                       section->buffer->current->string_length,
-                      section->buffer->current->vector_length);
+                      section->buffer->current->vector_length,
+                      section->undo->nodes);
     }
 
     // Paint all the NCurses windows.
@@ -198,7 +211,7 @@ int main(int argc, char **argv) {
     refresh_windows(section);
     curs_set(true);
 
-    key = wgetch(section->window_text);
+    wchar_t key = wgetch(section->window_text);
 
     handle_with_input(key);
   }

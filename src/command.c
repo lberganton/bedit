@@ -161,7 +161,7 @@ void set_command(Section *s, Command c) {
 
 void command_write(Section *s) {
   if (!file_write(s->file_full, s->buffer)) {
-    section_set_msg(s, "Erro: Falha ao escrever no arquivo.\n");
+    section_set_msg(s, "Erro: Falha ao escrever no arquivo.");
     return;
   }
 

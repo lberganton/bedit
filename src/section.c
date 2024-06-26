@@ -95,6 +95,6 @@ void pop_undo(Section *s) {
       cursor_left(s);
     }
   }
-
+  
   s->undo->dirty = false;
 }

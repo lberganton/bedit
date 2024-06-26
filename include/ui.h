@@ -56,3 +56,5 @@ void cursor_home(Section *s);
 void cursor_end(Section *s);
 void cursor_pgup(Section *s);
 void cursor_pgdown(Section *s);
+void cursor_nextword(Section *s);
+void cursor_prevword(Section *s);

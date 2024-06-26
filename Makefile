@@ -7,7 +7,7 @@ SRC := src
 TEST := test
 
 # Test Config
-TESTFILE :=
+TESTFILE := test/rocky.txt
 TERM := alacritty
 
 # C Compiler
@@ -40,7 +40,7 @@ link:
 
 .PHONY: test
 test:
-	@$(TERM) -e bash -c "./$(TARGET); $(TESTFILE)"
+	@$(TERM) -e ./$(TARGET) $(TESTFILE)
 	@echo "Running Beditor application with $(TESTFILE) file."
 
 .PHONY: clean
