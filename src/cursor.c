@@ -225,7 +225,7 @@ void cursor_pgdown(Section *s) {
 void cursor_nextword(Section *s) {
   bool blank = true;
 
-  while (s->col < s->buffer->current->string_length || s->row < s->rows - 1) { 
+  while (s->col < s->buffer->current->string_length || s->row < s->rows - 1) {
     if (s->col + 1 > s->buffer->current->string_length) {
       cursor_right(s);
       blank = false;
@@ -245,7 +245,7 @@ void cursor_nextword(Section *s) {
 void cursor_prevword(Section *s) {
   bool blank = true;
 
-  while (s->col > 0 || s->row > 0) { 
+  while (s->col > 0 || s->row > 0) {
     if (s->col == 0) {
       cursor_left(s);
       blank = false;

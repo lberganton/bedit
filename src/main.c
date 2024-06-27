@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   section.beg_col = 0;
   section.cursor_y = 0;
   section.cursor_x = 0;
-  
+
   section.mode = MODE_NORMAL;
 
   if (file_path == NULL) {

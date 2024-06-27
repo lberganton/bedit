@@ -4,10 +4,10 @@
  * Created: 05/11/2024
  *
  * The buffer is a linked list in wich node stores a dynamic vector.
- * 
+ *
  * A linked list node represents a row in the editor. Each index of the dynamic
  * vector represents a column of a row.
- * 
+ *
  * [ 1 ] -> [H] [e] [l] [l] [o] [ ] [w] [o] [r] [l] [d] [!] [ ] [ ] [ ]
  *   |
  *   V

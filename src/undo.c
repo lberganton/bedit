@@ -151,7 +151,7 @@ void undo_node_remove(UndoNode *node) {
   ASSERT(node == NULL || node->begin == NULL,
          "Erro: Falha ao remover item da lista na pilha de 'desfazer'. "
          "Tentativa de acessar um ponteiro NULL.");
-  
+
   UndoChange *change = node->begin->next;
 
   if (node->begin->state) {
