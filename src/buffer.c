@@ -108,7 +108,7 @@ Buffer *buffer_init(void) {
   return new;
 }
 
-BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
+BufferNode *buffer_insert_prev(Buffer *b, BufferNode *n) {
   ASSERT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
   BufferNode *new = node_create(n->prev, n);
 

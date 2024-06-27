@@ -18,12 +18,7 @@ static bool is_pair(wchar_t ch) {
 
 static char find_opossite_brace(wchar_t input) {
   char *ptr = strchr(double_pairs, input);
-  return ptr ? ((ptr - double_pairs) & 1) ? *ptr : 0 : 0;
-}
-
-static char find_openning_brace(wchar_t input) {
-  char *ptr = strchr(double_pairs, input);
-  return ptr ? !((ptr - double_pairs) & 1) ? *ptr : 0 : 0;
+  return ptr ? !((ptr - double_pairs) & 1) ? *(ptr + 1) : 0 : 0;
 }
 
 void insert_tab(Section *s) {
@@ -160,12 +155,27 @@ void insert_pairs(Section *s, wchar_t ch) {
     last_pair = double_pairs[pos + 1];
   }
 
+  if (!s->undo->dirty) {
+    s->undo->dirty = true;
+    undo_node_push(s->undo, s->buffer->current, s->row, s->col);
+    undo_node_insert(s->undo, UNDO_ROW, s->buffer->current);
+  }
+
   buffer_insert_char(first_pair, s->col, s->buffer->current);
   buffer_insert_char(last_pair, s->col + 1, s->buffer->current);
 }
 
 void insert_new_line(Section *s) {
   BufferNode *current = s->buffer->current;
+  bool pairs = false;
+
+  if (AUTO_PAIRS && s->col < s->buffer->current->string_length && s->col > 0) {
+    if (find_opossite_brace(current->vector[s->col - 1]) ==
+        current->vector[s->col]) {
+      pairs = true;
+    }
+  }
+
   BufferNode *new = buffer_insert_next(s->buffer, current);
 
   undo_node_push(s->undo, s->buffer->current, s->row, s->col);
@@ -188,10 +198,28 @@ void insert_new_line(Section *s) {
 
   cursor_down(s);
   cursor_home(s);
+  s->undo->dirty = true;
 
   for (u32 i = 0; i < current->string_length && current->vector[i] == ' ';
        i++) {
     insert_char(s, ' ');
+  }
+
+  if (pairs) {
+    BufferNode *new_pair = buffer_insert_next(s->buffer, current);
+    s->buffer->current = new_pair;
+
+    cursor_home(s);
+    s->undo->dirty = true;
+
+    for (u32 i = 0; i < new->string_length &&new->vector[i] == ' '; i++) {
+      insert_char(s, ' ');
+    }
+
+    insert_tab(s);
+
+    s->rows++;
+    undo_node_insert(s->undo, UNDO_NEW_ROW, new_pair);
   }
 }
 
