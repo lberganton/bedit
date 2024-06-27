@@ -229,6 +229,7 @@ void cursor_nextword(Section *s) {
     if (s->col + 1 > s->buffer->current->string_length) {
       cursor_right(s);
       blank = false;
+      continue;
     }
 
     if (isblank(s->buffer->current->vector[s->col]) == blank) {
@@ -249,6 +250,7 @@ void cursor_prevword(Section *s) {
     if (s->col == 0) {
       cursor_left(s);
       blank = false;
+      continue;
     }
 
     if (isblank(s->buffer->current->vector[s->col - 1]) == blank) {
