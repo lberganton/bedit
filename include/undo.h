@@ -52,3 +52,4 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows);
 void undo_node_free(UndoStack *stack, UndoNode *node);
 
 void undo_node_insert(UndoStack *stack, UndoType type, BufferNode *target);
+void undo_node_remove(UndoNode *node);

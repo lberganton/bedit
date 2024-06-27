@@ -74,6 +74,10 @@ void undo_node_free(UndoStack *stack, UndoNode *node) {
     node->prev = node->next;
   }
 
+  if (node->begin) {
+    undo_node_remove(node);
+  }
+
   free(node);
 }
 
@@ -143,6 +147,22 @@ void undo_node_insert(UndoStack *stack, UndoType type, BufferNode *target) {
   new->length = target->string_length;
 }
 
+void undo_node_remove(UndoNode *node) {
+  ASSERT(node == NULL || node->begin == NULL,
+         "Erro: Falha ao remover item da lista na pilha de 'desfazer'. "
+         "Tentativa de acessar um ponteiro NULL.");
+  
+  UndoChange *change = node->begin->next;
+
+  if (node->begin->state) {
+    free(node->begin->state);
+  }
+
+  free(node->begin);
+
+  node->begin = change;
+}
+
 UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
   ASSERT(stack == NULL || stack->nodes == 0,
          "Erro: Falha ao remover item da pilha de 'desfazer'.");
@@ -176,12 +196,10 @@ UndoNode undo_node_pop(UndoStack *stack, Buffer *buffer, u32 *rows) {
       }
 
       change->target->string_length = change->length;
-      free(change->state);
     }
 
-    UndoChange *temp = change->next;
-    free(change);
-    change = temp;
+    undo_node_remove(stack->top);
+    change = stack->top->begin;
   }
 
   UndoNode node_to_return = *stack->top;
