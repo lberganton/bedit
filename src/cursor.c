@@ -223,65 +223,41 @@ void cursor_pgdown(Section *s) {
 }
 
 void cursor_nextword(Section *s) {
-  while (true) { 
-    if (s->col + 1 > s->buffer->current->string_length) {
-      if (s->row == s->rows - 1) {
-        return;
-      }
-      cursor_down(s);
-      cursor_home(s);
-      break;
-    }
-    if (isblank(s->buffer->current->vector[s->col])) {
-      break;
-    }
-    cursor_right(s);
-  }
+  bool blank = true;
 
-  while (true) {
+  while (s->col < s->buffer->current->string_length || s->row < s->rows - 1) { 
     if (s->col + 1 > s->buffer->current->string_length) {
-      if (s->row == s->rows - 1) {
+      cursor_right(s);
+      blank = false;
+    }
+
+    if (isblank(s->buffer->current->vector[s->col]) == blank) {
+      if (!blank) {
         return;
       }
-      cursor_down(s);
-      cursor_home(s);
-      continue;
+      blank = false;
     }
-    if (!isblank(s->buffer->current->vector[s->col])) {
-      break;
-    }
+
     cursor_right(s);
   }
 }
 
 void cursor_prevword(Section *s) {
-  while (true) { 
-    if (s->col == 0) {
-      if (s->row == 0) {
-        return;
-      }
-      cursor_up(s);
-      cursor_end(s);
-      break;
-    }
-    if (isblank(s->buffer->current->vector[s->col - 1])) {
-      break;
-    }
-    cursor_left(s);
-  }
+  bool blank = true;
 
-  while (true) {
+  while (s->col > 0 || s->row > 0) { 
     if (s->col == 0) {
-      if (s->row == 0) {
+      cursor_left(s);
+      blank = false;
+    }
+
+    if (isblank(s->buffer->current->vector[s->col - 1]) == blank) {
+      if (!blank) {
         return;
       }
-      cursor_up(s);
-      cursor_end(s);
-      continue;
+      blank = false;
     }
-    if (!isblank(s->buffer->current->vector[s->col - 1])) {
-      break;
-    }
+
     cursor_left(s);
   }
 }
