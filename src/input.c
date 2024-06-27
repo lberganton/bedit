@@ -16,6 +16,16 @@ static bool is_pair(wchar_t ch) {
   return (strchr(single_pairs, ch)) || (strchr(double_pairs, ch));
 }
 
+static char find_opossite_brace(wchar_t input) {
+  char *ptr = strchr(double_pairs, input);
+  return ptr ? ((ptr - double_pairs) & 1) ? *ptr : 0 : 0;
+}
+
+static char find_openning_brace(wchar_t input) {
+  char *ptr = strchr(double_pairs, input);
+  return ptr ? !((ptr - double_pairs) & 1) ? *ptr : 0 : 0;
+}
+
 void insert_tab(Section *s) {
   for (u8 i = s->col % TAB_SIZE; i < TAB_SIZE; i++) {
     insert_char(s, ' ');

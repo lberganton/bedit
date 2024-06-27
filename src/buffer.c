@@ -110,6 +110,19 @@ Buffer *buffer_init(void) {
 
 BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
   ASSERT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
+  BufferNode *new = node_create(n->prev, n);
+
+  b->nodes++;
+
+  if (b->begin == n) {
+    b->begin = new;
+  }
+
+  return new;
+}
+
+BufferNode *buffer_insert_next(Buffer *b, BufferNode *n) {
+  ASSERT(n == NULL, "Erro: Tentativa de encadeamento com um buffer vazio.");
   BufferNode *new = node_create(n, n->next);
 
   b->nodes++;
