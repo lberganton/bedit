@@ -40,8 +40,6 @@ typedef uint64_t u64;
 #define FILE_EXTENSION_C "C"
 #define FILE_EXTENSION_CPP "C++"
 
-typedef enum Mode { MODE_NORMAL, MODE_INSERT } Mode;
-
 #define ASSERT(condition, description)                                         \
   do {                                                                         \
     if (condition) {                                                           \

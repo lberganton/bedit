@@ -70,7 +70,7 @@ void paint_command_bar(char *msg, attr_t attr, Section *s) {
   paint_string(s->window_command, 0, 0, attr, msg);
 }
 
-void paint_status_bar(Mode mode, Section *s) {
+void paint_status_bar(Section *s) {
   char buffer[BUFF_STR];
   WINDOW *w = s->window_status;
   static const char *mode_string[] = {" NORMAL ", " INSERÇÃO ", " NORMAL "};
@@ -80,14 +80,14 @@ void paint_status_bar(Mode mode, Section *s) {
   // Set color scheme.
   attr_t color;
 
-  if (mode == MODE_INSERT) {
+  if (s->mode == MODE_INSERT) {
     color = COLOR_PAIR(PAIR_TEAL);
   } else {
     color = COLOR_PAIR(PAIR_BLUE);
   }
 
   // Print the actual mode.
-  paint_string(w, 0, 0, color | A_REVERSE, mode_string[mode]);
+  paint_string(w, 0, 0, color | A_REVERSE, mode_string[s->mode]);
 
   // Print the actual file.
   snprintf(buffer, 64, " %.*s%s ", STATUS_BAR_FILE_NAME_LEN,

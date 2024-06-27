@@ -13,6 +13,7 @@
 
 #define ctrl(ch) (ch & 0x1F)
 
+void handle_with_input(Section *section, wchar_t key);
 void insert_tab(Section *s);
 void insert_char(Section *s, wchar_t ch);
 void delete_char(Section *s);

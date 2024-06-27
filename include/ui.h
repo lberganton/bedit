@@ -43,7 +43,7 @@ void resize_windows(Section *s);
 
 void paint_background(WINDOW *w, attr_t attr);
 void paint_command_bar(char *msg, attr_t attr, Section *s);
-void paint_status_bar(Mode mode, Section *s);
+void paint_status_bar(Section *s);
 void paint_rows(Section *s);
 
 void cursor_up(Section *s);

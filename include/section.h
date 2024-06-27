@@ -10,6 +10,8 @@
 #include "file.h"
 #include "undo.h"
 
+typedef enum Mode { MODE_NORMAL, MODE_INSERT } Mode;
+
 typedef struct Section {
   // This is the argument that the user passed in the command line or in the
   // program itself to save the file. It can be either only file name or the
@@ -30,6 +32,9 @@ typedef struct Section {
   // This is the buffer that stores the current message to be displayed on the
   // command bar.
   char msg[BUFF_STR];
+
+  // Editor mode.
+  Mode mode;
 
   // Informs if there is a change not writed in the current file.
   bool dirty;

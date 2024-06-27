@@ -4,6 +4,7 @@
  * Created: 05/20/2024
  */
 #include "input.h"
+#include "command.h"
 #include "ui.h"
 #include <ctype.h>
 #include <stddef.h>
@@ -11,6 +12,100 @@
 
 static const char single_pairs[] = "\'\"";
 static const char double_pairs[] = "()<>[]{}";
+
+void handle_with_input(Section *section, wchar_t key) {
+  switch (key) {
+  case ctrl('s'):
+    set_command(section, tokenize_command("w"));
+    return;
+  case ctrl('q'):
+    set_command(section, tokenize_command("q"));
+    return;
+  case KEY_UP:
+    cursor_up(section);
+    return;
+  case KEY_DOWN:
+    cursor_down(section);
+    return;
+  case KEY_LEFT:
+    cursor_left(section);
+    return;
+  case KEY_RIGHT:
+    cursor_right(section);
+    return;
+  case KEY_HOME:
+    cursor_home(section);
+    return;
+  case KEY_END:
+    cursor_end(section);
+    return;
+  case KEY_PPAGE:
+    cursor_pgup(section);
+    return;
+  case KEY_NPAGE:
+    cursor_pgdown(section);
+    return;
+  case KEY_DC:
+    delete_char(section);
+    return;
+  case KEY_ESC:
+    section->mode = MODE_NORMAL;
+    section->undo->dirty = false;
+    return;
+  case KEY_RESIZE:
+    resize_windows(section);
+    return;
+  }
+
+  if (section->mode == MODE_INSERT) {
+    section->dirty = true;
+
+    switch (key) {
+    case KEY_BACKSPACE:
+      backspace_char(section);
+      return;
+    case '\t':
+      insert_tab(section);
+      return;
+    case '\n':
+      insert_new_line(section);
+      return;
+    default:
+      insert_char(section, key);
+      return;
+    }
+  }
+
+  switch (key) {
+  case 'k':
+    cursor_up(section);
+    return;
+  case 'j':
+    cursor_down(section);
+    return;
+  case 'h':
+    cursor_left(section);
+    return;
+  case 'l':
+    cursor_right(section);
+    return;
+  case 'i':
+    section->mode = MODE_INSERT;
+    return;
+  case 'w':
+    cursor_nextword(section);
+    return;
+  case 'b':
+    cursor_prevword(section);
+    return;
+  case ':':
+    input_command(section);
+    return;
+  case 'u':
+    pop_undo(section);
+    return;
+  }
+}
 
 static bool is_pair(wchar_t ch) {
   return (strchr(single_pairs, ch)) || (strchr(double_pairs, ch));
