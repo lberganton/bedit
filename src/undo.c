@@ -29,9 +29,9 @@
  * Each change can be one of three types: row change, new row change and remove
  * row change.
  *
- * If it is a new row change, than the added row is freeded.
- * If it is a remove row change, than the removed row is reactivated.
- * If it is a row change, than the state of the row before the change will be
+ * If it is a 'new row change', than the added row is freeded.
+ * If it is a 'remove row change', than the removed row is reactivated.
+ * If it is a 'row change', than the state of the row before the change will be
  * restored.
  */
 #include "undo.h"

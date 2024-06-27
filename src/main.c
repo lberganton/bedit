@@ -3,7 +3,7 @@
  * Author: Lucas Berganton
  * Created: 05/11/2024
  *
- * The entry of Beditor application.
+ * The entry of Bedit application.
  */
 #include "input.h"
 #include "section.h"

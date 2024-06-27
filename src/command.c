@@ -1,3 +1,8 @@
+/*
+ * File: command.c
+ * Author: Lucas Berganton
+ * Created: 05/20/2024
+ */
 #include "command.h"
 #include "ui.h"
 #include <ctype.h>
