@@ -27,7 +27,7 @@ COBJ := $(CSRC:.c=.o)
 	@echo "File $@ Generated."
 
 # Targets
-all: build clean test
+all: build
 
 build: compile link
 
