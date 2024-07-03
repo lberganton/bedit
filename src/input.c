@@ -98,6 +98,12 @@ void handle_with_input(Section *section, wchar_t key) {
   case 'b':
     cursor_prevword(section);
     return;
+  case '0':
+    cursor_home(section);
+    return;
+  case '$':
+    cursor_end(section);
+    return;
   case ':':
     input_command(section);
     return;
