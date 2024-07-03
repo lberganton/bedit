@@ -104,6 +104,9 @@ void handle_with_input(Section *section, wchar_t key) {
   case '$':
     cursor_end(section);
     return;
+  case 'x':
+    delete_char(section);
+    return;
   case ':':
     input_command(section);
     return;
