@@ -47,3 +47,7 @@ test:
 clean:
 	@rm $(shell find $(SRC) -name '*.o')
 	@echo "Directories cleaned"
+
+format:
+	@clang-format -i $(shell find . -name '*.[ch]')
+	@echo "All '.c' and '.h' files formatted."
