@@ -39,6 +39,12 @@ typedef uint64_t u64;
 #define FILE_EXTENSION_TXT "Texto"
 #define FILE_EXTENSION_C "C"
 #define FILE_EXTENSION_CPP "C++"
+#define FILE_EXTENSION_CHEADER "C/C++ Header"
+#define FILE_EXTENSION_CSHARP "C#"
+#define FILE_EXTENSION_JAVA "Java"
+#define FILE_EXTENSION_JAVASCRIPT "Java Script"
+#define FILE_EXTENSION_RUST "Rust"
+#define FILE_EXTENSION_PYTHON "Python"
 
 #define ASSERT(condition, description)                                         \
   do {                                                                         \

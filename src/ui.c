@@ -114,6 +114,24 @@ void paint_status_bar(Section *s) {
   case EXTENSION_CPP:
     strncpy(buffer, FILE_EXTENSION_CPP, BUFF_STR);
     break;
+  case EXTENSION_CHEADER:
+    strncpy(buffer, FILE_EXTENSION_CHEADER, BUFF_STR);
+    break;
+  case EXTENSION_CSHARP:
+    strncpy(buffer, FILE_EXTENSION_CSHARP, BUFF_STR);
+    break;
+  case EXTENSION_JAVA:
+    strncpy(buffer, FILE_EXTENSION_JAVA, BUFF_STR);
+    break;
+  case EXTENSION_JAVASCRIPT:
+    strncpy(buffer, FILE_EXTENSION_JAVASCRIPT, BUFF_STR);
+    break;
+  case EXTENSION_RUST:
+    strncpy(buffer, FILE_EXTENSION_RUST, BUFF_STR);
+    break;
+  case EXTENSION_PYTHON:
+    strncpy(buffer, FILE_EXTENSION_PYTHON, BUFF_STR);
+    break;
   }
 
   // Print the file format.

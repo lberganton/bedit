@@ -46,6 +46,24 @@ FileExtension file_get_extension(const char *name) {
   if (strncmp(dot, ".cpp", 5) == 0) {
     return EXTENSION_CPP;
   }
+  if (strncmp(dot, ".h", 5) == 0) {
+    return EXTENSION_CHEADER;
+  }
+  if (strncmp(dot, ".cs", 5) == 0) {
+    return EXTENSION_CSHARP;
+  }
+  if (strncmp(dot, ".java", 5) == 0) {
+    return EXTENSION_JAVA;
+  }
+  if (strncmp(dot, ".js", 5) == 0) {
+    return EXTENSION_JAVASCRIPT;
+  }
+  if (strncmp(dot, ".rs", 5) == 0) {
+    return EXTENSION_RUST;
+  }
+  if (strncmp(dot, ".py", 5) == 0) {
+    return EXTENSION_PYTHON;
+  }
 
   return EXTENSION_UNKNOWN;
 }

@@ -16,6 +16,12 @@ typedef enum FileExtension {
   EXTENSION_TXT,
   EXTENSION_C,
   EXTENSION_CPP,
+  EXTENSION_CHEADER,
+  EXTENSION_CSHARP,
+  EXTENSION_JAVA,
+  EXTENSION_JAVASCRIPT,
+  EXTENSION_RUST,
+  EXTENSION_PYTHON
 } FileExtension;
 
 bool file_exist(const char *name);
