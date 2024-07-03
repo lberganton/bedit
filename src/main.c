@@ -113,6 +113,12 @@ int main(int argc, char **argv) {
 
     wchar_t key = wgetch(section.window_text);
 
+    // Check whether the input is a multibyte character. If it is, gets the
+    // appropriated value.
+    if (key == 0xC3) {
+      key = wgetch(section.window_text) + 64;
+    }
+
     handle_with_input(&section, key);
   }
 
