@@ -6,8 +6,6 @@
 #include "defs.h"
 #include "ui.h"
 #include <inttypes.h>
-#include <stdlib.h>
-#include <string.h>
 
 void initialize_windows(Section *s) {
   s->window_command = newwin(1, COLS, LINES - 1, 0);

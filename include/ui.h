@@ -5,8 +5,6 @@
  */
 #pragma once
 
-#include "buffer.h"
-#include "defs.h"
 #include "section.h"
 #include <ncurses.h>
 #include <stdbool.h>

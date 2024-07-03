@@ -6,7 +6,6 @@
 #include "input.h"
 #include "command.h"
 #include "ui.h"
-#include <ctype.h>
 #include <stddef.h>
 #include <string.h>
 
