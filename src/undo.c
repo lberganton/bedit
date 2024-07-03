@@ -33,6 +33,10 @@
  * If it is a 'remove row change', than the removed row is reactivated.
  * If it is a 'row change', than the state of the row before the change will be
  * restored.
+ *
+ * This algorithm was used because it allows a easy integration with a "Visual
+ * Mode". Therefore, this mode can be implemented in future with little or no
+ * reafactoring of the undo feature.
  */
 #include "undo.h"
 #include <stdlib.h>
