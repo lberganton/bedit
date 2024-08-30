@@ -14,7 +14,7 @@ TERM := alacritty
 CC := gcc
 CFLAGS := -Wall -Wextra -Wpedantic
 CINCLUDE := -I $(INCLUDE)
-CLIB := -lncurses -lm
+CLIB := -lncursesw -lm
 
 # Sources
 CSRC := $(shell find $(SRC) -name '*.c')
