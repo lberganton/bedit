@@ -45,7 +45,7 @@ test:
 
 .PHONY: clean
 clean:
-	@rm $(shell find $(SRC) -name '*.o')
+	@rm -f $(shell find $(SRC) -name '*.o')
 	@echo "Directories cleaned"
 
 format:
