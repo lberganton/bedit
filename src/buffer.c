@@ -171,7 +171,7 @@ bool buffer_insert_char(wchar_t ch, u32 index, BufferNode *n) {
   }
 
   // Move all characters from the index forward.
-  memcpy(&n->vector[index + 1], &n->vector[index],
+  memmove(&n->vector[index + 1], &n->vector[index],
          (n->string_length - index) * sizeof(wchar_t));
 
   // Insert the new character.
@@ -189,7 +189,7 @@ bool buffer_delete_char(u32 index, BufferNode *n) {
 
   // Move all characters in front to the position of the character to be
   // deleted.
-  memcpy(&n->vector[index], &n->vector[index + 1],
+  memmove(&n->vector[index], &n->vector[index + 1],
          (n->string_length - index) * sizeof(wchar_t));
 
   n->string_length--;

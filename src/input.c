@@ -287,7 +287,7 @@ void insert_new_line(Section *s) {
 
   buffer_increase_vector(new, current->string_length - s->col);
 
-  memcpy(&new->vector[0], &current->vector[s->col],
+  memmove(&new->vector[0], &current->vector[s->col],
          (current->string_length - s->col) * sizeof(wchar_t));
 
   if (current->vector_length && s->col <= current->vector_length - 50) {
@@ -341,7 +341,7 @@ bool merge_line(Section *s, BufferNode *dest, BufferNode *src) {
     buffer_increase_vector(dest, src->string_length);
   }
 
-  memcpy(&dest->vector[dest->string_length], &src->vector[0],
+  memmove(&dest->vector[dest->string_length], &src->vector[0],
          src->string_length * sizeof(wchar_t));
 
   dest->string_length += src->string_length;
